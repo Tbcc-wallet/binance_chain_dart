@@ -1,0 +1,158 @@
+///
+//  Generated code. Do not modify.
+//  source: gogo.proto
+//
+// @dart = 2.3
+// ignore_for_file: camel_case_types,non_constant_identifier_names,library_prefixes,unused_import,unused_shown_name,return_of_invalid_type
+
+import 'dart:core' as $core;
+
+import 'package:protobuf/protobuf.dart' as $pb;
+
+class Gogo {
+  static final $pb.Extension goprotoEnumPrefix = $pb.Extension<$core.bool>('google.protobuf.EnumOptions', 'goprotoEnumPrefix', 62001, $pb.PbFieldType.OB);
+  static final $pb.Extension goprotoEnumStringer = $pb.Extension<$core.bool>('google.protobuf.EnumOptions', 'goprotoEnumStringer', 62021, $pb.PbFieldType.OB);
+  static final $pb.Extension enumStringer = $pb.Extension<$core.bool>('google.protobuf.EnumOptions', 'enumStringer', 62022, $pb.PbFieldType.OB);
+  static final $pb.Extension enumCustomname = $pb.Extension<$core.String>('google.protobuf.EnumOptions', 'enumCustomname', 62023, $pb.PbFieldType.OS);
+  static final $pb.Extension enumdecl = $pb.Extension<$core.bool>('google.protobuf.EnumOptions', 'enumdecl', 62024, $pb.PbFieldType.OB);
+  static final $pb.Extension enumvalueCustomname = $pb.Extension<$core.String>('google.protobuf.EnumValueOptions', 'enumvalueCustomname', 66001, $pb.PbFieldType.OS);
+  static final $pb.Extension goprotoGettersAll = $pb.Extension<$core.bool>('google.protobuf.FileOptions', 'goprotoGettersAll', 63001, $pb.PbFieldType.OB);
+  static final $pb.Extension goprotoEnumPrefixAll = $pb.Extension<$core.bool>('google.protobuf.FileOptions', 'goprotoEnumPrefixAll', 63002, $pb.PbFieldType.OB);
+  static final $pb.Extension goprotoStringerAll = $pb.Extension<$core.bool>('google.protobuf.FileOptions', 'goprotoStringerAll', 63003, $pb.PbFieldType.OB);
+  static final $pb.Extension verboseEqualAll = $pb.Extension<$core.bool>('google.protobuf.FileOptions', 'verboseEqualAll', 63004, $pb.PbFieldType.OB);
+  static final $pb.Extension faceAll = $pb.Extension<$core.bool>('google.protobuf.FileOptions', 'faceAll', 63005, $pb.PbFieldType.OB);
+  static final $pb.Extension gostringAll = $pb.Extension<$core.bool>('google.protobuf.FileOptions', 'gostringAll', 63006, $pb.PbFieldType.OB);
+  static final $pb.Extension populateAll = $pb.Extension<$core.bool>('google.protobuf.FileOptions', 'populateAll', 63007, $pb.PbFieldType.OB);
+  static final $pb.Extension stringerAll = $pb.Extension<$core.bool>('google.protobuf.FileOptions', 'stringerAll', 63008, $pb.PbFieldType.OB);
+  static final $pb.Extension onlyoneAll = $pb.Extension<$core.bool>('google.protobuf.FileOptions', 'onlyoneAll', 63009, $pb.PbFieldType.OB);
+  static final $pb.Extension equalAll = $pb.Extension<$core.bool>('google.protobuf.FileOptions', 'equalAll', 63013, $pb.PbFieldType.OB);
+  static final $pb.Extension descriptionAll = $pb.Extension<$core.bool>('google.protobuf.FileOptions', 'descriptionAll', 63014, $pb.PbFieldType.OB);
+  static final $pb.Extension testgenAll = $pb.Extension<$core.bool>('google.protobuf.FileOptions', 'testgenAll', 63015, $pb.PbFieldType.OB);
+  static final $pb.Extension benchgenAll = $pb.Extension<$core.bool>('google.protobuf.FileOptions', 'benchgenAll', 63016, $pb.PbFieldType.OB);
+  static final $pb.Extension marshalerAll = $pb.Extension<$core.bool>('google.protobuf.FileOptions', 'marshalerAll', 63017, $pb.PbFieldType.OB);
+  static final $pb.Extension unmarshalerAll = $pb.Extension<$core.bool>('google.protobuf.FileOptions', 'unmarshalerAll', 63018, $pb.PbFieldType.OB);
+  static final $pb.Extension stableMarshalerAll = $pb.Extension<$core.bool>('google.protobuf.FileOptions', 'stableMarshalerAll', 63019, $pb.PbFieldType.OB);
+  static final $pb.Extension sizerAll = $pb.Extension<$core.bool>('google.protobuf.FileOptions', 'sizerAll', 63020, $pb.PbFieldType.OB);
+  static final $pb.Extension goprotoEnumStringerAll = $pb.Extension<$core.bool>('google.protobuf.FileOptions', 'goprotoEnumStringerAll', 63021, $pb.PbFieldType.OB);
+  static final $pb.Extension enumStringerAll = $pb.Extension<$core.bool>('google.protobuf.FileOptions', 'enumStringerAll', 63022, $pb.PbFieldType.OB);
+  static final $pb.Extension unsafeMarshalerAll = $pb.Extension<$core.bool>('google.protobuf.FileOptions', 'unsafeMarshalerAll', 63023, $pb.PbFieldType.OB);
+  static final $pb.Extension unsafeUnmarshalerAll = $pb.Extension<$core.bool>('google.protobuf.FileOptions', 'unsafeUnmarshalerAll', 63024, $pb.PbFieldType.OB);
+  static final $pb.Extension goprotoExtensionsMapAll = $pb.Extension<$core.bool>('google.protobuf.FileOptions', 'goprotoExtensionsMapAll', 63025, $pb.PbFieldType.OB);
+  static final $pb.Extension goprotoUnrecognizedAll = $pb.Extension<$core.bool>('google.protobuf.FileOptions', 'goprotoUnrecognizedAll', 63026, $pb.PbFieldType.OB);
+  static final $pb.Extension gogoprotoImport = $pb.Extension<$core.bool>('google.protobuf.FileOptions', 'gogoprotoImport', 63027, $pb.PbFieldType.OB);
+  static final $pb.Extension protosizerAll = $pb.Extension<$core.bool>('google.protobuf.FileOptions', 'protosizerAll', 63028, $pb.PbFieldType.OB);
+  static final $pb.Extension compareAll = $pb.Extension<$core.bool>('google.protobuf.FileOptions', 'compareAll', 63029, $pb.PbFieldType.OB);
+  static final $pb.Extension typedeclAll = $pb.Extension<$core.bool>('google.protobuf.FileOptions', 'typedeclAll', 63030, $pb.PbFieldType.OB);
+  static final $pb.Extension enumdeclAll = $pb.Extension<$core.bool>('google.protobuf.FileOptions', 'enumdeclAll', 63031, $pb.PbFieldType.OB);
+  static final $pb.Extension goprotoRegistration = $pb.Extension<$core.bool>('google.protobuf.FileOptions', 'goprotoRegistration', 63032, $pb.PbFieldType.OB);
+  static final $pb.Extension messagenameAll = $pb.Extension<$core.bool>('google.protobuf.FileOptions', 'messagenameAll', 63033, $pb.PbFieldType.OB);
+  static final $pb.Extension goprotoGetters = $pb.Extension<$core.bool>('google.protobuf.MessageOptions', 'goprotoGetters', 64001, $pb.PbFieldType.OB);
+  static final $pb.Extension goprotoStringer = $pb.Extension<$core.bool>('google.protobuf.MessageOptions', 'goprotoStringer', 64003, $pb.PbFieldType.OB);
+  static final $pb.Extension verboseEqual = $pb.Extension<$core.bool>('google.protobuf.MessageOptions', 'verboseEqual', 64004, $pb.PbFieldType.OB);
+  static final $pb.Extension face = $pb.Extension<$core.bool>('google.protobuf.MessageOptions', 'face', 64005, $pb.PbFieldType.OB);
+  static final $pb.Extension gostring = $pb.Extension<$core.bool>('google.protobuf.MessageOptions', 'gostring', 64006, $pb.PbFieldType.OB);
+  static final $pb.Extension populate = $pb.Extension<$core.bool>('google.protobuf.MessageOptions', 'populate', 64007, $pb.PbFieldType.OB);
+  static final $pb.Extension stringer = $pb.Extension<$core.bool>('google.protobuf.MessageOptions', 'stringer', 67008, $pb.PbFieldType.OB);
+  static final $pb.Extension onlyone = $pb.Extension<$core.bool>('google.protobuf.MessageOptions', 'onlyone', 64009, $pb.PbFieldType.OB);
+  static final $pb.Extension equal = $pb.Extension<$core.bool>('google.protobuf.MessageOptions', 'equal', 64013, $pb.PbFieldType.OB);
+  static final $pb.Extension description = $pb.Extension<$core.bool>('google.protobuf.MessageOptions', 'description', 64014, $pb.PbFieldType.OB);
+  static final $pb.Extension testgen = $pb.Extension<$core.bool>('google.protobuf.MessageOptions', 'testgen', 64015, $pb.PbFieldType.OB);
+  static final $pb.Extension benchgen = $pb.Extension<$core.bool>('google.protobuf.MessageOptions', 'benchgen', 64016, $pb.PbFieldType.OB);
+  static final $pb.Extension marshaler = $pb.Extension<$core.bool>('google.protobuf.MessageOptions', 'marshaler', 64017, $pb.PbFieldType.OB);
+  static final $pb.Extension unmarshaler = $pb.Extension<$core.bool>('google.protobuf.MessageOptions', 'unmarshaler', 64018, $pb.PbFieldType.OB);
+  static final $pb.Extension stableMarshaler = $pb.Extension<$core.bool>('google.protobuf.MessageOptions', 'stableMarshaler', 64019, $pb.PbFieldType.OB);
+  static final $pb.Extension sizer = $pb.Extension<$core.bool>('google.protobuf.MessageOptions', 'sizer', 64020, $pb.PbFieldType.OB);
+  static final $pb.Extension unsafeMarshaler = $pb.Extension<$core.bool>('google.protobuf.MessageOptions', 'unsafeMarshaler', 64023, $pb.PbFieldType.OB);
+  static final $pb.Extension unsafeUnmarshaler = $pb.Extension<$core.bool>('google.protobuf.MessageOptions', 'unsafeUnmarshaler', 64024, $pb.PbFieldType.OB);
+  static final $pb.Extension goprotoExtensionsMap = $pb.Extension<$core.bool>('google.protobuf.MessageOptions', 'goprotoExtensionsMap', 64025, $pb.PbFieldType.OB);
+  static final $pb.Extension goprotoUnrecognized = $pb.Extension<$core.bool>('google.protobuf.MessageOptions', 'goprotoUnrecognized', 64026, $pb.PbFieldType.OB);
+  static final $pb.Extension protosizer = $pb.Extension<$core.bool>('google.protobuf.MessageOptions', 'protosizer', 64028, $pb.PbFieldType.OB);
+  static final $pb.Extension compare = $pb.Extension<$core.bool>('google.protobuf.MessageOptions', 'compare', 64029, $pb.PbFieldType.OB);
+  static final $pb.Extension typedecl = $pb.Extension<$core.bool>('google.protobuf.MessageOptions', 'typedecl', 64030, $pb.PbFieldType.OB);
+  static final $pb.Extension messagename = $pb.Extension<$core.bool>('google.protobuf.MessageOptions', 'messagename', 64033, $pb.PbFieldType.OB);
+  static final $pb.Extension nullable = $pb.Extension<$core.bool>('google.protobuf.FieldOptions', 'nullable', 65001, $pb.PbFieldType.OB);
+  static final $pb.Extension embed = $pb.Extension<$core.bool>('google.protobuf.FieldOptions', 'embed', 65002, $pb.PbFieldType.OB);
+  static final $pb.Extension customtype = $pb.Extension<$core.String>('google.protobuf.FieldOptions', 'customtype', 65003, $pb.PbFieldType.OS);
+  static final $pb.Extension customname = $pb.Extension<$core.String>('google.protobuf.FieldOptions', 'customname', 65004, $pb.PbFieldType.OS);
+  static final $pb.Extension jsontag = $pb.Extension<$core.String>('google.protobuf.FieldOptions', 'jsontag', 65005, $pb.PbFieldType.OS);
+  static final $pb.Extension moretags = $pb.Extension<$core.String>('google.protobuf.FieldOptions', 'moretags', 65006, $pb.PbFieldType.OS);
+  static final $pb.Extension casttype = $pb.Extension<$core.String>('google.protobuf.FieldOptions', 'casttype', 65007, $pb.PbFieldType.OS);
+  static final $pb.Extension castkey = $pb.Extension<$core.String>('google.protobuf.FieldOptions', 'castkey', 65008, $pb.PbFieldType.OS);
+  static final $pb.Extension castvalue = $pb.Extension<$core.String>('google.protobuf.FieldOptions', 'castvalue', 65009, $pb.PbFieldType.OS);
+  static final $pb.Extension stdtime = $pb.Extension<$core.bool>('google.protobuf.FieldOptions', 'stdtime', 65010, $pb.PbFieldType.OB);
+  static final $pb.Extension stdduration = $pb.Extension<$core.bool>('google.protobuf.FieldOptions', 'stdduration', 65011, $pb.PbFieldType.OB);
+  static void registerAllExtensions($pb.ExtensionRegistry registry) {
+    registry.add(goprotoEnumPrefix);
+    registry.add(goprotoEnumStringer);
+    registry.add(enumStringer);
+    registry.add(enumCustomname);
+    registry.add(enumdecl);
+    registry.add(enumvalueCustomname);
+    registry.add(goprotoGettersAll);
+    registry.add(goprotoEnumPrefixAll);
+    registry.add(goprotoStringerAll);
+    registry.add(verboseEqualAll);
+    registry.add(faceAll);
+    registry.add(gostringAll);
+    registry.add(populateAll);
+    registry.add(stringerAll);
+    registry.add(onlyoneAll);
+    registry.add(equalAll);
+    registry.add(descriptionAll);
+    registry.add(testgenAll);
+    registry.add(benchgenAll);
+    registry.add(marshalerAll);
+    registry.add(unmarshalerAll);
+    registry.add(stableMarshalerAll);
+    registry.add(sizerAll);
+    registry.add(goprotoEnumStringerAll);
+    registry.add(enumStringerAll);
+    registry.add(unsafeMarshalerAll);
+    registry.add(unsafeUnmarshalerAll);
+    registry.add(goprotoExtensionsMapAll);
+    registry.add(goprotoUnrecognizedAll);
+    registry.add(gogoprotoImport);
+    registry.add(protosizerAll);
+    registry.add(compareAll);
+    registry.add(typedeclAll);
+    registry.add(enumdeclAll);
+    registry.add(goprotoRegistration);
+    registry.add(messagenameAll);
+    registry.add(goprotoGetters);
+    registry.add(goprotoStringer);
+    registry.add(verboseEqual);
+    registry.add(face);
+    registry.add(gostring);
+    registry.add(populate);
+    registry.add(stringer);
+    registry.add(onlyone);
+    registry.add(equal);
+    registry.add(description);
+    registry.add(testgen);
+    registry.add(benchgen);
+    registry.add(marshaler);
+    registry.add(unmarshaler);
+    registry.add(stableMarshaler);
+    registry.add(sizer);
+    registry.add(unsafeMarshaler);
+    registry.add(unsafeUnmarshaler);
+    registry.add(goprotoExtensionsMap);
+    registry.add(goprotoUnrecognized);
+    registry.add(protosizer);
+    registry.add(compare);
+    registry.add(typedecl);
+    registry.add(messagename);
+    registry.add(nullable);
+    registry.add(embed);
+    registry.add(customtype);
+    registry.add(customname);
+    registry.add(jsontag);
+    registry.add(moretags);
+    registry.add(casttype);
+    registry.add(castkey);
+    registry.add(castvalue);
+    registry.add(stdtime);
+    registry.add(stdduration);
+  }
+}
+
