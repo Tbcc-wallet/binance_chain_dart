@@ -131,6 +131,28 @@ class WebsocketBinanceListener {
         }),
         onMessage);
   }
+
+  void subscribeCandlesticksUpdates(String marketPairSymbol, {CandlestickInterval interval = CandlestickInterval.INTERVAL_1h, Function(WsBinanceMessage<MarketDepthData> message) onMessage}) {
+    _subscribe<MarketDepthData>(
+        json.encode({
+          'method': 'subscribe',
+          'topic': 'kline_${interval.toString().split('_')[1]}',
+          'symbols': [marketPairSymbol]
+        }),
+        onMessage);
+  }
+
+  void close() {
+    socket.sink.add(json.encode({'method': 'close'}));
+  }
+
+  void unsubscribeTopic(String topic) {
+    socket.sink.add(json.encode({'method': 'unsubscribe', 'topic': topic}));
+  }
+
+  void unsubscribeOrderBookSymbol(String symbol) {
+    socket.sink.add(json.encode({'method': 'unsubscribe', 'topic': 'marketDepth', symbol: symbol}));
+  }
 }
 
 class WebsocketBinanceManager {
