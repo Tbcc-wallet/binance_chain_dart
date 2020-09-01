@@ -9,14 +9,12 @@ class WebsocketBinanceListener {
   BinanceEnvironment env;
   WebsocketBinanceListener(this.env);
   Stream<dynamic> stream;
-  Function onDone;
+  int closeCode;
   Timer _keepAliveTimer;
   void _subscribe<DataModel>(String connectionJsonMessage, Function(WsBinanceMessage<DataModel> message) onMessage) {
+    closeCode = null;
     socket = IOWebSocketChannel.connect('${env.wssUrl}/ws');
     stream = socket.stream.asBroadcastStream();
-    this.onDone = () {
-      _subscribe(connectionJsonMessage, onMessage);
-    };
     stream.listen((message) {
       if (message.runtimeType == String) {
         if (message.contains('stream')) {
@@ -26,7 +24,10 @@ class WebsocketBinanceListener {
         }
       }
     }, onDone: () {
-      print(socket.closeCode);
+      if (closeCode == 1000) {
+      } else {
+        _subscribe(connectionJsonMessage, onMessage);
+      }
     });
 
     socket.sink.add(connectionJsonMessage);
@@ -145,9 +146,11 @@ class WebsocketBinanceListener {
         onMessage);
   }
 
-  void close() {
-    this.onDone = () {};
+  Future<void> close() async {
     socket.sink.add(json.encode({'method': 'close'}));
+    closeCode = 1000;
+    await socket.sink.close(1000);
+    _keepAliveTimer.cancel();
   }
 
   void unsubscribeTopic(String topic) {
