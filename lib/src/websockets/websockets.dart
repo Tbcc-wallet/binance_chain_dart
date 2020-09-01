@@ -25,7 +25,9 @@ class WebsocketBinanceListener {
           }
         }
       }
-    }, onDone: this.onDone);
+    }, onDone: () {
+      print(socket.closeCode);
+    });
 
     socket.sink.add(connectionJsonMessage);
     _keepAliveTimer?.cancel();
