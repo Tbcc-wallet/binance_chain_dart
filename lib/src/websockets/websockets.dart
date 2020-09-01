@@ -9,11 +9,14 @@ class WebsocketBinanceListener {
   BinanceEnvironment env;
   WebsocketBinanceListener(this.env);
   Stream<dynamic> stream;
+  Function onDone;
   Timer _keepAliveTimer;
   void _subscribe<DataModel>(String connectionJsonMessage, Function(WsBinanceMessage<DataModel> message) onMessage) {
     socket = IOWebSocketChannel.connect('${env.wssUrl}/ws');
     stream = socket.stream.asBroadcastStream();
-
+    this.onDone = () {
+      _subscribe(connectionJsonMessage, onMessage);
+    };
     stream.listen((message) {
       if (message.runtimeType == String) {
         if (message.contains('stream')) {
@@ -22,9 +25,7 @@ class WebsocketBinanceListener {
           }
         }
       }
-    }, onDone: () {
-      _subscribe(connectionJsonMessage, onMessage);
-    });
+    }, onDone: this.onDone);
 
     socket.sink.add(connectionJsonMessage);
     _keepAliveTimer?.cancel();
@@ -143,6 +144,7 @@ class WebsocketBinanceListener {
   }
 
   void close() {
+    this.onDone = () {};
     socket.sink.add(json.encode({'method': 'close'}));
   }
 
