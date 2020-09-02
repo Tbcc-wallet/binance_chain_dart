@@ -403,6 +403,57 @@ class TickerStatistics {
     count = json['count'] ?? 0;
   }
 
+  TickerStatistics.zero(String symbol) {
+    symbol = symbol;
+    baseAssetName = '0.0';
+    quoteAssetName = '0.0';
+    priceChange = '0.0';
+    priceChangePercent = '0.0';
+    prevClosePrice = '0.0';
+    lastPrice = '0.0';
+    lastQuantity = '0.0';
+    openPrice = '0.0';
+    highPrice = '0.0';
+    lowPrice = '0.0';
+    openTime = 0;
+    closeTime = 0;
+    firstId = '0.0';
+    lastId = '0.0';
+    bidPrice = '0.0';
+    bidQuantity = '0.0';
+    askPrice = '0.0';
+    askQuantity = '0.0';
+    weightedAvgPrice = '0.0';
+    volume = '0.0';
+    quoteVolume = '0.0';
+    count = 0;
+  }
+  TickerStatistics.stable(String symbol) {
+    symbol = symbol;
+    baseAssetName = '0.0';
+    quoteAssetName = '0.0';
+    priceChange = '0.0';
+    priceChangePercent = '0.0';
+    prevClosePrice = '0.0';
+    lastPrice = '1.0';
+    lastQuantity = '0.0';
+    openPrice = '0.0';
+    highPrice = '0.0';
+    lowPrice = '0.0';
+    openTime = 0;
+    closeTime = 0;
+    firstId = '0.0';
+    lastId = '0.0';
+    bidPrice = '0.0';
+    bidQuantity = '0.0';
+    askPrice = '0.0';
+    askQuantity = '0.0';
+    weightedAvgPrice = '0.0';
+    volume = '0.0';
+    quoteVolume = '0.0';
+    count = 0;
+  }
+
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
       'symbol': symbol ?? '0.0',
