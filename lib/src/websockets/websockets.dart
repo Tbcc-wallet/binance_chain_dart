@@ -11,11 +11,12 @@ class WebsocketBinanceListener {
   Stream<dynamic> stream;
   int closeCode;
   Timer _keepAliveTimer;
+  StreamSubscription mainSupscription;
   void _subscribe<DataModel>(String connectionJsonMessage, Function(WsBinanceMessage<DataModel> message) onMessage) {
     closeCode = null;
     socket = IOWebSocketChannel.connect('${env.wssUrl}/ws');
     stream = socket.stream.asBroadcastStream();
-    stream.listen((message) {
+    mainSupscription = stream.listen((message) {
       if (message.runtimeType == String) {
         if (message.contains('stream')) {
           if (onMessage != null) {
@@ -150,6 +151,7 @@ class WebsocketBinanceListener {
     socket.sink.add(json.encode({'method': 'close'}));
     closeCode = 1000;
     await socket.sink.close(1000);
+    await mainSupscription.cancel();
     _keepAliveTimer.cancel();
   }
 
