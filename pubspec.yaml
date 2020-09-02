@@ -17,10 +17,6 @@ dependencies:
   web_socket_channel: ^1.1.0
   decimal: ^0.3.5
 
-
-  binance_chain_broken: 
-    path: "C:/Users/OLEGATOR/Desktop/binance_chain_broken"
-
   
 
 dev_dependencies:
