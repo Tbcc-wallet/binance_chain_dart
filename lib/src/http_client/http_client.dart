@@ -39,7 +39,7 @@ class HttpApiClient {
   APIResponse _handle_response(Response response) {
     var res = json.decode(response.body);
 
-    return APIResponse(statusCode: response.statusCode, load: res);
+    return APIResponse(response.statusCode, res);
   }
 
   Future<APIResponse<dynamic>> _post(String path, {Map<String, String> headers = const {}, dynamic body = ''}) async {
@@ -220,7 +220,7 @@ class APIResponse<DataModel_T> {
   DataModel_T load;
   Error error;
   bool ok;
-  APIResponse({this.statusCode, DataModel_T load}) {
+  APIResponse(this.statusCode, DataModel_T load) {
     ok = statusCode == 200;
 
     if (statusCode == 200) {
