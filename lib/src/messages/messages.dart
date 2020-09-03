@@ -165,6 +165,10 @@ class PubKeyMsg extends Msg {
   }
 }
 
+
+///Transfer is the transaction for transfering funds to different addresses.
+///
+///Read more: [Binance Chain Docs / Amino encoding / Transfer](Transfer is the transaction for transfering funds to different addresses.)
 class TransferMsg extends Msg {
   @override
   final AMINO_MESSAGE_TYPE = '2A2C87FA';
@@ -234,6 +238,9 @@ class TransferMsg extends Msg {
   }
 }
 
+///NewOrder transaction will create a new order to buy or sell tokens on Binance DEX.
+///
+///Read more: [Binance Chain Docs / Amino encoding / New Order] (https://docs.binance.org/guides/concepts/encoding/amino-example.html#neworder)
 class NewOrderMsg extends Msg {
   @override
   final AMINO_MESSAGE_TYPE = 'CE6DC043';
@@ -286,7 +293,11 @@ class NewOrderMsg extends Msg {
     return pb;
   }
 }
-
+///Cancel transactions (cancel the outstanding/unfilled) orders from the Binance DEX. 
+///After cancel success, the locked quantity on the orders will return back to the originating 
+///address balance and become free to use, i.e. transfer or send new orders.
+///
+///Read more: [Binance Chain Docs / Amino encoding / Cancel Order](https://docs.binance.org/guides/concepts/encoding/amino-example.html#cancel) 
 class CancelOrderMsg extends Msg {
   @override
   final AMINO_MESSAGE_TYPE = '166E681B';
@@ -313,7 +324,10 @@ class CancelOrderMsg extends Msg {
     return pb;
   }
 }
-
+///Freeze transaction will move the amount of the tokens into a frozen state, 
+///in which they cannot be used for transfers or sending new orders.
+///
+/// Read more: [Binance Chain Docs / Amino encoding / Freeze](https://docs.binance.org/guides/concepts/encoding/amino-example.html#freeze)
 class FreezeMsg extends Msg {
   @override
   final AMINO_MESSAGE_TYPE = 'E774B32D';
@@ -341,7 +355,9 @@ class FreezeMsg extends Msg {
     return pb;
   }
 }
-
+///Unfreeze will reversely turn the amount of frozen tokens back to free state.
+///
+///Read more: [Binance Chain Docs / Amino encoding / Unfreeze](https://docs.binance.org/guides/concepts/encoding/amino-example.html#unfreeze)
 class UnFreezeMsg extends Msg {
   @override
   final AMINO_MESSAGE_TYPE = '6515FF0D';
@@ -371,6 +387,9 @@ class UnFreezeMsg extends Msg {
   }
 }
 
+///Vote transactions for proposals.
+///
+///Read more: [Binance Chain Docs / Amino encoding / Vote] (https://docs.binance.org/guides/concepts/encoding/amino-example.html#vote)
 class VoteMsg extends Msg {
   @override
   final AMINO_MESSAGE_TYPE = 'A1CADD36';
