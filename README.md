@@ -1,11 +1,11 @@
 ## binance_chain_dart
 
 This is unofficial Dart wrapper for the [Binance Chain API](https://docs.binance.org/api-reference/dex-api/paths.html "Binance Chain API").
-Most of the classes are ports from [python-binance-chain](https://github.com/sammchardy/python-binance-chain) and [Binance Chain Java SDK](https://github.com/binance-chain/java-sdk)
+Inspired by [python-binance-chain](https://github.com/sammchardy/python-binance-chain) and [Binance Chain Java SDK](https://github.com/binance-chain/java-sdk)
 ## Features
 
 * HTTP API in async implementation
-* Websocket API with automatic "keep alive" messages
+* Websocket API with automatic "keep alive" messages and reconnecting.
 * Create, sign and broadcast messages (transactions)
 * Wallet creation from private key or mnemonic phrase
 * Wallet handling account sequence for transactions
@@ -52,3 +52,9 @@ main() async {
   
 }
 ```
+
+## TODO:
+* Support for WIF and .keystore
+* Tests
+* More docs and samples
+* Maybe JSON-RPC
