@@ -51,6 +51,58 @@ class Validators {
   }
 }
 
+class Token {
+  bool mintable;
+  String name;
+  String originalSymbol;
+  String owner;
+  String symbol;
+  String totalSupply;
+
+  Token({this.mintable, this.name, this.originalSymbol, this.owner, this.symbol, this.totalSupply});
+
+  Token.fromJson(Map<String, dynamic> json) {
+    mintable = json['mintable'];
+    name = json['name'];
+    originalSymbol = json['original_symbol'];
+    owner = json['owner'];
+    symbol = json['symbol'];
+    totalSupply = json['total_supply'];
+  }
+}
+
+class Market {
+  String baseAssetSymbol;
+  String listPrice;
+  String lotSize;
+  String quoteAssetSymbol;
+  String tickSize;
+
+  Market({this.baseAssetSymbol, this.listPrice, this.lotSize, this.quoteAssetSymbol, this.tickSize});
+
+  Market.fromJson(Map<String, dynamic> json) {
+    baseAssetSymbol = json['base_asset_symbol'];
+    listPrice = json['list_price'];
+    lotSize = json['lot_size'];
+    quoteAssetSymbol = json['quote_asset_symbol'];
+    tickSize = json['tick_size'];
+  }
+}
+
+class Fee {
+  String msgType;
+  int fee;
+  int feeFor;
+
+  Fee({this.msgType, this.fee, this.feeFor});
+
+  Fee.fromJson(Map<String, dynamic> json) {
+    msgType = json['msg_type'];
+    fee = json['fee'];
+    feeFor = json['fee_for'];
+  }
+}
+
 /// Read more: [HTTP API ``Peer`` data model](https://docs.binance.org/api-reference/dex-api/paths.html#peer)
 class Peer {
   bool accelerated;
@@ -302,7 +354,25 @@ class Tx {
   int source;
   int sequence;
 
-  Tx({this.txHash, this.blockHeight, this.txType, this.timeStamp, this.fromAddr, this.toAddr, this.value, this.txAsset, this.txFee, this.proposalId, this.txAge, this.orderId, this.code, this.data, this.confirmBlocks, this.memo, this.source, this.sequence});
+  Tx(
+      {this.txHash,
+      this.blockHeight,
+      this.txType,
+      this.timeStamp,
+      this.fromAddr,
+      this.toAddr,
+      this.value,
+      this.txAsset,
+      this.txFee,
+      this.proposalId,
+      this.txAge,
+      this.orderId,
+      this.code,
+      this.data,
+      this.confirmBlocks,
+      this.memo,
+      this.source,
+      this.sequence});
 
   Tx.fromJson(Map<String, dynamic> json) {
     txHash = json['txHash'];
@@ -538,7 +608,24 @@ class Order {
   String lastExecutedQuantity;
   String transactionHash;
 
-  Order({this.orderId, this.symbol, this.owner, this.price, this.quantity, this.cumulateQuantity, this.fee, this.orderCreateTime, this.transactionTime, this.status, this.timeInForce, this.side, this.type, this.tradeId, this.lastExecutedPrice, this.lastExecutedQuantity, this.transactionHash});
+  Order(
+      {this.orderId,
+      this.symbol,
+      this.owner,
+      this.price,
+      this.quantity,
+      this.cumulateQuantity,
+      this.fee,
+      this.orderCreateTime,
+      this.transactionTime,
+      this.status,
+      this.timeInForce,
+      this.side,
+      this.type,
+      this.tradeId,
+      this.lastExecutedPrice,
+      this.lastExecutedQuantity,
+      this.transactionHash});
 
   Order.fromJson(Map<String, dynamic> json) {
     orderId = json['orderId'];

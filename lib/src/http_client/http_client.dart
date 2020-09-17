@@ -50,15 +50,77 @@ class HttpApiClient {
     return _request('get', path, headers: headers);
   }
 
-  Future<APIResponse<Account>> getAccount(String address) async {
-    var res = await _get('account/$address');
-    res.load = Account.fromJson(res.load);
+  Future<APIResponse<Times>> getBlockTime() async {
+    var res = await _get('time');
+    res.load = Times.fromJson(res.load);
     return APIResponse.fromOther(res);
   }
 
   Future<APIResponse<NodeInfo>> getNodeInfo() async {
     var res = await _get('node-info');
     res.load = NodeInfo.fromJson(res.load);
+    return APIResponse.fromOther(res);
+  }
+
+  Future<APIResponse<List<Peer>>> getPeers() async {
+    var res = await _get('peers');
+    res.load = res.runtimeType == List ? [for (var item in res.load) Peer.fromJson(item)] : [];
+    return APIResponse.fromOther(res);
+  }
+
+  Future<APIResponse<Account>> getAccount(String address) async {
+    var res = await _get('account/$address');
+    res.load = Account.fromJson(res.load);
+    return APIResponse.fromOther(res);
+  }
+
+  Future<APIResponse<AccountSequence>> getAccountSequence(String address) async {
+    var res = await _get('account/$address/sequence');
+    res.load = AccountSequence.fromJson(res.load);
+    return APIResponse.fromOther(res);
+  }
+
+  Future<APIResponse<Transaction>> getSingleTransaction(String txHash, {String format = 'json'}) async {
+    final path = 'tx/$txHash?format=$format';
+
+    var res = await _get(path);
+    res.load = Transaction.fromJson(res.load);
+    return APIResponse.fromOther(res);
+  }
+
+  Future<APIResponse<List<Token>>> getTokens({int limit, int offset}) async {
+    final path = 'tokens?${limit != null ? 'limit=$limit' : ''}'
+        '${offset != null ? '&offset=$offset' : ''}';
+
+    var res = await _get(path);
+    res.load = res.runtimeType == List ? [for (var item in res.load) Token.fromJson(item)] : [];
+
+    return APIResponse.fromOther(res);
+  }
+
+  Future<APIResponse<List<Market>>> getMarkets({int limit, int offset}) async {
+    final path = 'markets?${limit != null ? 'limit=$limit' : ''}'
+        '${offset != null ? '&offset=$offset' : ''}';
+
+    var res = await _get(path);
+    res.load = res.runtimeType == List ? [for (var item in res.load) Market.fromJson(item)] : [];
+
+    return APIResponse.fromOther(res);
+  }
+
+  Future<APIResponse<List<Fee>>> getFees({int limit, int offset}) async {
+    final path = 'fees';
+
+    var res = await _get(path);
+    res.load = res.runtimeType == List ? [for (var item in res.load) Fee.fromJson(item)] : [];
+
+    return APIResponse.fromOther(res);
+  }
+
+  Future<APIResponse<MarketDepth>> getOrderBook(String marketPair) async {
+    final path = 'depth?symbol=$marketPair&limit=50';
+    var res = await _get(path);
+    res.load = MarketDepth.fromJson(res.load);
     return APIResponse.fromOther(res);
   }
 
@@ -79,6 +141,94 @@ class HttpApiClient {
     return APIResponse.fromOther(res);
   }
 
+  Future<APIResponse<List<Candlestick>>> getCandlestickBars({@required String symbol, CandlestickInterval interval = CandlestickInterval.INTERVAL_1h, int limit, int startTime, int endTime}) async {
+    final path = 'klines?symbol=$symbol'
+        '&interval=${interval.toString().split('_')[1]}'
+        '${limit != null ? '&limit=' + interval.toString().split('_')[1] : ''}'
+        '${startTime != null ? '&start=$startTime' : ''}'
+        '${endTime != null ? '&end=$endTime' : ''}';
+
+    var res = await _get(path);
+
+    res.load = List.generate(res.load?.length, (index) => Candlestick.fromJson(res.load[index]));
+    return APIResponse.fromOther(res);
+  }
+
+  Future<APIResponse<OrderList>> getClosedOrders({@required String address, int endTime, int limit, int offset, OrderSide side, int startTime, String symbol, int total}) async {
+    final path = 'orders/closed?address=$address'
+        '${endTime != null ? '&end=$endTime' : ''}'
+        '${limit != null ? '&limit=$limit' : ''}'
+        '${offset != null ? '&offset=$offset' : ''}'
+        '${side != null ? '&side=' + side.value.toString() : ''}'
+        '${startTime != null ? '&start=$startTime' : ''}'
+        '${symbol != null ? '&symbol=$symbol' : ''}'
+        '${total != null ? '&total=$total' : ''}';
+
+    var res = await _get(path);
+    res.load = OrderList.fromJson(res.load);
+    return APIResponse.fromOther(res);
+  }
+
+  Future<APIResponse<OrderList>> getOpenOrders({@required String address, int limit, int offset, String symbol, int total}) async {
+    final path = 'orders/open?address=$address';
+    '${limit != null ? '&limit=$limit' : ''}'
+        '${offset != null ? '&offset=$offset' : ''}'
+        '${symbol != null ? '&symbol=$symbol' : ''}'
+        '${total != null ? '&total=$total' : ''}';
+
+    var res = await _get(path);
+    res.load = OrderList.fromJson(res.load);
+    return APIResponse.fromOther(res);
+  }
+
+  Future<APIResponse<Order>> getOrder(String orderID) async {
+    final path = 'orders/$orderID';
+    var res = await _get(path);
+    res.load = Order.fromJson(res.load);
+    return APIResponse.fromOther(res);
+  }
+
+  Future<APIResponse<List<TickerStatistics>>> getTickerStats24hr({String symbol}) async {
+    final path = "ticker/24hr${symbol != null ? '?symbol=$symbol' : ''}";
+    var res = await _get(path);
+
+    res.load = res.load.runtimeType == List ? [for (var item in res.load) TickerStatistics.fromJson(item)] : [];
+    return APIResponse.fromOther(res);
+  }
+
+  Future<APIResponse<List<TickerStatistics>>> getTrades(
+      {String address,
+      String buyerOrderId,
+      int endTime,
+      int blockHeight,
+      int limit,
+      int offset,
+      String quoteAsset,
+      String sellerOrderId,
+      OrderSide side,
+      int startTime,
+      String symbol,
+      int total}) async {
+    final path = "trades/?"
+        "${address != null ? '&address=$address' : ''}"
+        "${buyerOrderId != null ? '&buyerOrderId=$buyerOrderId' : ''}"
+        "${endTime != null ? '&end=$endTime' : ''}"
+        "${blockHeight != null ? '&height=$blockHeight' : ''}"
+        "${limit != null ? '&limit=$limit' : ''}"
+        "${offset != null ? '&offset=$offset' : ''}"
+        "${quoteAsset != null ? '&quoteAsset=$quoteAsset' : ''}"
+        "${sellerOrderId != null ? '&sellerOrderId=$sellerOrderId' : ''}"
+        "${side != null ? '&side=' + side.value.toString() : ''}"
+        "${startTime != null ? '&start=$startTime' : ''}"
+        "${symbol != null ? '&symbol=$symbol' : ''}"
+        "${total != null ? '&total=$total' : ''}";
+
+    var res = await _get(path);
+
+    res.load = res.load.runtimeType == List ? [for (var item in res.load) TickerStatistics.fromJson(item)] : [];
+    return APIResponse.fromOther(res);
+  }
+
   Future<APIResponse<TxPage>> getTransactions({@required String address, int blockHeight, int endTime, int limit, int offset, TxSide side, int startTime, String txAsset, TxType txType}) async {
     final path = 'transactions?address=$address'
         '${blockHeight != null ? '&blockHeight=$blockHeight' : ''}'
@@ -96,74 +246,11 @@ class HttpApiClient {
     return APIResponse.fromOther(res);
   }
 
-  Future<APIResponse<List<TickerStatistics>>> getTickerStats24hr({String symbol}) async {
-    final path = "ticker/24hr${symbol != null ? '?symbol=$symbol' : ''}";
-    var res = await _get(path);
-    if (res.load != null) {
-      res.load = List<TickerStatistics>.generate(res.load.length, (index) => TickerStatistics.fromJson(res.load[index]));
-    } else {
-      res.load = [];
-    }
-    return APIResponse.fromOther(res);
-  }
-
   Future<APIResponse<List<TickerStatistics>>> getMiniTickerStats24hr({String symbol}) async {
     final path = "mini/ticker/24hr${symbol != null ? '?symbol=$symbol' : ''}";
     var res = await _get(path);
-    if (res.load != null) {
-      res.load = List<TickerStatistics>.generate(res.load.length, (index) => TickerStatistics.fromJson(res.load[index]));
-    } else {
-      res.load = [];
-    }
-    return APIResponse.fromOther(res);
-  }
+    res.load = res.load.runtimeType == List ? [for (var item in res.load) TickerStatistics.fromJson(item)] : [];
 
-  Future<APIResponse<Transaction>> getSingleTransaction(String txHash, {String format = 'json'}) async {
-    final path = 'tx/$txHash?format=$format';
-
-    var res = await _get(path);
-    res.load = Transaction.fromJson(res.load);
-    return APIResponse.fromOther(res);
-  }
-
-  Future<APIResponse<MarketDepth>> getOrderBook(String marketPair) async {
-    final path = 'depth?symbol=$marketPair&limit=50';
-    var res = await _get(path);
-    res.load = MarketDepth.fromJson(res.load);
-    return APIResponse.fromOther(res);
-  }
-
-  Future<APIResponse<Order>> getOrder(String orderID) async {
-    final path = 'orders/$orderID';
-    var res = await _get(path);
-    res.load = Order.fromJson(res.load);
-    return APIResponse.fromOther(res);
-  }
-
-  Future<APIResponse<OrderList>> getOpenOrders({@required String address, int limit, int offset, String symbol, int total}) async {
-    final path = 'orders/open?address=$address';
-    '${limit != null ? '&limit=$limit' : ''}'
-        '${offset != null ? '&offset=$offset' : ''}'
-        '${symbol != null ? '&symbol=$symbol' : ''}'
-        '${total != null ? '&total=$total' : ''}';
-
-    var res = await _get(path);
-    res.load = OrderList.fromJson(res.load);
-    return APIResponse.fromOther(res);
-  }
-
-  Future<APIResponse<OrderList>> getClosedOrders({@required String address, int endTime, int limit, int offset, OrderSide side, int startTime, String symbol, int total}) async {
-    final path = 'orders/closed?address=$address'
-        '${endTime != null ? '&end=$endTime' : ''}'
-        '${limit != null ? '&limit=$limit' : ''}'
-        '${offset != null ? '&offset=$offset' : ''}'
-        '${side != null ? '&side=' + side.value.toString() : ''}'
-        '${startTime != null ? '&start=$startTime' : ''}'
-        '${symbol != null ? '&symbol=$symbol' : ''}'
-        '${total != null ? '&total=$total' : ''}';
-
-    var res = await _get(path);
-    res.load = OrderList.fromJson(res.load);
     return APIResponse.fromOther(res);
   }
 
@@ -201,7 +288,8 @@ class HttpApiClient {
     return APIResponse.fromOther(res);
   }
 
-  Future<APIResponse<List<Candlestick>>> getCandlestickBarsMini({@required String symbol, CandlestickInterval interval = CandlestickInterval.INTERVAL_1h, int limit, int startTime, int endTime}) async {
+  Future<APIResponse<List<Candlestick>>> getCandlestickBarsMini(
+      {@required String symbol, CandlestickInterval interval = CandlestickInterval.INTERVAL_1h, int limit, int startTime, int endTime}) async {
     final path = 'mini/klines?symbol=$symbol'
         '&interval=${interval.toString().split('_')[1]}'
         '${limit != null ? '&limit=' + interval.toString().split('_')[1] : ''}'
@@ -237,26 +325,5 @@ class APIResponse<DataModel_T> {
     load = other.load;
     error = other.error;
     ok = other.ok;
-  }
-}
-
-class BinanceChainAPIException implements Exception {
-  String message;
-  BinanceChainAPIException([this.message]);
-
-  @override
-  String toString() {
-    if (message == null) return 'Exception';
-    return 'Exception: $message';
-  }
-}
-
-class BinanceChainRequestException implements Exception {
-  String message;
-  BinanceChainRequestException([this.message]);
-  @override
-  String toString() {
-    if (message == null) return 'Exception';
-    return 'Exception: $message';
   }
 }
