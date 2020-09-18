@@ -21,8 +21,8 @@ class HttpApiClient {
     return '${_env.apiUrl}/v1/$path';
   }
 
-  Future<APIResponse> _request(String method, String path, {Map<String, String> headers, dynamic body}) async {
-    var url = _createFullPath(path);
+  Future<APIResponse> _request(String method, String path, {Map<String, String> headers, dynamic body, bool customPath}) async {
+    var url = customPath == true ? path : _createFullPath(path);
     var resp;
     switch (method) {
       case 'post':
@@ -42,12 +42,12 @@ class HttpApiClient {
     return APIResponse(response.statusCode, res);
   }
 
-  Future<APIResponse<dynamic>> _post(String path, {Map<String, String> headers = const {}, dynamic body = ''}) async {
-    return _request('post', path, headers: headers, body: body);
+  Future<APIResponse<dynamic>> _post(String path, {Map<String, String> headers = const {}, dynamic body = '', bool customPath = false}) async {
+    return _request('post', path, headers: headers, body: body, customPath: customPath);
   }
 
-  Future<APIResponse<dynamic>> _get(String path, {Map<String, String> headers}) async {
-    return _request('get', path, headers: headers);
+  Future<APIResponse<dynamic>> _get(String path, {Map<String, String> headers, bool customPath = false}) async {
+    return _request('get', path, headers: headers, customPath: customPath);
   }
 
   Future<APIResponse<Times>> getBlockTime() async {
@@ -141,7 +141,13 @@ class HttpApiClient {
     return APIResponse.fromOther(res);
   }
 
-  Future<APIResponse<List<Candlestick>>> getCandlestickBars({@required String symbol, CandlestickInterval interval = CandlestickInterval.INTERVAL_1h, int limit, int startTime, int endTime}) async {
+  Future<APIResponse<List<Candlestick>>> getCandlestickBars({
+    @required String symbol,
+    CandlestickInterval interval = CandlestickInterval.INTERVAL_1h,
+    int limit,
+    int startTime,
+    int endTime,
+  }) async {
     final path = 'klines?symbol=$symbol'
         '&interval=${interval.toString().split('_')[1]}'
         '${limit != null ? '&limit=' + interval.toString().split('_')[1] : ''}'
@@ -154,7 +160,16 @@ class HttpApiClient {
     return APIResponse.fromOther(res);
   }
 
-  Future<APIResponse<OrderList>> getClosedOrders({@required String address, int endTime, int limit, int offset, OrderSide side, int startTime, String symbol, int total}) async {
+  Future<APIResponse<OrderList>> getClosedOrders({
+    @required String address,
+    int endTime,
+    int limit,
+    int offset,
+    OrderSide side,
+    int startTime,
+    String symbol,
+    int total,
+  }) async {
     final path = 'orders/closed?address=$address'
         '${endTime != null ? '&end=$endTime' : ''}'
         '${limit != null ? '&limit=$limit' : ''}'
@@ -196,32 +211,33 @@ class HttpApiClient {
     return APIResponse.fromOther(res);
   }
 
-  Future<APIResponse<List<TickerStatistics>>> getTrades(
-      {String address,
-      String buyerOrderId,
-      int endTime,
-      int blockHeight,
-      int limit,
-      int offset,
-      String quoteAsset,
-      String sellerOrderId,
-      OrderSide side,
-      int startTime,
-      String symbol,
-      int total}) async {
-    final path = "trades/?"
-        "${address != null ? '&address=$address' : ''}"
-        "${buyerOrderId != null ? '&buyerOrderId=$buyerOrderId' : ''}"
-        "${endTime != null ? '&end=$endTime' : ''}"
-        "${blockHeight != null ? '&height=$blockHeight' : ''}"
-        "${limit != null ? '&limit=$limit' : ''}"
-        "${offset != null ? '&offset=$offset' : ''}"
-        "${quoteAsset != null ? '&quoteAsset=$quoteAsset' : ''}"
-        "${sellerOrderId != null ? '&sellerOrderId=$sellerOrderId' : ''}"
-        "${side != null ? '&side=' + side.value.toString() : ''}"
-        "${startTime != null ? '&start=$startTime' : ''}"
-        "${symbol != null ? '&symbol=$symbol' : ''}"
-        "${total != null ? '&total=$total' : ''}";
+  Future<APIResponse<List<TickerStatistics>>> getTrades({
+    String address,
+    String buyerOrderId,
+    int endTime,
+    int blockHeight,
+    int limit,
+    int offset,
+    String quoteAsset,
+    String sellerOrderId,
+    OrderSide side,
+    int startTime,
+    String symbol,
+    int total,
+  }) async {
+    final path = 'trades?'
+        '${address != null ? '&address=$address' : ''}'
+        '${buyerOrderId != null ? '&buyerOrderId=$buyerOrderId' : ''}'
+        '${endTime != null ? '&end=$endTime' : ''}'
+        '${blockHeight != null ? '&height=$blockHeight' : ''}'
+        '${limit != null ? '&limit=$limit' : ''}'
+        '${offset != null ? '&offset=$offset' : ''}'
+        '${quoteAsset != null ? '&quoteAsset=$quoteAsset' : ''}'
+        '${sellerOrderId != null ? '&sellerOrderId=$sellerOrderId' : ''}'
+        '${side != null ? '&side=' + side.value.toString() : ''}'
+        '${startTime != null ? '&start=$startTime' : ''}'
+        '${symbol != null ? '&symbol=$symbol' : ''}'
+        '${total != null ? '&total=$total' : ''}';
 
     var res = await _get(path);
 
@@ -229,7 +245,39 @@ class HttpApiClient {
     return APIResponse.fromOther(res);
   }
 
-  Future<APIResponse<TxPage>> getTransactions({@required String address, int blockHeight, int endTime, int limit, int offset, TxSide side, int startTime, String txAsset, TxType txType}) async {
+  Future<APIResponse<BlockExchangeFeePage>> getTradingFee({
+    @required String address,
+    int endTime,
+    int limit,
+    int offset,
+    int startTime,
+    int total,
+  }) async {
+    final path = 'block-exchange-fee?'
+        '${address != null ? '&address=$address' : ''}'
+        '${endTime != null ? '&end=$endTime' : ''}'
+        '${limit != null ? '&limit=$limit' : ''}'
+        '${offset != null ? '&offset=$offset' : ''}'
+        '${startTime != null ? '&start=$startTime' : ''}'
+        '${total != null ? '&total=$total' : ''}';
+
+    var res = await _get(path);
+
+    res.load = BlockExchangeFeePage.fromJson(res.load);
+    return APIResponse.fromOther(res);
+  }
+
+  Future<APIResponse<TxPage>> getTransactions({
+    @required String address,
+    int blockHeight,
+    int endTime,
+    int limit,
+    int offset,
+    TxSide side,
+    int startTime,
+    String txAsset,
+    TxType txType,
+  }) async {
     final path = 'transactions?address=$address'
         '${blockHeight != null ? '&blockHeight=$blockHeight' : ''}'
         '${endTime != null ? '&endTime=$endTime' : ''}'
@@ -243,6 +291,24 @@ class HttpApiClient {
     var res = await _get(path);
 
     res.load = TxPage.fromJson(res.load);
+    return APIResponse.fromOther(res);
+  }
+
+  Future<APIResponse<BlockTx>> getBlockTransactions({@required int blockHeight}) async {
+    final path = 'transactions-in-block/$blockHeight';
+
+    var res = await _get(path);
+
+    res.load = BlockTx.fromJson(res.load);
+    return APIResponse.fromOther(res);
+  }
+
+  Future<APIResponse<BlockTxV2>> getBlockTransactionsV2({@required int blockHeight}) async {
+    final path = '${env.apiUrl}/v2/transactions-in-block/$blockHeight';
+
+    var res = await _get(path);
+
+    res.load = BlockTxV2.fromJson(res.load);
     return APIResponse.fromOther(res);
   }
 
@@ -273,7 +339,16 @@ class HttpApiClient {
     return APIResponse.fromOther(res);
   }
 
-  Future<APIResponse<OrderList>> getClosedOrdersMini({@required String address, int endTime, int limit, int offset, OrderSide side, int startTime, String symbol, int total}) async {
+  Future<APIResponse<OrderList>> getClosedOrdersMini({
+    @required String address,
+    int endTime,
+    int limit,
+    int offset,
+    OrderSide side,
+    int startTime,
+    String symbol,
+    int total,
+  }) async {
     final path = 'mini/orders/closed?address=$address'
         '${endTime != null ? '&end=$endTime' : ''}'
         '${limit != null ? '&limit=$limit' : ''}'
@@ -288,8 +363,13 @@ class HttpApiClient {
     return APIResponse.fromOther(res);
   }
 
-  Future<APIResponse<List<Candlestick>>> getCandlestickBarsMini(
-      {@required String symbol, CandlestickInterval interval = CandlestickInterval.INTERVAL_1h, int limit, int startTime, int endTime}) async {
+  Future<APIResponse<List<Candlestick>>> getCandlestickBarsMini({
+    @required String symbol,
+    CandlestickInterval interval = CandlestickInterval.INTERVAL_1h,
+    int limit,
+    int startTime,
+    int endTime,
+  }) async {
     final path = 'mini/klines?symbol=$symbol'
         '&interval=${interval.toString().split('_')[1]}'
         '${limit != null ? '&limit=' + interval.toString().split('_')[1] : ''}'

@@ -51,6 +51,41 @@ class Validators {
   }
 }
 
+class BlockExchangeFeePage {
+  List<BlockExchangeFee> blockExchangeFee;
+  int total;
+
+  BlockExchangeFeePage({this.blockExchangeFee, this.total});
+
+  BlockExchangeFeePage.fromJson(Map<String, dynamic> json) {
+    if (json['blockExchangeFee'] != null) {
+      blockExchangeFee = <BlockExchangeFee>[];
+      json['blockExchangeFee'].forEach((v) {
+        blockExchangeFee.add(BlockExchangeFee.fromJson(v));
+      });
+    }
+    total = json['total'];
+  }
+}
+
+class BlockExchangeFee {
+  String address;
+  int blockHeight;
+  int blockTime;
+  String fee;
+  int tradeCount;
+
+  BlockExchangeFee({this.address, this.blockHeight, this.blockTime, this.fee, this.tradeCount});
+
+  BlockExchangeFee.fromJson(Map<String, dynamic> json) {
+    address = json['address'];
+    blockHeight = json['blockHeight'];
+    blockTime = json['blockTime'];
+    fee = json['fee'];
+    tradeCount = json['tradeCount'];
+  }
+}
+
 class Token {
   bool mintable;
   String name;
@@ -354,25 +389,7 @@ class Tx {
   int source;
   int sequence;
 
-  Tx(
-      {this.txHash,
-      this.blockHeight,
-      this.txType,
-      this.timeStamp,
-      this.fromAddr,
-      this.toAddr,
-      this.value,
-      this.txAsset,
-      this.txFee,
-      this.proposalId,
-      this.txAge,
-      this.orderId,
-      this.code,
-      this.data,
-      this.confirmBlocks,
-      this.memo,
-      this.source,
-      this.sequence});
+  Tx({this.txHash, this.blockHeight, this.txType, this.timeStamp, this.fromAddr, this.toAddr, this.value, this.txAsset, this.txFee, this.proposalId, this.txAge, this.orderId, this.code, this.data, this.confirmBlocks, this.memo, this.source, this.sequence});
 
   Tx.fromJson(Map<String, dynamic> json) {
     txHash = json['txHash'];
@@ -393,6 +410,40 @@ class Tx {
     memo = json['memo'];
     source = json['source'];
     sequence = json['sequence'];
+  }
+}
+
+class BlockTx {
+  int blockHeight;
+  List<Tx> tx;
+
+  BlockTx({this.blockHeight, this.tx});
+
+  BlockTx.fromJson(Map<String, dynamic> json) {
+    blockHeight = json['blockHeight'];
+    if (json['tx'] != null) {
+      tx = <Tx>[];
+      json['tx'].forEach((v) {
+        tx.add(Tx.fromJson(v));
+      });
+    }
+  }
+}
+
+class BlockTxV2 {
+  int blockHeight;
+  List<Tx> tx;
+
+  BlockTxV2({this.blockHeight, this.tx});
+
+  BlockTxV2.fromJson(Map<String, dynamic> json) {
+    blockHeight = json['blockHeight'];
+    if (json['tx'] != null) {
+      tx = <Tx>[];
+      json['tx'].forEach((v) {
+        tx.add(Tx.fromJson(v));
+      });
+    }
   }
 }
 
@@ -608,24 +659,7 @@ class Order {
   String lastExecutedQuantity;
   String transactionHash;
 
-  Order(
-      {this.orderId,
-      this.symbol,
-      this.owner,
-      this.price,
-      this.quantity,
-      this.cumulateQuantity,
-      this.fee,
-      this.orderCreateTime,
-      this.transactionTime,
-      this.status,
-      this.timeInForce,
-      this.side,
-      this.type,
-      this.tradeId,
-      this.lastExecutedPrice,
-      this.lastExecutedQuantity,
-      this.transactionHash});
+  Order({this.orderId, this.symbol, this.owner, this.price, this.quantity, this.cumulateQuantity, this.fee, this.orderCreateTime, this.transactionTime, this.status, this.timeInForce, this.side, this.type, this.tradeId, this.lastExecutedPrice, this.lastExecutedQuantity, this.transactionHash});
 
   Order.fromJson(Map<String, dynamic> json) {
     orderId = json['orderId'];
