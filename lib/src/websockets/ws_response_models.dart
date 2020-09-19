@@ -54,7 +54,7 @@ class TransferData {
     memo = json['M'];
     from = json['f'];
     if (json['t'] != null) {
-      to = List<To>();
+      to = <To>[];
       json['t'].forEach((v) {
         to.add(To.fromJson(v));
       });
@@ -71,7 +71,7 @@ class To {
   To.fromJson(Map<String, dynamic> json) {
     toAddr = json['o'];
     if (json['c'] != null) {
-      coins = List<Coins>();
+      coins = <Coins>[];
       json['c'].forEach((v) {
         coins.add(Coins.fromJson(v));
       });
@@ -182,7 +182,7 @@ class AccountData {
     eventType = json['e'];
     eventHeight = json['E'];
     if (json['B'] != null) {
-      balances = List<BalanceData>();
+      balances = <BalanceData>[];
       json['B'].forEach((v) {
         balances.add(BalanceData.fromJson(v));
       });

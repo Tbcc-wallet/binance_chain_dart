@@ -1,7 +1,10 @@
 import 'dart:typed_data';
+import 'package:convert/convert.dart';
 import 'package:pointycastle/digests/ripemd160.dart';
 import 'package:pointycastle/digests/sha256.dart';
-import 'package:convert/convert.dart';
+import 'package:pointycastle/api.dart' show KeyParameter;
+import 'package:pointycastle/macs/hmac.dart';
+import 'package:pointycastle/digests/sha512.dart';
 
 import './num_utils.dart';
 
@@ -113,4 +116,17 @@ dynamic getAddressFromPublicKey(String publicKey, [hrp = 'tbnb']) {
   final r = RIPEMD160Digest().process(s);
 
   return encode(hrp, r);
+}
+
+final ONE1 = Uint8List.fromList([1]);
+final ZERO1 = Uint8List.fromList([0]);
+
+Uint8List hash160(Uint8List buffer) {
+  var _tmp = SHA256Digest().process(buffer);
+  return RIPEMD160Digest().process(_tmp);
+}
+
+Uint8List hmacSHA512(Uint8List key, Uint8List data) {
+  final _tmp = HMac(SHA512Digest(), 128)..init(KeyParameter(key));
+  return _tmp.process(data);
 }

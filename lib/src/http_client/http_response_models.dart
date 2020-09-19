@@ -1,5 +1,3 @@
-import 'package:binance_chain/src/messages/proto/gen/dex.pb.dart';
-
 /// Read more: [HTTP API ``Error`` data model](https://docs.binance.org/api-reference/dex-api/paths.html#error)
 class Error {
   int code;

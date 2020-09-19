@@ -1,7 +1,7 @@
 import 'dart:typed_data';
 import 'package:pointycastle/export.dart';
 import 'package:convert/convert.dart';
-import 'package:bip32/bip32.dart' as bip32;
+import './utils/bip32core.dart' as bip32;
 import 'package:bip39/bip39.dart' as bip39;
 import './utils/crypto.dart';
 import './utils/num_utils.dart';

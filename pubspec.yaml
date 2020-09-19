@@ -1,7 +1,8 @@
 name: binance_chain
-description: Binance Chain Api Wrapper
-# version: 1.0.0
-# homepage: https://www.example.com
+description: Binance Chain Dart SDK
+version: 0.0.5
+homepage: https://github.com/Tbcc-wallet/binance_chain_dart
+repositoy: https://github.com/Tbcc-wallet/binance_chain_dart
 
 environment:
   sdk: '>=2.8.1 <3.0.0'
@@ -11,11 +12,11 @@ dependencies:
   protoc_plugin: ^19.0.1
   protobuf: ^1.0.1
   bip39: ^1.0.3
-  bip32: 
-    git: https://github.com/andromeda911/bip32-dart.git
   pointycastle: ^1.0.2
   web_socket_channel: ^1.1.0
   decimal: ^0.3.5
+  hex: ^0.1.2
+  bs58check: ^1.0.1
 
   
 
