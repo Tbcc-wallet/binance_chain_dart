@@ -165,10 +165,10 @@ class PubKeyMsg extends Msg {
   }
 }
 
-
 ///Transfer is the transaction for transfering funds to different addresses.
 ///
-///Read more: [Binance Chain Docs / Amino encoding / Transfer](Transfer is the transaction for transfering funds to different addresses.)
+///Read more: [Binance Chain Docs / Amino encoding / Transfer](https://docs.binance.org/guides/concepts/encoding/amino-example.html#transfer)
+///Or [Wiki of repo on GitHub](https://github.com/Tbcc-wallet/binance_chain_dart/wiki)
 class TransferMsg extends Msg {
   @override
   final AMINO_MESSAGE_TYPE = '2A2C87FA';
@@ -238,9 +238,142 @@ class TransferMsg extends Msg {
   }
 }
 
+class Transfer {
+  String to_address;
+  String symbol;
+  Decimal amount;
+  int amount_amino;
+  Transfer(this.to_address, this.symbol, this.amount);
+}
+
+/// Multisend. See [Wiki of repo on GitHub](https://github.com/Tbcc-wallet/binance_chain_dart/wiki)
+class MultiTransferMsg extends Msg {
+  @override
+  final AMINO_MESSAGE_TYPE = '2A2C87FA';
+
+  String _symbol;
+  Decimal _amount;
+  int _amountAmino;
+  String _from_address;
+  List<String> _to_addresses;
+
+  Send compiled_msg;
+  LinkedHashMap compiled_map;
+
+  MultiTransferMsg({List<Transfer> transfers, String memo, Wallet wallet}) : super(wallet, memo) {
+    _from_address = wallet.address;
+
+    var coins = <String, int>{};
+
+    for (var transfer in transfers) {
+      transfer.amount_amino = (transfer.amount * Decimal.fromInt(10.pow(8))).toInt();
+      coins.containsKey(transfer.symbol) ? coins[transfer.symbol] += transfer.amount_amino : coins[transfer.symbol] = transfer.amount_amino;
+    }
+
+    compiled_map = LinkedHashMap.from({
+      'inputs': [
+        LinkedHashMap.from({
+          'address': _from_address,
+          'coins': [
+            for (var coin in coins.entries) LinkedHashMap.from({'amount': coin.value, 'denom': coin.key}),
+          ]
+        }),
+      ],
+      'outputs': [
+        for (var transfer in transfers)
+          LinkedHashMap.from({
+            'address': transfer.to_address,
+            'coins': [
+              LinkedHashMap.from({'amount': transfer.amount_amino, 'denom': transfer.symbol}),
+            ]
+          }),
+      ]
+    });
+
+    var input_addr = Send_Input()
+      ..address = decode_address(_from_address).toList()
+      ..coins.addAll([
+        for (var coin in coins.entries)
+          Send_Token()
+            ..denom = coin.key
+            ..amount = fixnum.Int64(coin.value)
+      ]);
+
+    var msg = Send()
+      ..inputs.add(input_addr)
+      ..outputs.addAll([
+        for (var transfer in transfers)
+          Send_Output()
+            ..address = decode_address(transfer.to_address).toList()
+            ..coins.add(
+              Send_Token()
+                ..denom = transfer.symbol
+                ..amount = fixnum.Int64(transfer.amount_amino),
+            )
+      ]);
+
+    compiled_msg = msg;
+  }
+
+  MultiTransferMsg.oneTokenSameAmount({String symbol, Decimal amount, List<String> to_addresses, String memo, Wallet wallet}) : super(wallet, memo) {
+    _symbol = symbol;
+    _amount = amount;
+    _to_addresses = to_addresses;
+    _amountAmino = (_amount * Decimal.fromInt(10.pow(8))).toInt();
+
+    compiled_map = LinkedHashMap.from({
+      'inputs': [
+        LinkedHashMap.from({
+          'address': _from_address,
+          'coins': [
+            LinkedHashMap.from({'amount': _amountAmino * _to_addresses.length, 'denom': _symbol}),
+          ]
+        }),
+      ],
+      'outputs': [
+        for (var address in _to_addresses)
+          LinkedHashMap.from({
+            'address': address,
+            'coins': [
+              LinkedHashMap.from({'amount': _amountAmino, 'denom': _symbol}),
+            ]
+          }),
+      ]
+    });
+
+    var input_addr = Send_Input()
+      ..address = decode_address(_from_address).toList()
+      ..coins.add(Send_Token()
+        ..denom = _symbol
+        ..amount = fixnum.Int64(_amountAmino * _to_addresses.length));
+
+    var msg = Send()
+      ..inputs.add(input_addr)
+      ..outputs.addAll([
+        for (String address in _to_addresses)
+          Send_Output()
+            ..address = decode_address(address).toList()
+            ..coins.add(
+              Send_Token()
+                ..denom = _symbol
+                ..amount = fixnum.Int64(_amountAmino),
+            )
+      ]);
+
+    compiled_msg = msg;
+  }
+
+  @override
+  Map to_map() => compiled_map;
+
+  @override
+  Send to_protobuf() => compiled_msg;
+}
+
 ///NewOrder transaction will create a new order to buy or sell tokens on Binance DEX.
 ///
 ///Read more: [Binance Chain Docs / Amino encoding / New Order] (https://docs.binance.org/guides/concepts/encoding/amino-example.html#neworder)
+///Or [Wiki of repo on GitHub](https://github.com/Tbcc-wallet/binance_chain_dart/wiki)
 class NewOrderMsg extends Msg {
   @override
   final AMINO_MESSAGE_TYPE = 'CE6DC043';
@@ -293,11 +426,13 @@ class NewOrderMsg extends Msg {
     return pb;
   }
 }
-///Cancel transactions (cancel the outstanding/unfilled) orders from the Binance DEX. 
-///After cancel success, the locked quantity on the orders will return back to the originating 
+
+///Cancel transactions (cancel the outstanding/unfilled) orders from the Binance DEX.
+///After cancel success, the locked quantity on the orders will return back to the originating
 ///address balance and become free to use, i.e. transfer or send new orders.
 ///
-///Read more: [Binance Chain Docs / Amino encoding / Cancel Order](https://docs.binance.org/guides/concepts/encoding/amino-example.html#cancel) 
+///Read more: [Binance Chain Docs / Amino encoding / Cancel Order](https://docs.binance.org/guides/concepts/encoding/amino-example.html#cancel)
+///Or [Wiki of repo on GitHub](https://github.com/Tbcc-wallet/binance_chain_dart/wiki)
 class CancelOrderMsg extends Msg {
   @override
   final AMINO_MESSAGE_TYPE = '166E681B';
@@ -324,10 +459,12 @@ class CancelOrderMsg extends Msg {
     return pb;
   }
 }
-///Freeze transaction will move the amount of the tokens into a frozen state, 
+
+///Freeze transaction will move the amount of the tokens into a frozen state,
 ///in which they cannot be used for transfers or sending new orders.
 ///
 /// Read more: [Binance Chain Docs / Amino encoding / Freeze](https://docs.binance.org/guides/concepts/encoding/amino-example.html#freeze)
+///Or [Wiki of repo on GitHub](https://github.com/Tbcc-wallet/binance_chain_dart/wiki)
 class FreezeMsg extends Msg {
   @override
   final AMINO_MESSAGE_TYPE = 'E774B32D';
@@ -355,9 +492,11 @@ class FreezeMsg extends Msg {
     return pb;
   }
 }
+
 ///Unfreeze will reversely turn the amount of frozen tokens back to free state.
 ///
 ///Read more: [Binance Chain Docs / Amino encoding / Unfreeze](https://docs.binance.org/guides/concepts/encoding/amino-example.html#unfreeze)
+///Or [Wiki of repo on GitHub](https://github.com/Tbcc-wallet/binance_chain_dart/wiki)
 class UnFreezeMsg extends Msg {
   @override
   final AMINO_MESSAGE_TYPE = '6515FF0D';
@@ -390,6 +529,7 @@ class UnFreezeMsg extends Msg {
 ///Vote transactions for proposals.
 ///
 ///Read more: [Binance Chain Docs / Amino encoding / Vote] (https://docs.binance.org/guides/concepts/encoding/amino-example.html#vote)
+///Or [Wiki of repo on GitHub](https://github.com/Tbcc-wallet/binance_chain_dart/wiki)
 class VoteMsg extends Msg {
   @override
   final AMINO_MESSAGE_TYPE = 'A1CADD36';
