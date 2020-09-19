@@ -4,9 +4,11 @@ This is unofficial Dart wrapper for the [Binance Chain API](https://docs.binance
 Inspired by [python-binance-chain](https://github.com/sammchardy/python-binance-chain) and [Binance Chain Java SDK](https://github.com/binance-chain/java-sdk)
 ## Features
 
-* HTTP API in async implementation
-* Websocket API with automatic "keep alive" messages and reconnecting.
+* HTTP API in async implementation (100% coverage)
+* Mini (BEP8) tokens support
 * Create, sign and broadcast messages (transactions)
+* Multisend and multitoken transactions
+* Websocket API with automatic "keep alive" messages and reconnecting.
 * Wallet creation from private key or mnemonic phrase
 * Wallet handling account sequence for transactions
 * Helper classes for handling responses from Binance API. Data models are presented as classes that parse the JSON from responses
@@ -20,6 +22,8 @@ Inspired by [python-binance-chain](https://github.com/sammchardy/python-binance-
 * [Binance Chain Community Forum](https://community.binance.org/)
 * [Tendermint Docs](https://docs.tendermint.com/master/)
 * [How to get Testnet funds](https://academy.binance.com/tutorials/binance-dex-funding-your-testnet-account)
+
+## HOW TO USE: SEE [WIKI](https://github.com/Tbcc-wallet/binance_chain_dart/wiki)
 
 ## Usage
 
