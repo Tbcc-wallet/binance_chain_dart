@@ -1,8 +1,11 @@
 import 'dart:typed_data';
+
 import 'package:pointycastle/export.dart';
 import 'package:convert/convert.dart';
-import './utils/bip32core.dart' as bip32;
+
 import 'package:bip39/bip39.dart' as bip39;
+import './utils/bip32core.dart' as bip32;
+import './utils/wif.dart' as wif;
 import './utils/crypto.dart';
 import './utils/num_utils.dart';
 import './environment.dart';
@@ -88,6 +91,14 @@ class Wallet {
     } else {
       throw ArgumentError('Mnemonic Phrase is invalid');
     }
+  }
+
+  String toWIF() {
+    return _bip32.toWIF();
+  }
+
+  factory Wallet.fromWIF(String stringWIF, BinanceEnvironment env) {
+    return Wallet(hex.encode(wif.decode(stringWIF).privateKey.toList()), env);
   }
 
   /// Load ``accountNumber``, ``chainId`` and ``sequence`` using HTTP request
