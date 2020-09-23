@@ -1,15 +1,20 @@
+import 'dart:math';
 import 'dart:typed_data';
+import 'dart:convert';
 
-import 'package:pointycastle/export.dart';
-import 'package:convert/convert.dart';
-
-import 'package:bip39/bip39.dart' as bip39;
 import './utils/bip32core.dart' as bip32;
 import './utils/wif.dart' as wif;
 import './utils/crypto.dart';
 import './utils/num_utils.dart';
+
 import './environment.dart';
 import './http_client/http_client.dart';
+
+import 'package:uuid/uuid.dart' as uuid;
+import 'package:binance_chain/src/utils/keystore.dart';
+import 'package:pointycastle/export.dart';
+import 'package:convert/convert.dart';
+import 'package:bip39/bip39.dart' as bip39;
 
 class Wallet {
   String _privateKey;
@@ -99,6 +104,102 @@ class Wallet {
 
   factory Wallet.fromWIF(String stringWIF, BinanceEnvironment env) {
     return Wallet(hex.encode(wif.decode(stringWIF).privateKey.toList()), env);
+  }
+
+  /// only pbkdf2 yet
+  factory Wallet.fromKeystore({
+    Keystore keystore,
+    String password,
+    BinanceEnvironment env,
+  }) {
+    var kdfDerivator = PBKDF2KeyDerivator(HMac(SHA256Digest(), 64))
+      ..init(
+        Pbkdf2Parameters(
+          hex.decode(keystore.crypto.kdfparams.salt),
+          keystore.crypto.kdfparams.c,
+          keystore.crypto.kdfparams.dklen,
+        ),
+      );
+
+    var derivedKey = kdfDerivator.process(utf8.encode(password));
+
+    var ciphertextbytes = hex.decode(keystore.crypto.ciphertext);
+    var macBody = Uint8List(16 + ciphertextbytes.length)..setRange(0, 16, derivedKey.sublist(16, 32))..setRange(16, ciphertextbytes.length + 16, ciphertextbytes);
+
+    var mac = SHA3Digest(int.parse(keystore.crypto.cipher.split('-')[1]) * 2).process(macBody);
+    if (hex.encode(mac) == keystore.crypto.mac) {
+      var cipher = StreamCipher('AES/CTR');
+      cipher
+        ..reset()
+        ..init(
+          false,
+          ParametersWithIV(
+            KeyParameter(derivedKey.sublist(0, int.parse(keystore.crypto.cipher.split('-')[1]) ~/ 8)),
+            hex.decode(keystore.crypto.cipherparams.iv),
+          ),
+        );
+      return Wallet(hex.encode(cipher.process(Uint8List.fromList(hex.decode(keystore.crypto.ciphertext)))), env);
+    } else {
+      throw ArgumentError('Invalid Password');
+    }
+  }
+
+  Keystore toKeystore(String password) {
+    var keystore = Keystore();
+    final _sGen = Random.secure();
+    final _seed = Uint8List.fromList(List.generate(32, (n) => _sGen.nextInt(255)));
+    final secRnd = SecureRandom('Fortuna')..seed(KeyParameter(_seed));
+    var id = uuid.Uuid().v4();
+    var salt = secRnd.nextBytes(32);
+    var iv = secRnd.nextBytes(16);
+    var crypto = Crypto(
+        cipher: 'aes-256-ctr',
+        kdf: 'pbkdf2',
+        kdfparams: Kdfparams(
+          c: 262144,
+          dklen: 32,
+          prf: 'hmac-sha256',
+          salt: hex.encode(salt),
+        ),
+        cipherparams: Cipherparams(
+          iv: hex.encode(iv),
+        ));
+    keystore.crypto = crypto;
+    keystore.version = 1;
+    keystore.id = id;
+    var cipher = StreamCipher('AES/CTR');
+
+    var kdfDerivator = PBKDF2KeyDerivator(HMac(SHA256Digest(), 64))
+      ..init(
+        Pbkdf2Parameters(
+          hex.decode(keystore.crypto.kdfparams.salt),
+          keystore.crypto.kdfparams.c,
+          keystore.crypto.kdfparams.dklen,
+        ),
+      );
+    var derivedKey = kdfDerivator.process(utf8.encode(password));
+
+    cipher
+      ..reset()
+      ..init(
+        true,
+        ParametersWithIV(
+          KeyParameter(derivedKey.sublist(0, int.parse(keystore.crypto.cipher.split('-')[1]) ~/ 8)),
+          hex.decode(keystore.crypto.cipherparams.iv),
+        ),
+      );
+
+    var cipherText = cipher.process(Uint8List.fromList(hex.decode(_privateKey)));
+
+    crypto.ciphertext = hex.encode(cipherText);
+
+    var macBody = Uint8List(16 + cipherText.length)..setRange(0, 16, derivedKey.sublist(16, 32))..setRange(16, cipherText.length + 16, cipherText);
+
+    var mac = SHA3Digest(int.parse(keystore.crypto.cipher.split('-')[1]) * 2).process(macBody);
+
+    crypto.mac = hex.encode(mac);
+
+    return keystore;
   }
 
   /// Load ``accountNumber``, ``chainId`` and ``sequence`` using HTTP request
