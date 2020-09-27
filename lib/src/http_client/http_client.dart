@@ -83,7 +83,7 @@ class HttpApiClient {
   /// More info: [BinanceChain docs](https://docs.binance.org/api-reference/dex-api/paths.html#apiv1peers)
   Future<APIResponse<List<Peer>>> getPeers() async {
     var res = await _get('peers');
-    res.load = res.runtimeType == List ? [for (var item in res.load) Peer.fromJson(item)] : [];
+    res.load = res.runtimeType == List ? <Peer>[for (var item in res.load) Peer.fromJson(item)] : <Peer>[];
     return APIResponse.fromOther(res);
   }
 
@@ -122,7 +122,7 @@ class HttpApiClient {
     final path = 'tokens?${limit != null ? 'limit=$limit' : ''}'
         '${offset != null ? '&offset=$offset' : ''}';
     var res = await _get(path);
-    res.load = res.runtimeType == List ? [for (var item in res.load) Token.fromJson(item)] : [];
+    res.load = res.runtimeType == List ? <Token>[for (var item in res.load) Token.fromJson(item)] : <Token>[];
     return APIResponse.fromOther(res);
   }
 
@@ -133,7 +133,7 @@ class HttpApiClient {
     final path = 'markets?${limit != null ? 'limit=$limit' : ''}'
         '${offset != null ? '&offset=$offset' : ''}';
     var res = await _get(path);
-    res.load = res.runtimeType == List ? [for (var item in res.load) Market.fromJson(item)] : [];
+    res.load = res.runtimeType == List ? <Market>[for (var item in res.load) Market.fromJson(item)] : <Market>[];
     return APIResponse.fromOther(res);
   }
 
@@ -272,7 +272,7 @@ class HttpApiClient {
     final path = "ticker/24hr${symbol != null ? '?symbol=$symbol' : ''}";
     var res = await _get(path);
 
-    res.load = res.load.runtimeType == List ? [for (var item in res.load) TickerStatistics.fromJson(item)] : [];
+    res.load = res.load.runtimeType == List ? <TickerStatistics>[for (var item in res.load) TickerStatistics.fromJson(item)] : <TickerStatistics>[];
     return APIResponse.fromOther(res);
   }
 
@@ -441,7 +441,7 @@ class HttpApiClient {
 
     var res = await _get(path);
 
-    res.load = res.load.runtimeType == List ? [for (var item in res.load) MiniToken.fromJson(item)] : [];
+    res.load = res.load.runtimeType == List ? <MiniToken>[for (var item in res.load) MiniToken.fromJson(item)] : <MiniToken>[];
     return APIResponse.fromOther(res);
   }
 
@@ -453,7 +453,7 @@ class HttpApiClient {
 
     var res = await _get(path);
 
-    res.load = res.load.runtimeType == List ? [for (var item in res.load) Market.fromJson(item)] : [];
+    res.load = res.load.runtimeType == List ? <Market>[for (var item in res.load) Market.fromJson(item)] : <Market>[];
     return APIResponse.fromOther(res);
   }
 
@@ -539,7 +539,7 @@ class HttpApiClient {
   Future<APIResponse<List<TickerStatistics>>> getMiniTickerStats24hr({String symbol}) async {
     final path = "mini/ticker/24hr${symbol != null ? '?symbol=$symbol' : ''}";
     var res = await _get(path);
-    res.load = res.load.runtimeType == List ? [for (var item in res.load) TickerStatistics.fromJson(item)] : [];
+    res.load = res.load.runtimeType == List ? <TickerStatistics>[for (var item in res.load) TickerStatistics.fromJson(item)] : <TickerStatistics>[];
 
     return APIResponse.fromOther(res);
   }
