@@ -19,7 +19,7 @@ dependencies:
   bs58check: ^1.0.1
   convert: ^2.1.1
   fixnum: ^0.10.11
-  meta: ^1.2.3
+  meta: ^1.1.8
   uuid: ^2.2.2
   
 
