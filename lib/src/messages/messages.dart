@@ -11,6 +11,7 @@ import '../utils/constants.dart';
 import '../utils/crypto.dart';
 import '../wallet.dart';
 import './proto/gen/dex.pb.dart';
+import 'SuperMsg.dart';
 
 // An identifier for tools triggering broadcast transactions, set to zero if unwilling to disclose.
 var BROADCAST_SOURCE = 0;
@@ -18,22 +19,29 @@ var BROADCAST_SOURCE = 0;
 class Msg {
   final AMINO_MESSAGE_TYPE = '';
   bool INCLUDE_AMINO_LENGTH_PREFIX = false;
-  Wallet _wallet;
+  List<Wallet> _wallets = [];
   String memo;
 
-  Msg(this._wallet, [this.memo = '']);
+  Msg(List<Wallet> wallets, [this.memo = '']) {
+    if (wallets != null) _wallets.addAll(wallets);
+  }
 
-  Wallet get wallet => _wallet;
+  Wallet get wallet {
+    if (_wallets?.isNotEmpty == true) return _wallets.first;
+  }
+
+  List<Wallet> get wallets => _wallets;
 
   Map to_map() => {};
 
   Map to_sign_map() => {};
 
   dynamic to_protobuf() => null;
+  dynamic to_protobuf_with_sign(Map<String, dynamic> withJsonAndSign, Wallet wallet) => null;
 
-  Uint8List to_amino() {
+  Uint8List to_amino([Map<String, dynamic> withJsonAndSign, Wallet wallet]) {
     var varint_length;
-    var proto = to_protobuf();
+    var proto = withJsonAndSign != null ? to_protobuf_with_sign(withJsonAndSign, wallet) : to_protobuf();
     if (proto.runtimeType != Uint8List) {
       proto = proto.writeToBuffer();
     }
@@ -55,6 +63,7 @@ class Msg {
   }
 
   String to_hex_data() => hex.encode(StdTxMsg(this).to_amino());
+  String to_hex_dataV2([Map<String, dynamic> withJsonAndSign, Wallet wallet]) => hex.encode(SuperStdTxMsg(this).to_amino(withJsonAndSign, wallet));
 }
 
 class Signature {
@@ -95,7 +104,7 @@ class SignatureMsg extends Msg {
   final AMINO_MESSAGE_TYPE = '';
   Signature _signature;
   Signature get signature => _signature;
-  SignatureMsg(msg) : super(msg.wallet) {
+  SignatureMsg(Msg msg) : super(msg.wallets) {
     _signature = Signature(msg);
   }
 
@@ -123,19 +132,20 @@ class StdTxMsg extends Msg {
   final _source = BROADCAST_SOURCE;
 
   final String _data;
-  SignatureMsg _signature;
-  StdTxMsg(this._msg, [this._data = '']) : super(_msg.wallet) {
-    _signature = SignatureMsg(_msg);
+  List<SignatureMsg> _signatures = [];
+  StdTxMsg(this._msg, [this._data = '']) : super(_msg.wallets) {
+    _signatures.add(SignatureMsg(_msg));
   }
   @override
   StdTx to_protobuf() {
     var stdtx = StdTx()
       ..msgs.add(_msg.to_amino().toList())
-      ..signatures.add(_signature.to_amino().toList())
       ..data = _data.codeUnits
       ..memo = _msg.memo
       ..source = fixnum.Int64(_source);
-
+    _signatures.forEach((element) {
+      stdtx.signatures.add(element.to_amino().toList());
+    });
     return stdtx;
   }
 }
@@ -144,7 +154,7 @@ class PubKeyMsg extends Msg {
   @override
   final AMINO_MESSAGE_TYPE = 'EB5AE987';
 
-  PubKeyMsg(Wallet wallet) : super(wallet);
+  PubKeyMsg(Wallet wallet) : super([wallet]);
 
   @override
   Uint8List to_protobuf() {
@@ -152,7 +162,7 @@ class PubKeyMsg extends Msg {
   }
 
   @override
-  Uint8List to_amino() {
+  Uint8List to_amino([_, __]) {
     var proto = to_protobuf();
 
     var type_bytes = hex.decode(AMINO_MESSAGE_TYPE);
@@ -185,11 +195,10 @@ class TransferMsg extends Msg {
     String to_address,
     String memo,
     Wallet wallet,
-  }) : super(wallet, memo) {
+  }) : super([wallet], memo) {
     _symbol = symbol;
     _amount = amount;
     _to_address = to_address;
-    _wallet = wallet;
     memo = memo ?? '';
     _from_address = wallet.address;
     _amountAmino = (_amount * Decimal.fromInt(10.pow(8))).toInt();
@@ -260,7 +269,7 @@ class MultiTransferMsg extends Msg {
   Send compiled_msg;
   LinkedHashMap compiled_map;
 
-  MultiTransferMsg({List<Transfer> transfers, String memo, Wallet wallet}) : super(wallet, memo) {
+  MultiTransferMsg({List<Transfer> transfers, String memo, Wallet wallet}) : super([wallet], memo) {
     _from_address = wallet.address;
 
     var coins = <String, int>{};
@@ -315,7 +324,13 @@ class MultiTransferMsg extends Msg {
     compiled_msg = msg;
   }
 
-  MultiTransferMsg.oneTokenSameAmount({String symbol, Decimal amount, List<String> to_addresses, String memo, Wallet wallet}) : super(wallet, memo) {
+  MultiTransferMsg.oneTokenSameAmount({
+    String symbol,
+    Decimal amount,
+    List<String> to_addresses,
+    String memo,
+    Wallet wallet,
+  }) : super([wallet], memo) {
     _symbol = symbol;
     _amount = amount;
     _to_addresses = to_addresses;
@@ -387,7 +402,15 @@ class NewOrderMsg extends Msg {
   Decimal _quantity;
   int _quantity_encoded;
 
-  NewOrderMsg({String symbol, TimeInForce time_in_force, OrderType order_type, OrderSide side, Decimal price, Decimal quantity, Wallet wallet}) : super(wallet) {
+  NewOrderMsg({
+    String symbol,
+    TimeInForce time_in_force,
+    OrderType order_type,
+    OrderSide side,
+    Decimal price,
+    Decimal quantity,
+    Wallet wallet,
+  }) : super([wallet]) {
     _symbol = symbol;
     _time_in_force = time_in_force.value;
     _order_type = order_type.value;
@@ -399,11 +422,11 @@ class NewOrderMsg extends Msg {
   }
   @override
   Map to_map() => LinkedHashMap.from({
-        'id': _wallet.generate_order_id(),
+        'id': wallet.generate_order_id(),
         'ordertype': _order_type,
         'price': _price_encoded,
         'quantity': _quantity_encoded,
-        'sender': _wallet.address,
+        'sender': wallet.address,
         'side': _side,
         'symbol': _symbol,
         'timeinforce': _time_in_force,
@@ -415,8 +438,8 @@ class NewOrderMsg extends Msg {
   @override
   NewOrder to_protobuf() {
     var pb = NewOrder()
-      ..sender = decode_address(_wallet.address).toList()
-      ..id = _wallet.generate_order_id()
+      ..sender = decode_address(wallet.address).toList()
+      ..id = wallet.generate_order_id()
       ..symbol = _symbol
       ..timeinforce = fixnum.Int64(_time_in_force)
       ..ordertype = fixnum.Int64(_order_type)
@@ -439,7 +462,7 @@ class CancelOrderMsg extends Msg {
   String _symbol;
   String _order_id;
 
-  CancelOrderMsg({String symbol, String order_id, Wallet wallet}) : super(wallet) {
+  CancelOrderMsg({String symbol, String order_id, Wallet wallet}) : super([wallet]) {
     _symbol = symbol;
     _order_id = order_id;
   }
@@ -471,7 +494,7 @@ class FreezeMsg extends Msg {
   String _symbol;
   Decimal _amount;
   int _amount_encoded;
-  FreezeMsg({String symbol, Decimal amount, Wallet wallet}) : super(wallet) {
+  FreezeMsg({String symbol, Decimal amount, Wallet wallet}) : super([wallet]) {
     _symbol = symbol;
     _amount = amount;
     _amount_encoded = (_amount * Decimal.fromInt(10.pow(8))).toInt();
@@ -504,7 +527,7 @@ class UnFreezeMsg extends Msg {
   String _symbol;
   Decimal _amount;
   int _amount_encoded;
-  UnFreezeMsg({String symbol, Decimal amount, Wallet wallet}) : super(wallet) {
+  UnFreezeMsg({String symbol, Decimal amount, Wallet wallet}) : super([wallet]) {
     _symbol = symbol;
     _amount = amount;
     _amount_encoded = (_amount * Decimal.fromInt(10.pow(8))).toInt();
@@ -539,7 +562,7 @@ class VoteMsg extends Msg {
   VoteOption _vote_option;
   String _voter;
 
-  VoteMsg(int proposal_id, VoteOption vote_option, Wallet wallet) : super(wallet) {
+  VoteMsg(int proposal_id, VoteOption vote_option, Wallet wallet) : super([wallet]) {
     _proposal_id = proposal_id;
     _proposal_id_encoded = (proposal_id * 10.pow(8)).toInt();
     _vote_option = vote_option;
@@ -555,7 +578,7 @@ class VoteMsg extends Msg {
   @override
   Vote to_protobuf() {
     var pb = Vote()
-      ..voter = decode_address(_wallet.address)
+      ..voter = decode_address(wallet.address)
       ..proposalId = fixnum.Int64(_proposal_id)
       ..option = fixnum.Int64(_vote_option.int_val);
     return pb;

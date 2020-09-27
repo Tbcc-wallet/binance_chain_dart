@@ -185,7 +185,7 @@ class Wallet {
         true,
         ParametersWithIV(
           KeyParameter(derivedKey.sublist(0, int.parse(keystore.crypto.cipher.split('-')[1]) ~/ 8)),
-          hex.decode(keystore.crypto.cipherparams.iv),
+          iv,
         ),
       );
 

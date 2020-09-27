@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:binance_chain/src/wallet.dart';
 import 'package:http/http.dart';
 import 'package:meta/meta.dart';
 import '../environment.dart';
@@ -167,6 +168,20 @@ class HttpApiClient {
 
     print(res.load);
     print(msg.wallet.sequence);
+    if (res.statusCode == 200) {
+      res.load = List<Transaction>.generate(res.load.length, (index) => Transaction.fromJson(res.load[index]));
+    } else {
+      res.load = null;
+    }
+
+    return APIResponse.fromOther(res);
+  }
+
+  Future<APIResponse<List<Transaction>>> broadcastSuperMsg(Msg msg, {Map<String, dynamic> withJsonAndSign, Wallet signWallet, bool sync = false}) async {
+    var res = await _post('broadcast${sync ? '?sync=true' : ''}', headers: <String, String>{'content-type': 'text/plain'}, body: msg.to_hex_dataV2(withJsonAndSign, signWallet));
+
+    print(res.load);
+
     if (res.statusCode == 200) {
       res.load = List<Transaction>.generate(res.load.length, (index) => Transaction.fromJson(res.load[index]));
     } else {
