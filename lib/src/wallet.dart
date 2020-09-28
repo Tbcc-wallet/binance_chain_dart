@@ -206,7 +206,7 @@ class Wallet {
   }
 
   /// Load ``accountNumber``, ``chainId`` and ``sequence`` using HTTP request
-  void initialize_wallet() async {
+  Future<void> initialize_wallet() async {
     if (_accountNumber == null) {
       var account = await httpClient.getAccount(_address);
       _accountNumber = account.load.accountNumber;
