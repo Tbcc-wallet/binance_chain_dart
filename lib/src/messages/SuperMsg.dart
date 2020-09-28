@@ -180,7 +180,10 @@ class SuperStdTxMsg extends Msg {
     _signatures.forEach((element) {
       stdtx.signatures.add(element.to_amino().toList());
     });
-    stdtx.signatures.addAll([for (var i in withJsonAndSign['signatures']) i.cast<int>()] as List<List<int>>);
+    withJsonAndSign['signatures'].forEach((s) {
+      stdtx.signatures.add(s.cast<int>());
+    });
+
     return stdtx;
   }
 }
