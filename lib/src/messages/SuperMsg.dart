@@ -171,18 +171,25 @@ class SuperStdTxMsg extends Msg {
     print(_msg.to_protobuf().toProto3Json());
     var stdtx = StdTx()
       ..msgs.add(_msg.to_amino().toList())
-      //..msgs.add(aminoSendMsg.toList())
       ..data = _data.codeUnits
       ..memo = withJsonAndSign['memo']
       ..source = fixnum.Int64(_source);
-
-    addSignature(0, wallet);
-    _signatures.forEach((element) {
-      stdtx.signatures.add(element.to_amino().toList());
-    });
-    withJsonAndSign['signatures'].forEach((s) {
-      stdtx.signatures.add(s.cast<int>());
-    });
+    _signatures.add(SuperSignatureMsg(_msg, wallet));
+    if (_msg.to_map()['inputs'][0]['address'] == wallet.address) {
+      _signatures.forEach((element) {
+        stdtx.signatures.add(element.to_amino().toList());
+      });
+      withJsonAndSign['signatures'].forEach((s) {
+        stdtx.signatures.add(s.cast<int>());
+      });
+    } else {
+      withJsonAndSign['signatures'].forEach((s) {
+        stdtx.signatures.add(s.cast<int>());
+      });
+      _signatures.forEach((element) {
+        stdtx.signatures.add(element.to_amino().toList());
+      });
+    }
 
     return stdtx;
   }
