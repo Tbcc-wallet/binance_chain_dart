@@ -180,6 +180,8 @@ class HttpApiClient {
   Future<APIResponse<List<Transaction>>> broadcastSuperMsg(Msg msg, {Map<String, dynamic> withJsonAndSign, Wallet signWallet, bool sync = false}) async {
     var res = await _post('broadcast${sync ? '?sync=true' : ''}', headers: <String, String>{'content-type': 'text/plain'}, body: msg.to_hex_dataV2(withJsonAndSign, signWallet));
 
+    signWallet.increment_account_sequence();
+
     print(res.load);
 
     if (res.statusCode == 200) {
