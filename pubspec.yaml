@@ -1,6 +1,6 @@
 name: binance_chain
 description: Binance Chain Dart SDK. Get Binance DEX info, send tokens, place orders, keep account balance using HTTP or WebSocket! 
-version: 0.0.6
+version: 0.0.6+1
 homepage: https://github.com/Tbcc-wallet/binance_chain_dart
 repositoy: https://github.com/Tbcc-wallet/binance_chain_dart
 
