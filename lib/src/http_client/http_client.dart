@@ -599,7 +599,9 @@ class APIResponse<DataModel_T> {
     } else {
       this.load = <String, dynamic>{} as DataModel_T;
       var load_ = load as Map;
-      error = Error(code: statusCode, message: load_['message'] as String != null ? load_['message'] : load.toString());
+      try {
+        error = Error(code: statusCode, message: load_['message'] as String != null ? load_['message'] : load.toString());
+      } catch (_) {}
     }
   }
 
