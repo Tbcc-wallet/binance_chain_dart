@@ -84,6 +84,9 @@ class Wallet {
       throw ArgumentError('Private key can`t be empty');
     }
   }
+  Wallet.addressOnly(String address) {
+    _address = address;
+  }
 
   /// Create wallet object from mnemonic phrase 12-24 words.
   Wallet.fromMnemonicPhrase(String mnemonicPhrase, BinanceEnvironment env) {
