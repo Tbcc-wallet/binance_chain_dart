@@ -211,7 +211,7 @@ class Wallet {
       var account = await httpClient.getAccount(_address);
       _accountNumber = account.load.accountNumber;
       _sequence = account.load.sequence;
-
+      print(account.load.sequence);
       var nodeInfo = await httpClient.getNodeInfo();
       _chain_id = nodeInfo.load.network;
     }
