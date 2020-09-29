@@ -223,6 +223,7 @@ class Wallet {
     ECSignature s = dsaSigner.generateSignature(message);
     var buffer = Uint8List(64);
     var bi = encodeBigInt(s.r);
+
     buffer.setRange(0, 32, bi);
 
     if (s.s.compareTo(ECCurve_secp256k1().n >> 1) > 0) {

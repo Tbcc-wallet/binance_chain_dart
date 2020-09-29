@@ -18,10 +18,17 @@ Uint8List encodeBigInt(BigInt number) {
   var _byteMask = BigInt.from(0xff);
   var size = (number.bitLength + 7) >> 3;
 
-  var result = Uint8List(size);
+  var tmp = Uint8List(size);
   for (var i = 0; i < size; i++) {
-    result[size - i - 1] = (number & _byteMask).toInt();
+    tmp[size - i - 1] = (number & _byteMask).toInt();
     number = number >> 8;
+  }
+  Uint8List result;
+  if (tmp.length < 32) {
+    var padLeadingZero = Uint8List(32 - tmp.length);
+    result = Uint8List.fromList(padLeadingZero + tmp);
+  } else {
+    result = tmp;
   }
 
   return result;
