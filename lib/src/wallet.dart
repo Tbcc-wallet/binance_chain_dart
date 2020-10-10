@@ -101,6 +101,15 @@ class Wallet {
     }
   }
 
+  /// Create wallet object from seed [Uint8List]
+  Wallet.fromSeed(Uint8List seed, BinanceEnvironment env) {
+    _bip32 = bip32.BIP32.fromSeed(seed).derivePath("44'/714'/0'/0/0");
+    _privateKey = hex.encode(_bip32.privateKey);
+    _publicKey = hex.encode(_bip32.publicKey);
+    _env = env;
+    _address = getAddressFromPublicKey(_publicKey, env.hrp);
+  }
+
   String toWIF() {
     return _bip32.toWIF();
   }
