@@ -26,6 +26,7 @@ const UINT32_MAX = 4294967295; // 2^32 - 1
 class BIP32 {
   Uint8List _d;
   Uint8List _Q;
+  Uint8List _Q_uncompressed;
   Uint8List chainCode;
   int depth = 0;
   int index = 0;
@@ -36,6 +37,11 @@ class BIP32 {
   Uint8List get publicKey {
     _Q ??= ecc.pointFromScalar(_d, true);
     return _Q;
+  }
+
+  Uint8List get publicKeyUncompressed {
+    _Q_uncompressed ??= ecc.pointFromScalar(_d, false);
+    return _Q_uncompressed;
   }
 
   Uint8List get privateKey => _d;

@@ -19,6 +19,7 @@ import 'package:bip39/bip39.dart' as bip39;
 class Wallet {
   String _privateKey;
   String _publicKey;
+  String _publicKeyUncompressed;
   String _address;
   bip32.BIP32 _bip32;
   int _accountNumber;
@@ -61,6 +62,8 @@ class Wallet {
   /// Public key in hex.
   String get publicKey => _publicKey;
 
+  String get publicKeyUncompressed => _publicKeyUncompressed;
+
   /// An internal identifier for the account in Binance.
   /// Read more: [Binance Chain Docs / chain access / account](https://docs.binance.org/chain-access.html#account-and-sequence-number)
   int get accountNumber => _accountNumber;
@@ -78,7 +81,10 @@ class Wallet {
       _privateKey = privateKey;
       _env = env;
       _bip32 = bip32.BIP32.fromPrivateKey(hex.decode(_privateKey), null);
+
       _publicKey = hex.encode(_bip32.publicKey);
+      _publicKeyUncompressed = hex.encode(_bip32.publicKeyUncompressed);
+
       _address = getAddressFromPublicKey(_publicKey, env.hrp);
     } else {
       throw ArgumentError('Private key can`t be empty');
@@ -94,6 +100,8 @@ class Wallet {
       _bip32 = bip32.BIP32.fromSeed(bip39.mnemonicToSeed(mnemonicPhrase)).derivePath("44'/714'/0'/0/0");
       _privateKey = hex.encode(_bip32.privateKey);
       _publicKey = hex.encode(_bip32.publicKey);
+      _publicKeyUncompressed = hex.encode(_bip32.publicKeyUncompressed);
+
       _env = env;
       _address = getAddressFromPublicKey(_publicKey, env.hrp);
     } else {
@@ -106,6 +114,8 @@ class Wallet {
     _bip32 = bip32.BIP32.fromSeed(seed).derivePath("44'/714'/0'/0/0");
     _privateKey = hex.encode(_bip32.privateKey);
     _publicKey = hex.encode(_bip32.publicKey);
+    _publicKeyUncompressed = hex.encode(_bip32.publicKeyUncompressed);
+
     _env = env;
     _address = getAddressFromPublicKey(_publicKey, env.hrp);
   }
