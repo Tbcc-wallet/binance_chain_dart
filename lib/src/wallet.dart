@@ -24,7 +24,7 @@ class Wallet {
   bip32.BIP32 _bip32;
   int _accountNumber;
   String _chain_id;
-  int _sequence;
+  int sequence;
   BinanceEnvironment _env;
   HttpApiClient _httpClient;
 
@@ -54,7 +54,7 @@ class Wallet {
   /// as the one of latest transaction.
   ///
   /// Read more: [Binance Chain Docs / chain access / account](https://docs.binance.org/chain-access.html#account-and-sequence-number)
-  int get sequence => _sequence;
+  //int get sequence => _sequence;
 
   /// Private key in hex.
   String get privateKey => _privateKey;
@@ -229,7 +229,7 @@ class Wallet {
     if (_accountNumber == null) {
       var account = await httpClient.getAccount(_address);
       _accountNumber = account.load.accountNumber;
-      _sequence = account.load.sequence;
+      sequence = account.load.sequence;
       print(account.load.sequence);
       var nodeInfo = await httpClient.getNodeInfo();
       _chain_id = nodeInfo.load.network;
@@ -254,19 +254,19 @@ class Wallet {
   }
 
   void increment_account_sequence() {
-    if (_sequence != null) {
-      _sequence += 1;
+    if (sequence != null) {
+      sequence += 1;
     }
   }
 
   Future<void> reload_account_sequence() async {
     var account = await httpClient.getAccount(_address);
-    _sequence = account.load.sequence;
+    sequence = account.load.sequence;
   }
 
   /// read more: [Binance Chain Docs / encoding / orderID](https://docs.binance.org/encoding.html#order-id)
   String generate_order_id() {
-    return '${hex.encode(decode_address(address)).toUpperCase()}-${_sequence + 1}';
+    return '${hex.encode(decode_address(address)).toUpperCase()}-${sequence + 1}';
   }
 }
 
