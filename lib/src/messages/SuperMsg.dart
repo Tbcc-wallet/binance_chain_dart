@@ -167,8 +167,8 @@ class SuperStdTxMsg extends Msg {
   StdTx to_protobuf_with_sign(Map<String, dynamic> withJsonAndSign, Wallet wallet) {
     _msg = SuperMultiTransfer.fromJson(withJsonAndSign['transferMap'] as Map<String, dynamic>, withJsonAndSign['sendMsgJsonString']);
     _msg.memo = withJsonAndSign['memo'];
-    print(_msg.to_map());
-    print(_msg.to_protobuf().toProto3Json());
+    //print(_msg.to_map());
+    //print(_msg.to_protobuf().toProto3Json());
     var stdtx = StdTx()
       ..msgs.add(_msg.to_amino().toList())
       ..data = _data.codeUnits
