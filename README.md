@@ -58,7 +58,7 @@ main() async {
 ```
 
 ## TODO:
-* Support for WIF and .keystore
+✓ Support for WIF and .keystore
 * Tests
 * More docs and samples
 * Maybe JSON-RPC
