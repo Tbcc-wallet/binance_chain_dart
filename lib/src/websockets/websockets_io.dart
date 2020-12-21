@@ -7,7 +7,8 @@ import 'package:web_socket_channel/io.dart';
 class WebsocketBinanceListener {
   IOWebSocketChannel socket;
   BinanceEnvironment env;
-  WebsocketBinanceListener(this.env);
+  bool debugPrint;
+  WebsocketBinanceListener(this.env, {this.debugPrint = false});
   Stream<dynamic> stream;
   int closeCode;
   Timer _keepAliveTimer;
@@ -19,6 +20,9 @@ class WebsocketBinanceListener {
     socket = IOWebSocketChannel.connect('${env.wssUrl}/ws');
     stream = socket.stream.asBroadcastStream();
     mainSupscription = stream.listen((message) {
+      if (debugPrint) {
+        print('received:\n$message\n');
+      }
       if (message.runtimeType == String) {
         if (message.contains('stream')) {
           if (onMessage != null) {
