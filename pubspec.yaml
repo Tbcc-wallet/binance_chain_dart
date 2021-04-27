@@ -12,7 +12,7 @@ dependencies:
   protoc_plugin: ^19.0.1
   protobuf: ^1.0.1
   bip39: ^1.0.3
-  pointycastle: 2.0.0
+  pointycastle: ^2.0.1
   web_socket_channel: ^1.1.0
   decimal: ^0.3.5
   hex: ^0.1.2
