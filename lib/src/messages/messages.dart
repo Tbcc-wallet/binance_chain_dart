@@ -11,6 +11,7 @@ import '../utils/constants.dart';
 import '../utils/crypto.dart';
 import '../wallet.dart';
 import './proto/gen/dex.pb.dart';
+import './proto/gen/bridge.pb.dart' as bridge;
 import 'SuperMsg.dart';
 
 // An identifier for tools triggering broadcast transactions, set to zero if unwilling to disclose.
@@ -33,8 +34,6 @@ class Msg {
   List<Wallet> get wallets => _wallets;
 
   Map to_map() => {};
-
-  Map to_sign_map() => {};
 
   dynamic to_protobuf() => null;
   dynamic to_protobuf_with_sign(Map<String, dynamic> withJsonAndSign, Wallet wallet) => null;
@@ -223,9 +222,6 @@ class TransferMsg extends Msg {
           })
         ]
       });
-
-  @override
-  Map to_sign_map() => {'to_address': _to_address, 'amount': _amount, 'denom': _symbol};
 
   @override
   Send to_protobuf() {
@@ -433,9 +429,6 @@ class NewOrderMsg extends Msg {
       });
 
   @override
-  Map to_sign_map() => {'order_type': _order_type, 'price': _price, 'quantity': _quantity, 'side': _side, 'symbol': _symbol, 'time_in_force': _time_in_force};
-
-  @override
   NewOrder to_protobuf() {
     var pb = NewOrder()
       ..sender = decode_address(wallet.address).toList()
@@ -471,9 +464,6 @@ class CancelOrderMsg extends Msg {
   Map to_map() => LinkedHashMap.from({'refid': _order_id, 'sender': wallet.address, 'symbol': _symbol});
 
   @override
-  Map to_sign_map() => {'refid': _order_id, 'symbol': _symbol};
-
-  @override
   CancelOrder to_protobuf() {
     var pb = CancelOrder()
       ..sender = decode_address(wallet.address)
@@ -504,9 +494,6 @@ class FreezeMsg extends Msg {
   Map to_map() => LinkedHashMap.from({'amount': _amount_encoded, 'from': wallet.address, 'symbol': _symbol});
 
   @override
-  Map to_sign_map() => {'amount': _amount_encoded, 'symbol': _symbol};
-
-  @override
   TokenFreeze to_protobuf() {
     var pb = TokenFreeze()
       ..from = decode_address(wallet.address).toList()
@@ -535,9 +522,6 @@ class UnFreezeMsg extends Msg {
 
   @override
   Map to_map() => LinkedHashMap.from({'amount': _amount_encoded, 'from': wallet.address, 'symbol': _symbol});
-
-  @override
-  Map to_sign_map() => {'amount': _amount_encoded, 'symbol': _symbol};
 
   @override
   TokenUnfreeze to_protobuf() {
@@ -573,14 +557,61 @@ class VoteMsg extends Msg {
   Map to_map() => LinkedHashMap.from({'option': _vote_option.str_val, 'proposal_id': _proposal_id_encoded, 'voter': _voter});
 
   @override
-  Map to_sign_map() => {'option': _vote_option, 'proposal_id': _proposal_id_encoded};
-
-  @override
   Vote to_protobuf() {
     var pb = Vote()
       ..voter = decode_address(wallet.address)
       ..proposalId = fixnum.Int64(_proposal_id)
       ..option = fixnum.Int64(_vote_option.int_val);
+    return pb;
+  }
+}
+
+class TransferOutMsg extends Msg {
+  @override
+  final AMINO_MESSAGE_TYPE = '800819C0';
+
+  String _symbol;
+  Decimal _amount;
+  int _amountAmino;
+  int _expireTime;
+  String _addressFrom;
+  BSCAddress _addressTo;
+
+  TransferOutMsg({
+    String symbol,
+    Decimal amount,
+    String addressFrom,
+    BSCAddress addressTo,
+    int expireTime,
+    Wallet wallet,
+  }) : super([wallet]) {
+    _symbol = symbol;
+    _amount = amount;
+    _addressFrom = addressFrom;
+    _addressTo = addressTo;
+    _expireTime = expireTime;
+    _amountAmino = (_amount * Decimal.fromInt(10.pow(8))).toInt();
+  }
+
+  @override
+  Map to_map() => LinkedHashMap.from({
+        'amount': LinkedHashMap.from({
+          'amount': _amountAmino,
+          'denom': _symbol,
+        }),
+        'expire_time': _expireTime,
+        'from': _addressFrom,
+        'to': _addressTo.hexEip55,
+      });
+
+  @override
+  bridge.TransferOutMsg to_protobuf() {
+    var pb = bridge.TransferOutMsg()
+      ..from = decode_address(_addressFrom).toList()
+      ..to = hexToBytes(_addressTo.hexEip55).toList()
+      ..amount = bridge.TransferOutMsg_Token(amount: fixnum.Int64(_amountAmino), denom: _symbol)
+      ..expireTime = fixnum.Int64(_expireTime);
+
     return pb;
   }
 }

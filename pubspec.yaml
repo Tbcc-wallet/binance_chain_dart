@@ -9,8 +9,8 @@ environment:
 
 dependencies:
   http: ^0.12.1
-  protoc_plugin: ^19.0.1
-  protobuf: ^1.0.1
+  protoc_plugin: ^19.3.1
+  protobuf: ^1.1.0
   bip39: ^1.0.3
   pointycastle: ^1.0.2
   web_socket_channel: ^1.1.0

@@ -39,7 +39,7 @@ class HttpApiClient {
 
   APIResponse _handle_response(Response response) {
     var res = json.decode(response.body);
-
+    print(res);
     return APIResponse(response.statusCode, res);
   }
 
