@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:typed_data';
+import 'package:collection/collection.dart' show IterableExtension;
 import 'package:convert/convert.dart';
 import 'package:pointycastle/digests/ripemd160.dart';
 import 'package:pointycastle/digests/sha256.dart';
@@ -19,7 +20,7 @@ int bech32_polymod(List values) {
 
   var chk = 1;
   int top;
-  for (int value in values) {
+  for (int value in values as Iterable<int>) {
     top = chk >> 25;
     chk = (chk & 0x1ffffff) << 5 ^ value;
     for (var i in [0, 1, 2, 3, 4]) {
@@ -70,9 +71,8 @@ List bech32_decode(String bech) {
   /// Validate a Bech32 string, and determine HRP and data.
 
   //validation
-  if ((<bool>[for (var x in bech.codeUnits) (x < 33 && x > 126)].firstWhere(
+  if ((<bool>[for (var x in bech.codeUnits) (x < 33 && x > 126)].firstWhereOrNull(
             (element) => element,
-            orElse: () => null,
           ) !=
           null) ||
       ((bech.toLowerCase() != bech && bech.toUpperCase() != bech))) {
@@ -83,7 +83,7 @@ List bech32_decode(String bech) {
   if (pos < 1 || pos + 7 > bech.length || bech.length > 90) {
     return [null, null];
   }
-  if (<bool>[for (var x in List<int>.generate(bech.substring(pos + 1).length, (index) => index + pos + 1)) CHARSET.contains(bech[x])].firstWhere((element) => element == false, orElse: () => null) != null) {
+  if (<bool>[for (var x in List<int>.generate(bech.substring(pos + 1).length, (index) => index + pos + 1)) CHARSET.contains(bech[x])].firstWhereOrNull((element) => element == false) != null) {
     return [null, null];
   }
 
@@ -97,7 +97,7 @@ List bech32_decode(String bech) {
   return [hrp, data.sublist(0, data.length - 6)];
 }
 
-Uint8List decode_address(String address) {
+Uint8List? decode_address(String address) {
   var components = bech32_decode(address);
   if (components[0] == null) {
     return null;
@@ -110,11 +110,11 @@ Uint8List decode_address(String address) {
 String encode(String hrp, Uint8List witprog) {
   /// Encode a segwit address.
 
-  return bech32_encode(hrp, convertbits(witprog, 8, 5));
+  return bech32_encode(hrp, convertbits(witprog, 8, 5)!);
 }
 
 dynamic getAddressFromPublicKey(String publicKey, [hrp = 'tbnb']) {
-  final s = SHA256Digest().process(hex.decode(publicKey));
+  final s = SHA256Digest().process(hex.decode(publicKey) as Uint8List);
   final r = RIPEMD160Digest().process(s);
 
   return encode(hrp, r);
@@ -261,7 +261,7 @@ String strip0x(String hex) {
   return hex;
 }
 
-String bytesToHex(List<int> bytes, {bool include0x = false, int forcePadLength, bool padToEvenLength = false}) {
+String bytesToHex(List<int> bytes, {bool include0x = false, int? forcePadLength, bool padToEvenLength = false}) {
   var encoded = hex.encode(bytes);
 
   if (forcePadLength != null) {

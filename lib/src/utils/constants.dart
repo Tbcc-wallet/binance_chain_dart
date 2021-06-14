@@ -1,5 +1,5 @@
 class TimeInForce {
-  int value;
+  int? value;
   TimeInForce.GOOD_TILL_EXPIRE() {
     value = 1;
   }
@@ -9,7 +9,7 @@ class TimeInForce {
 }
 
 class OrderSide {
-  int value;
+  int? value;
   OrderSide.BUY() {
     value = 1;
   }
@@ -19,15 +19,15 @@ class OrderSide {
 }
 
 class OrderType {
-  int value;
+  int? value;
   OrderType.LIMIT() {
     value = 2;
   }
 }
 
 class VoteOption {
-  String str_val;
-  int int_val;
+  String? str_val;
+  late int int_val;
 
   VoteOption.YES() {
     str_val = 'Yes';

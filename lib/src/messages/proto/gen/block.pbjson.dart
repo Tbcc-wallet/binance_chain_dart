@@ -2,9 +2,13 @@
 //  Generated code. Do not modify.
 //  source: block.proto
 //
-// @dart = 2.3
-// ignore_for_file: camel_case_types,non_constant_identifier_names,library_prefixes,unused_import,unused_shown_name,return_of_invalid_type
+// @dart = 2.12
+// ignore_for_file: annotate_overrides,camel_case_types,unnecessary_const,non_constant_identifier_names,library_prefixes,unused_import,unused_shown_name,return_of_invalid_type,unnecessary_this,prefer_final_fields,deprecated_member_use_from_same_package
 
+import 'dart:core' as $core;
+import 'dart:convert' as $convert;
+import 'dart:typed_data' as $typed_data;
+@$core.Deprecated('Use partSetHeaderDescriptor instead')
 const PartSetHeader$json = const {
   '1': 'PartSetHeader',
   '2': const [
@@ -13,6 +17,9 @@ const PartSetHeader$json = const {
   ],
 };
 
+/// Descriptor for `PartSetHeader`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List partSetHeaderDescriptor = $convert.base64Decode('Cg1QYXJ0U2V0SGVhZGVyEhQKBVRvdGFsGAEgASgFUgVUb3RhbBISCgRIYXNoGAIgASgMUgRIYXNo');
+@$core.Deprecated('Use blockIDDescriptor instead')
 const BlockID$json = const {
   '1': 'BlockID',
   '2': const [
@@ -21,6 +28,9 @@ const BlockID$json = const {
   ],
 };
 
+/// Descriptor for `BlockID`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List blockIDDescriptor = $convert.base64Decode('CgdCbG9ja0lEEhIKBEhhc2gYASABKAxSBEhhc2gSNwoLUGFydHNIZWFkZXIYAiABKAsyFS5wcm90bzMuUGFydFNldEhlYWRlclILUGFydHNIZWFkZXI=');
+@$core.Deprecated('Use headerDescriptor instead')
 const Header$json = const {
   '1': 'Header',
   '2': const [
@@ -43,6 +53,9 @@ const Header$json = const {
   ],
 };
 
+/// Descriptor for `Header`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List headerDescriptor = $convert.base64Decode('CgZIZWFkZXISKQoHVmVyc2lvbhgBIAEoCzIPLnByb3RvMy5WZXJzaW9uUgdWZXJzaW9uEhgKB0NoYWluSUQYAiABKAlSB0NoYWluSUQSFgoGSGVpZ2h0GAMgASgDUgZIZWlnaHQSJQoEVGltZRgEIAEoCzIRLnByb3RvMy5UaW1lc3RhbXBSBFRpbWUSFgoGTnVtVHhzGAUgASgDUgZOdW1UeHMSGgoIVG90YWxUeHMYBiABKANSCFRvdGFsVHhzEjEKC0xhc3RCbG9ja0lEGAcgASgLMg8ucHJvdG8zLkJsb2NrSURSC0xhc3RCbG9ja0lEEiYKDkxhc3RDb21taXRIYXNoGAggASgMUg5MYXN0Q29tbWl0SGFzaBIaCghEYXRhSGFzaBgJIAEoDFIIRGF0YUhhc2gSJgoOVmFsaWRhdG9yc0hhc2gYCiABKAxSDlZhbGlkYXRvcnNIYXNoEi4KEk5leHRWYWxpZGF0b3JzSGFzaBgLIAEoDFISTmV4dFZhbGlkYXRvcnNIYXNoEiQKDUNvbnNlbnN1c0hhc2gYDCABKAxSDUNvbnNlbnN1c0hhc2gSGAoHQXBwSGFzaBgNIAEoDFIHQXBwSGFzaBIoCg9MYXN0UmVzdWx0c0hhc2gYDiABKAxSD0xhc3RSZXN1bHRzSGFzaBIiCgxFdmlkZW5jZUhhc2gYDyABKAxSDEV2aWRlbmNlSGFzaBIoCg9Qcm9wb3NlckFkZHJlc3MYECABKAxSD1Byb3Bvc2VyQWRkcmVzcw==');
+@$core.Deprecated('Use versionDescriptor instead')
 const Version$json = const {
   '1': 'Version',
   '2': const [
@@ -51,6 +64,9 @@ const Version$json = const {
   ],
 };
 
+/// Descriptor for `Version`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List versionDescriptor = $convert.base64Decode('CgdWZXJzaW9uEhQKBUJsb2NrGAEgASgEUgVCbG9jaxIQCgNBcHAYAiABKARSA0FwcA==');
+@$core.Deprecated('Use timestampDescriptor instead')
 const Timestamp$json = const {
   '1': 'Timestamp',
   '2': const [
@@ -59,3 +75,5 @@ const Timestamp$json = const {
   ],
 };
 
+/// Descriptor for `Timestamp`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List timestampDescriptor = $convert.base64Decode('CglUaW1lc3RhbXASGAoHc2Vjb25kcxgBIAEoA1IHc2Vjb25kcxIUCgVuYW5vcxgCIAEoBVIFbmFub3M=');

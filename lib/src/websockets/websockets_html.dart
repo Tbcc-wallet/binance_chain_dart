@@ -5,14 +5,14 @@ import 'package:binance_chain/src/websockets/ws_response_models.dart';
 import 'package:web_socket_channel/html.dart';
 
 class WebsocketBinanceListener {
-  HtmlWebSocketChannel socket;
+  late HtmlWebSocketChannel socket;
   BinanceEnvironment env;
   WebsocketBinanceListener(this.env);
-  Stream<dynamic> stream;
-  int closeCode;
-  Timer _keepAliveTimer;
-  StreamSubscription mainSupscription;
-  void _subscribe<DataModel>(String connectionJsonMessage, Function(WsBinanceMessage<DataModel> message) onMessage) {
+  late Stream<dynamic> stream;
+  int? closeCode;
+  Timer? _keepAliveTimer;
+  late StreamSubscription mainSupscription;
+  void _subscribe<DataModel>(String connectionJsonMessage, Function(WsBinanceMessage<DataModel> message)? onMessage) {
     closeCode = null;
     socket = HtmlWebSocketChannel.connect('${env.wssUrl}/ws');
     stream = socket.stream.asBroadcastStream();
@@ -61,7 +61,7 @@ class WebsocketBinanceListener {
   ///     },
   ///   );
   /// ```
-  void subscribeAccountUpdates(String address, {Function(WsBinanceMessage<AccountData> message) onMessage}) {
+  void subscribeAccountUpdates(String address, {Function(WsBinanceMessage<AccountData> message)? onMessage}) {
     _subscribe<AccountData>(json.encode({'method': 'subscribe', 'topic': 'accounts', 'address': address}), onMessage);
   }
 
@@ -83,7 +83,7 @@ class WebsocketBinanceListener {
   ///     }
   ///   );
   /// ```
-  void subscribeAccountOrders(String address, {Function(WsBinanceMessage<List<OrdersData>> message) onMessage}) {
+  void subscribeAccountOrders(String address, {Function(WsBinanceMessage<List<OrdersData>> message)? onMessage}) {
     _subscribe<List<OrdersData>>(json.encode({'method': 'subscribe', 'topic': 'orders', 'address': address}), onMessage);
   }
 
@@ -105,7 +105,7 @@ class WebsocketBinanceListener {
   ///     }
   ///   );
   /// ```
-  void subscribeAccoutTransfers(String address, {Function(WsBinanceMessage<TransferData> message) onMessage}) {
+  void subscribeAccoutTransfers(String address, {Function(WsBinanceMessage<TransferData> message)? onMessage}) {
     _subscribe<TransferData>(json.encode({'method': 'subscribe', 'topic': 'transfers', 'address': address}), onMessage);
   }
 
@@ -127,7 +127,7 @@ class WebsocketBinanceListener {
   ///      },
   ///    );
   /// ```
-  void subscribeOrderBook(String marketPairSymbol, {Function(WsBinanceMessage<MarketDepthData> message) onMessage}) {
+  void subscribeOrderBook(String marketPairSymbol, {Function(WsBinanceMessage<MarketDepthData> message)? onMessage}) {
     _subscribe<MarketDepthData>(
         json.encode({
           'method': 'subscribe',
@@ -137,7 +137,7 @@ class WebsocketBinanceListener {
         onMessage);
   }
 
-  void subscribeCandlesticksUpdates(String marketPairSymbol, {CandlestickInterval interval = CandlestickInterval.INTERVAL_1h, Function(WsBinanceMessage<MarketDepthData> message) onMessage}) {
+  void subscribeCandlesticksUpdates(String marketPairSymbol, {CandlestickInterval interval = CandlestickInterval.INTERVAL_1h, Function(WsBinanceMessage<MarketDepthData> message)? onMessage}) {
     _subscribe<MarketDepthData>(
         json.encode({
           'method': 'subscribe',
@@ -152,7 +152,7 @@ class WebsocketBinanceListener {
     closeCode = 1000;
     await socket.sink.close(1000);
     await mainSupscription.cancel();
-    _keepAliveTimer.cancel();
+    _keepAliveTimer!.cancel();
   }
 
   void unsubscribeTopic(String topic) {
@@ -165,7 +165,7 @@ class WebsocketBinanceListener {
 }
 
 class WebsocketBinanceManager {
-  Map<String, WebsocketBinanceListener> sockets;
+  Map<String, WebsocketBinanceListener>? sockets;
 
   WebsocketBinanceManager();
 }

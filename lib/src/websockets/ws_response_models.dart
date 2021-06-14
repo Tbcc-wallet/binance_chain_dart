@@ -1,6 +1,6 @@
 class WsBinanceMessage<DataModel> {
-  String stream;
-  DataModel data;
+  String? stream;
+  DataModel? data;
 
   WsBinanceMessage({
     this.stream,
@@ -38,12 +38,12 @@ class WsBinanceMessage<DataModel> {
 
 //////////////////////////////////////////////////////////////////////////////////
 class TransferData {
-  String eventType;
-  int eventHeight;
-  String txHash;
-  String memo;
-  String from;
-  List<To> to;
+  String? eventType;
+  int? eventHeight;
+  String? txHash;
+  String? memo;
+  String? from;
+  List<To>? to;
 
   TransferData({this.eventType, this.eventHeight, this.txHash, this.memo, this.from, this.to});
 
@@ -56,15 +56,15 @@ class TransferData {
     if (json['t'] != null) {
       to = <To>[];
       json['t'].forEach((v) {
-        to.add(To.fromJson(v));
+        to!.add(To.fromJson(v));
       });
     }
   }
 }
 
 class To {
-  String toAddr;
-  List<Coins> coins;
+  String? toAddr;
+  List<Coins>? coins;
 
   To({this.toAddr, this.coins});
 
@@ -73,15 +73,15 @@ class To {
     if (json['c'] != null) {
       coins = <Coins>[];
       json['c'].forEach((v) {
-        coins.add(Coins.fromJson(v));
+        coins!.add(Coins.fromJson(v));
       });
     }
   }
 }
 
 class Coins {
-  String asset;
-  String amount;
+  String? asset;
+  String? amount;
 
   Coins({this.asset, this.amount});
 
@@ -93,10 +93,10 @@ class Coins {
 
 //////////////////////////////////////////////////////////////////////////////////
 class MarketDepthData {
-  List<List<double>> bids;
-  List<List<double>> asks;
-  int lastUpdateId;
-  String symbol;
+  List<List<double>>? bids;
+  List<List<double>>? asks;
+  int? lastUpdateId;
+  String? symbol;
 
   MarketDepthData({this.bids, this.asks, this.lastUpdateId, this.symbol});
 
@@ -109,24 +109,24 @@ class MarketDepthData {
 }
 
 class OrdersData {
-  String eventType;
-  int eventHeight;
-  String symbol;
-  int side;
-  int orderType;
-  int timeInForce;
-  String quantity;
-  String price;
-  String executionType;
-  String orderStatus;
-  String orderID;
-  String lastExecutedQuantity;
-  String cumulativeFilledQuantity;
-  String lastExecutedPrice;
-  String comission;
-  int transactionTime;
-  String tradeID;
-  int orderCreationTime;
+  String? eventType;
+  int? eventHeight;
+  String? symbol;
+  int? side;
+  int? orderType;
+  int? timeInForce;
+  String? quantity;
+  String? price;
+  String? executionType;
+  String? orderStatus;
+  String? orderID;
+  String? lastExecutedQuantity;
+  String? cumulativeFilledQuantity;
+  String? lastExecutedPrice;
+  String? comission;
+  int? transactionTime;
+  String? tradeID;
+  int? orderCreationTime;
 
   OrdersData(
       {this.eventType,
@@ -172,9 +172,9 @@ class OrdersData {
 
 ///////////////////////////////////////////////////////////////
 class AccountData {
-  String eventType;
-  int eventHeight;
-  List<BalanceData> balances;
+  String? eventType;
+  int? eventHeight;
+  List<BalanceData>? balances;
 
   AccountData({this.eventType, this.eventHeight, this.balances});
 
@@ -184,17 +184,17 @@ class AccountData {
     if (json['B'] != null) {
       balances = <BalanceData>[];
       json['B'].forEach((v) {
-        balances.add(BalanceData.fromJson(v));
+        balances!.add(BalanceData.fromJson(v));
       });
     }
   }
 }
 
 class BalanceData {
-  String asset;
-  String free;
-  String locked;
-  String frozen;
+  String? asset;
+  String? free;
+  String? locked;
+  String? frozen;
 
   BalanceData({this.asset, this.free, this.locked, this.frozen});
 

@@ -10,50 +10,50 @@ import 'package:fixnum/fixnum.dart' as fixnum;
 import 'package:binance_chain/binance_chain.dart';
 import 'dart:convert';
 import '../utils/num_utils.dart';
-import 'package:convert/convert.dart';
 
 class SuperMultiTransfer extends Msg {
   @override
   final AMINO_MESSAGE_TYPE = '2A2C87FA';
-  Send compiled_msg;
-  LinkedHashMap compiled_map;
+  Send? compiled_msg;
+  LinkedHashMap? compiled_map;
 
   SuperMultiTransfer({
-    List<Wallet> wallets,
-    List<TransferV2> transfers,
-    String memo,
+    List<Wallet>? wallets,
+    List<TransferV2>? transfers,
+    String? memo,
   }) : super(wallets, memo) {
     if (transfers != null) {
-      var coins = <Wallet, Map<String, int>>{};
+      var coins = <Wallet?, Map<String?, int?>>{};
 
       transfers.sort((t1, t2) {
-        return t1.amount.compareTo(t2.amount);
+        return t1.amount!.compareTo(t2.amount!);
       });
 
       for (var transfer in transfers) {
-        transfer.amount_amino = (transfer.amount * Decimal.fromInt(10.pow(8))).toInt();
+        transfer.amount_amino = (transfer.amount! * Decimal.fromInt(10.pow(8))).toInt();
         if (coins.containsKey(transfer.from)) {
-          if (coins[transfer.from].containsKey(transfer.symbol)) {
-            coins[transfer.from][transfer.symbol] += transfer.amount_amino;
+          if (coins[transfer.from]!.containsKey(transfer.symbol)) {
+            var curr = coins[transfer.from]?[transfer.symbol];
+            if (curr != null) coins[transfer.from]?[transfer.symbol] = curr + transfer.amount_amino!;
           } else {
-            coins[transfer.from][transfer.symbol] = transfer.amount_amino;
+            coins[transfer.from]![transfer.symbol] = transfer.amount_amino;
           }
         } else {
           coins[transfer.from] = {transfer.symbol: transfer.amount_amino};
         }
       }
 
-      var sorted_coins = coins.entries?.toList();
+      var sorted_coins = coins.entries.toList();
       sorted_coins.sort((l, r) {
-        return l.key.address.compareTo(r.key.address);
+        return l.key!.address!.compareTo(r.key!.address!);
       });
       compiled_map = LinkedHashMap<String, dynamic>.from({
         'inputs': [
           for (var input in sorted_coins)
             LinkedHashMap.from({
-              'address': input.key.address,
+              'address': input.key!.address,
               'coins': [
-                for (var coin in input.value.entries.toList()..sort((l, r) => l.key.compareTo(r.key)))
+                for (var coin in input.value.entries.toList()..sort((l, r) => l.key!.compareTo(r.key!)))
                   LinkedHashMap.from(
                     {'amount': coin.value, 'denom': coin.key},
                   ),
@@ -65,7 +65,7 @@ class SuperMultiTransfer extends Msg {
             LinkedHashMap.from({
               'address': addr_to,
               'coins': [
-                for (var coin in transfers.where((e) => e.addressTo == addr_to).toList()..sort((l, r) => l.symbol.compareTo(r.symbol)))
+                for (var coin in transfers.where((e) => e.addressTo == addr_to).toList()..sort((l, r) => l.symbol!.compareTo(r.symbol!)))
                   LinkedHashMap.from({
                     'amount': coin.amount_amino,
                     'denom': coin.symbol,
@@ -79,12 +79,12 @@ class SuperMultiTransfer extends Msg {
         ..inputs.addAll([
           for (var input in sorted_coins)
             Send_Input()
-              ..address = decode_address(input.key.address).toList()
+              ..address = decode_address(input.key!.address!)!.toList()
               ..coins.addAll([
                 for (var coin in input.value.entries)
                   Send_Token()
-                    ..denom = coin.key
-                    ..amount = fixnum.Int64(coin.value)
+                    ..denom = coin.key!
+                    ..amount = fixnum.Int64(coin.value!)
               ]..sort((l, r) {
                   return l.denom.compareTo(r.denom);
                 }))
@@ -92,12 +92,12 @@ class SuperMultiTransfer extends Msg {
         ..outputs.addAll([
           for (var addr_to in {for (var t in transfers) t.addressTo})
             Send_Output()
-              ..address = decode_address(addr_to).toList()
+              ..address = decode_address(addr_to!)!.toList()
               ..coins.addAll([
-                for (var coin in transfers.where((e) => e.addressTo == addr_to).toList()..sort((l, r) => l.symbol.compareTo(r.symbol)))
+                for (var coin in transfers.where((e) => e.addressTo == addr_to).toList()..sort((l, r) => l.symbol!.compareTo(r.symbol!)))
                   Send_Token()
-                    ..denom = coin.symbol
-                    ..amount = fixnum.Int64(coin.amount_amino),
+                    ..denom = coin.symbol!
+                    ..amount = fixnum.Int64(coin.amount_amino!),
               ])
         ]);
 
@@ -106,23 +106,23 @@ class SuperMultiTransfer extends Msg {
   }
 
   SuperMultiTransfer.fromJson(Map<String, dynamic> json_, String sendJson) : super(null) {
-    compiled_map = {}..addAll(json_);
+    compiled_map = ({}..addAll(json_)) as LinkedHashMap<dynamic, dynamic>?;
     compiled_msg = Send.fromJson(sendJson);
   }
 
   @override
-  LinkedHashMap to_map() => compiled_map;
+  LinkedHashMap? to_map() => compiled_map;
 
   @override
-  Send to_protobuf() => compiled_msg;
+  Send? to_protobuf() => compiled_msg;
 }
 
 class TransferV2 {
-  Wallet from;
-  String addressTo;
-  Decimal amount;
-  String symbol;
-  int amount_amino;
+  Wallet? from;
+  String? addressTo;
+  Decimal? amount;
+  String? symbol;
+  int? amount_amino;
   TransferV2({
     this.from,
     this.addressTo,
@@ -143,7 +143,7 @@ class SuperStdTxMsg extends Msg {
   String _data;
   List<SuperSignatureMsg> _signatures = [];
   SuperStdTxMsg(this._msg, [this._data = '']) : super(_msg.wallets) {
-    _signatures.addAll([for (Wallet w in _msg.wallets) SuperSignatureMsg(_msg, w)]);
+    _signatures.addAll([for (Wallet? w in _msg.wallets) SuperSignatureMsg(_msg, w)]);
   }
 
   void addSignature(int index, Wallet wallet) {
@@ -155,7 +155,7 @@ class SuperStdTxMsg extends Msg {
     var stdtx = StdTx()
       ..msgs.add(_msg.to_amino().toList())
       ..data = _data.codeUnits
-      ..memo = _msg.memo
+      ..memo = _msg.memo!
       ..source = fixnum.Int64(_source);
     _signatures.forEach((element) {
       stdtx.signatures.add(element.to_amino().toList());
@@ -164,7 +164,7 @@ class SuperStdTxMsg extends Msg {
   }
 
   @override
-  StdTx to_protobuf_with_sign(Map<String, dynamic> withJsonAndSign, Wallet wallet) {
+  StdTx to_protobuf_with_sign(Map<String, dynamic> withJsonAndSign, Wallet? wallet) {
     _msg = SuperMultiTransfer.fromJson(withJsonAndSign['transferMap'] as Map<String, dynamic>, withJsonAndSign['sendMsgJsonString']);
     _msg.memo = withJsonAndSign['memo'];
     //print(_msg.to_map());
@@ -175,7 +175,7 @@ class SuperStdTxMsg extends Msg {
       ..memo = withJsonAndSign['memo']
       ..source = fixnum.Int64(_source);
     _signatures.add(SuperSignatureMsg(_msg, wallet));
-    if (_msg.to_map()['inputs'][0]['address'] == wallet.address) {
+    if (_msg.to_map()!['inputs'][0]['address'] == wallet!.address) {
       _signatures.forEach((element) {
         stdtx.signatures.add(element.to_amino().toList());
       });
@@ -198,9 +198,9 @@ class SuperStdTxMsg extends Msg {
 class SuperSignatureMsg extends Msg {
   @override
   final AMINO_MESSAGE_TYPE = '';
-  SuperSignature _signature;
-  SuperSignature get signature => _signature;
-  Wallet toSignWallet;
+  SuperSignature? _signature;
+  SuperSignature? get signature => _signature;
+  Wallet? toSignWallet;
   SuperSignatureMsg(Msg msg, this.toSignWallet) : super([toSignWallet]) {
     _signature = SuperSignature(msg, toSignWallet);
   }
@@ -209,10 +209,10 @@ class SuperSignatureMsg extends Msg {
   StdSignature to_protobuf() {
     var pub_key_msg = PubKeyMsg(toSignWallet);
     var std_sig = StdSignature()
-      ..sequence = fixnum.Int64(toSignWallet.sequence)
-      ..accountNumber = fixnum.Int64(toSignWallet.accountNumber)
+      ..sequence = fixnum.Int64(toSignWallet!.sequence!)
+      ..accountNumber = fixnum.Int64(toSignWallet!.accountNumber!)
       ..pubKey = pub_key_msg.to_amino()
-      ..signature = _signature.sign(toSignWallet);
+      ..signature = _signature!.sign(toSignWallet!);
     return std_sig;
   }
 }
@@ -222,21 +222,21 @@ class SuperSignature {
   var _chain_id;
   var _data;
   var _source;
-  Wallet toSignWallet;
+  Wallet? toSignWallet;
   SuperSignature(this._msg, [this.toSignWallet, data]) {
-    _chain_id = toSignWallet == null ? _msg.wallet.chainId : toSignWallet.chainId;
+    _chain_id = toSignWallet == null ? _msg.wallet!.chainId : toSignWallet!.chainId;
 
     _data = data;
     _source = BROADCAST_SOURCE;
   }
 
   String to_json() => json.encode(LinkedHashMap.from({
-        'account_number': toSignWallet.accountNumber.toString(),
+        'account_number': toSignWallet!.accountNumber.toString(),
         'chain_id': _chain_id,
         'data': _data,
         'memo': _msg.memo,
         'msgs': [_msg.to_map()],
-        'sequence': toSignWallet.sequence.toString(),
+        'sequence': toSignWallet!.sequence.toString(),
         'source': _source.toString()
       }));
 

@@ -1,7 +1,7 @@
 class Keystore {
-  int version;
-  String id;
-  Crypto crypto;
+  int? version;
+  String? id;
+  Crypto? crypto;
 
   Keystore({this.version, this.id, this.crypto});
 
@@ -16,19 +16,19 @@ class Keystore {
     data['version'] = version;
     data['id'] = id;
     if (crypto != null) {
-      data['crypto'] = crypto.toJson();
+      data['crypto'] = crypto!.toJson();
     }
     return data;
   }
 }
 
 class Crypto {
-  String ciphertext;
-  Cipherparams cipherparams;
-  String cipher;
-  String kdf;
-  Kdfparams kdfparams;
-  String mac;
+  String? ciphertext;
+  Cipherparams? cipherparams;
+  String? cipher;
+  String? kdf;
+  Kdfparams? kdfparams;
+  String? mac;
 
   Crypto({this.ciphertext, this.cipherparams, this.cipher, this.kdf, this.kdfparams, this.mac});
 
@@ -45,12 +45,12 @@ class Crypto {
     final data = <String, dynamic>{};
     data['ciphertext'] = ciphertext;
     if (cipherparams != null) {
-      data['cipherparams'] = cipherparams.toJson();
+      data['cipherparams'] = cipherparams!.toJson();
     }
     data['cipher'] = cipher;
     data['kdf'] = kdf;
     if (kdfparams != null) {
-      data['kdfparams'] = kdfparams.toJson();
+      data['kdfparams'] = kdfparams!.toJson();
     }
     data['mac'] = mac;
     return data;
@@ -58,7 +58,7 @@ class Crypto {
 }
 
 class Cipherparams {
-  String iv;
+  String? iv;
 
   Cipherparams({this.iv});
 
@@ -74,10 +74,10 @@ class Cipherparams {
 }
 
 class Kdfparams {
-  int dklen;
-  String salt;
-  int c;
-  String prf;
+  int? dklen;
+  String? salt;
+  int? c;
+  String? prf;
 
   Kdfparams({this.dklen, this.salt, this.c, this.prf});
 

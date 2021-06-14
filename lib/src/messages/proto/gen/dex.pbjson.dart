@@ -2,9 +2,13 @@
 //  Generated code. Do not modify.
 //  source: dex.proto
 //
-// @dart = 2.3
-// ignore_for_file: camel_case_types,non_constant_identifier_names,library_prefixes,unused_import,unused_shown_name,return_of_invalid_type
+// @dart = 2.12
+// ignore_for_file: annotate_overrides,camel_case_types,unnecessary_const,non_constant_identifier_names,library_prefixes,unused_import,unused_shown_name,return_of_invalid_type,unnecessary_this,prefer_final_fields,deprecated_member_use_from_same_package
 
+import 'dart:core' as $core;
+import 'dart:convert' as $convert;
+import 'dart:typed_data' as $typed_data;
+@$core.Deprecated('Use stdTxDescriptor instead')
 const StdTx$json = const {
   '1': 'StdTx',
   '2': const [
@@ -16,6 +20,9 @@ const StdTx$json = const {
   ],
 };
 
+/// Descriptor for `StdTx`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List stdTxDescriptor = $convert.base64Decode('CgVTdGRUeBISCgRtc2dzGAEgAygMUgRtc2dzEh4KCnNpZ25hdHVyZXMYAiADKAxSCnNpZ25hdHVyZXMSEgoEbWVtbxgDIAEoCVIEbWVtbxIWCgZzb3VyY2UYBCABKANSBnNvdXJjZRISCgRkYXRhGAUgASgMUgRkYXRh');
+@$core.Deprecated('Use stdSignatureDescriptor instead')
 const StdSignature$json = const {
   '1': 'StdSignature',
   '2': const [
@@ -27,10 +34,14 @@ const StdSignature$json = const {
   '3': const [StdSignature_PubKey$json],
 };
 
+@$core.Deprecated('Use stdSignatureDescriptor instead')
 const StdSignature_PubKey$json = const {
   '1': 'PubKey',
 };
 
+/// Descriptor for `StdSignature`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List stdSignatureDescriptor = $convert.base64Decode('CgxTdGRTaWduYXR1cmUSFwoHcHViX2tleRgBIAEoDFIGcHViS2V5EhwKCXNpZ25hdHVyZRgCIAEoDFIJc2lnbmF0dXJlEiUKDmFjY291bnRfbnVtYmVyGAMgASgDUg1hY2NvdW50TnVtYmVyEhoKCHNlcXVlbmNlGAQgASgDUghzZXF1ZW5jZRoICgZQdWJLZXk=');
+@$core.Deprecated('Use newOrderDescriptor instead')
 const NewOrder$json = const {
   '1': 'NewOrder',
   '2': const [
@@ -45,6 +56,9 @@ const NewOrder$json = const {
   ],
 };
 
+/// Descriptor for `NewOrder`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List newOrderDescriptor = $convert.base64Decode('CghOZXdPcmRlchIWCgZzZW5kZXIYASABKAxSBnNlbmRlchIOCgJpZBgCIAEoCVICaWQSFgoGc3ltYm9sGAMgASgJUgZzeW1ib2wSHAoJb3JkZXJ0eXBlGAQgASgDUglvcmRlcnR5cGUSEgoEc2lkZRgFIAEoA1IEc2lkZRIUCgVwcmljZRgGIAEoA1IFcHJpY2USGgoIcXVhbnRpdHkYByABKANSCHF1YW50aXR5EiAKC3RpbWVpbmZvcmNlGAggASgDUgt0aW1laW5mb3JjZQ==');
+@$core.Deprecated('Use cancelOrderDescriptor instead')
 const CancelOrder$json = const {
   '1': 'CancelOrder',
   '2': const [
@@ -54,6 +68,9 @@ const CancelOrder$json = const {
   ],
 };
 
+/// Descriptor for `CancelOrder`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List cancelOrderDescriptor = $convert.base64Decode('CgtDYW5jZWxPcmRlchIWCgZzZW5kZXIYASABKAxSBnNlbmRlchIWCgZzeW1ib2wYAiABKAlSBnN5bWJvbBIUCgVyZWZpZBgDIAEoCVIFcmVmaWQ=');
+@$core.Deprecated('Use tokenFreezeDescriptor instead')
 const TokenFreeze$json = const {
   '1': 'TokenFreeze',
   '2': const [
@@ -63,6 +80,9 @@ const TokenFreeze$json = const {
   ],
 };
 
+/// Descriptor for `TokenFreeze`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List tokenFreezeDescriptor = $convert.base64Decode('CgtUb2tlbkZyZWV6ZRISCgRmcm9tGAEgASgMUgRmcm9tEhYKBnN5bWJvbBgCIAEoCVIGc3ltYm9sEhYKBmFtb3VudBgDIAEoA1IGYW1vdW50');
+@$core.Deprecated('Use tokenUnfreezeDescriptor instead')
 const TokenUnfreeze$json = const {
   '1': 'TokenUnfreeze',
   '2': const [
@@ -72,6 +92,9 @@ const TokenUnfreeze$json = const {
   ],
 };
 
+/// Descriptor for `TokenUnfreeze`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List tokenUnfreezeDescriptor = $convert.base64Decode('Cg1Ub2tlblVuZnJlZXplEhIKBGZyb20YASABKAxSBGZyb20SFgoGc3ltYm9sGAIgASgJUgZzeW1ib2wSFgoGYW1vdW50GAMgASgDUgZhbW91bnQ=');
+@$core.Deprecated('Use sendDescriptor instead')
 const Send$json = const {
   '1': 'Send',
   '2': const [
@@ -81,6 +104,7 @@ const Send$json = const {
   '3': const [Send_Token$json, Send_Input$json, Send_Output$json],
 };
 
+@$core.Deprecated('Use sendDescriptor instead')
 const Send_Token$json = const {
   '1': 'Token',
   '2': const [
@@ -89,6 +113,7 @@ const Send_Token$json = const {
   ],
 };
 
+@$core.Deprecated('Use sendDescriptor instead')
 const Send_Input$json = const {
   '1': 'Input',
   '2': const [
@@ -97,6 +122,7 @@ const Send_Input$json = const {
   ],
 };
 
+@$core.Deprecated('Use sendDescriptor instead')
 const Send_Output$json = const {
   '1': 'Output',
   '2': const [
@@ -105,6 +131,9 @@ const Send_Output$json = const {
   ],
 };
 
+/// Descriptor for `Send`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List sendDescriptor = $convert.base64Decode('CgRTZW5kEi8KBmlucHV0cxgBIAMoCzIXLnRyYW5zYWN0aW9uLlNlbmQuSW5wdXRSBmlucHV0cxIyCgdvdXRwdXRzGAIgAygLMhgudHJhbnNhY3Rpb24uU2VuZC5PdXRwdXRSB291dHB1dHMaNQoFVG9rZW4SFAoFZGVub20YASABKAlSBWRlbm9tEhYKBmFtb3VudBgCIAEoA1IGYW1vdW50GlAKBUlucHV0EhgKB2FkZHJlc3MYASABKAxSB2FkZHJlc3MSLQoFY29pbnMYAiADKAsyFy50cmFuc2FjdGlvbi5TZW5kLlRva2VuUgVjb2lucxpRCgZPdXRwdXQSGAoHYWRkcmVzcxgBIAEoDFIHYWRkcmVzcxItCgVjb2lucxgCIAMoCzIXLnRyYW5zYWN0aW9uLlNlbmQuVG9rZW5SBWNvaW5z');
+@$core.Deprecated('Use voteDescriptor instead')
 const Vote$json = const {
   '1': 'Vote',
   '2': const [
@@ -114,6 +143,9 @@ const Vote$json = const {
   ],
 };
 
+/// Descriptor for `Vote`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List voteDescriptor = $convert.base64Decode('CgRWb3RlEh8KC3Byb3Bvc2FsX2lkGAEgASgDUgpwcm9wb3NhbElkEhQKBXZvdGVyGAIgASgMUgV2b3RlchIWCgZvcHRpb24YAyABKANSBm9wdGlvbg==');
+@$core.Deprecated('Use tokenDescriptor instead')
 const Token$json = const {
   '1': 'Token',
   '2': const [
@@ -122,6 +154,9 @@ const Token$json = const {
   ],
 };
 
+/// Descriptor for `Token`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List tokenDescriptor = $convert.base64Decode('CgVUb2tlbhIUCgVkZW5vbRgBIAEoCVIFZGVub20SFgoGYW1vdW50GAIgASgDUgZhbW91bnQ=');
+@$core.Deprecated('Use appAccountDescriptor instead')
 const AppAccount$json = const {
   '1': 'AppAccount',
   '2': const [
@@ -133,6 +168,7 @@ const AppAccount$json = const {
   '3': const [AppAccount_baseAccount$json],
 };
 
+@$core.Deprecated('Use appAccountDescriptor instead')
 const AppAccount_baseAccount$json = const {
   '1': 'baseAccount',
   '2': const [
@@ -144,6 +180,9 @@ const AppAccount_baseAccount$json = const {
   ],
 };
 
+/// Descriptor for `AppAccount`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List appAccountDescriptor = $convert.base64Decode('CgpBcHBBY2NvdW50EjcKBGJhc2UYASABKAsyIy50cmFuc2FjdGlvbi5BcHBBY2NvdW50LmJhc2VBY2NvdW50UgRiYXNlEhIKBG5hbWUYAiABKAlSBG5hbWUSKgoGZnJvemVuGAMgAygLMhIudHJhbnNhY3Rpb24uVG9rZW5SBmZyb3plbhIqCgZsb2NrZWQYBCADKAsyEi50cmFuc2FjdGlvbi5Ub2tlblIGbG9ja2VkGrMBCgtiYXNlQWNjb3VudBIYCgdhZGRyZXNzGAEgASgMUgdhZGRyZXNzEigKBWNvaW5zGAIgAygLMhIudHJhbnNhY3Rpb24uVG9rZW5SBWNvaW5zEh0KCnB1YmxpY19rZXkYAyABKAxSCXB1YmxpY0tleRIlCg5hY2NvdW50X251bWJlchgEIAEoA1INYWNjb3VudE51bWJlchIaCghzZXF1ZW5jZRgFIAEoA1IIc2VxdWVuY2U=');
+@$core.Deprecated('Use atomicSwapInfoDescriptor instead')
 const AtomicSwapInfo$json = const {
   '1': 'AtomicSwapInfo',
   '2': const [
@@ -164,6 +203,9 @@ const AtomicSwapInfo$json = const {
   ],
 };
 
+/// Descriptor for `AtomicSwapInfo`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List atomicSwapInfoDescriptor = $convert.base64Decode('Cg5BdG9taWNTd2FwSW5mbxISCgRmcm9tGAEgASgMUgRmcm9tEg4KAnRvGAIgASgMUgJ0bxIxCgpvdXRfYW1vdW50GAMgAygLMhIudHJhbnNhY3Rpb24uVG9rZW5SCW91dEFtb3VudBIvCglpbl9hbW91bnQYBCADKAsyEi50cmFuc2FjdGlvbi5Ub2tlblIIaW5BbW91bnQSJwoPZXhwZWN0ZWRfaW5jb21lGAUgASgJUg5leHBlY3RlZEluY29tZRIyChVyZWNpcGllbnRfb3RoZXJfY2hhaW4YBiABKAxSE3JlY2lwaWVudE90aGVyQ2hhaW4SLAoScmFuZG9tX251bWJlcl9oYXNoGAcgASgMUhByYW5kb21OdW1iZXJIYXNoEiMKDXJhbmRvbV9udW1iZXIYCCABKAxSDHJhbmRvbU51bWJlchIcCgl0aW1lc3RhbXAYCSABKANSCXRpbWVzdGFtcBIfCgtjcm9zc19jaGFpbhgKIAEoCFIKY3Jvc3NDaGFpbhIjCg1leHBpcmVfaGVpZ2h0GAsgASgDUgxleHBpcmVIZWlnaHQSFAoFaW5kZXgYDCABKANSBWluZGV4Eh8KC2Nsb3NlZF90aW1lGA0gASgDUgpjbG9zZWRUaW1lEhYKBnN0YXR1cxgOIAEoBVIGc3RhdHVz');
+@$core.Deprecated('Use tokenInfoDescriptor instead')
 const TokenInfo$json = const {
   '1': 'TokenInfo',
   '2': const [
@@ -176,6 +218,9 @@ const TokenInfo$json = const {
   ],
 };
 
+/// Descriptor for `TokenInfo`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List tokenInfoDescriptor = $convert.base64Decode('CglUb2tlbkluZm8SEgoEbmFtZRgBIAEoCVIEbmFtZRIWCgZzeW1ib2wYAiABKAlSBnN5bWJvbBInCg9vcmlnaW5hbF9zeW1ib2wYAyABKAlSDm9yaWdpbmFsU3ltYm9sEiEKDHRvdGFsX3N1cHBseRgEIAEoA1ILdG90YWxTdXBwbHkSFAoFb3duZXIYBSABKAxSBW93bmVyEhoKCG1pbnRhYmxlGAYgASgIUghtaW50YWJsZQ==');
+@$core.Deprecated('Use miniTokenInfoDescriptor instead')
 const MiniTokenInfo$json = const {
   '1': 'MiniTokenInfo',
   '2': const [
@@ -190,6 +235,9 @@ const MiniTokenInfo$json = const {
   ],
 };
 
+/// Descriptor for `MiniTokenInfo`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List miniTokenInfoDescriptor = $convert.base64Decode('Cg1NaW5pVG9rZW5JbmZvEhIKBG5hbWUYASABKAlSBG5hbWUSFgoGc3ltYm9sGAIgASgJUgZzeW1ib2wSJwoPb3JpZ2luYWxfc3ltYm9sGAMgASgJUg5vcmlnaW5hbFN5bWJvbBIhCgx0b3RhbF9zdXBwbHkYBCABKANSC3RvdGFsU3VwcGx5EhQKBW93bmVyGAUgASgMUgVvd25lchIaCghtaW50YWJsZRgGIAEoCFIIbWludGFibGUSHQoKdG9rZW5fdHlwZRgHIAEoBVIJdG9rZW5UeXBlEhsKCXRva2VuX3VyaRgIIAEoCVIIdG9rZW5Vcmk=');
+@$core.Deprecated('Use dexFeeParamDescriptor instead')
 const DexFeeParam$json = const {
   '1': 'DexFeeParam',
   '2': const [
@@ -198,6 +246,7 @@ const DexFeeParam$json = const {
   '3': const [DexFeeParam_DexFeeField$json],
 };
 
+@$core.Deprecated('Use dexFeeParamDescriptor instead')
 const DexFeeParam_DexFeeField$json = const {
   '1': 'DexFeeField',
   '2': const [
@@ -206,6 +255,9 @@ const DexFeeParam_DexFeeField$json = const {
   ],
 };
 
+/// Descriptor for `DexFeeParam`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List dexFeeParamDescriptor = $convert.base64Decode('CgtEZXhGZWVQYXJhbRJKCg5kZXhfZmVlX2ZpZWxkcxgBIAMoCzIkLnRyYW5zYWN0aW9uLkRleEZlZVBhcmFtLkRleEZlZUZpZWxkUgxkZXhGZWVGaWVsZHMaRQoLRGV4RmVlRmllbGQSGQoIZmVlX25hbWUYASABKAlSB2ZlZU5hbWUSGwoJZmVlX3ZhbHVlGAIgASgDUghmZWVWYWx1ZQ==');
+@$core.Deprecated('Use fixedFeeParamsDescriptor instead')
 const FixedFeeParams$json = const {
   '1': 'FixedFeeParams',
   '2': const [
@@ -215,6 +267,9 @@ const FixedFeeParams$json = const {
   ],
 };
 
+/// Descriptor for `FixedFeeParams`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List fixedFeeParamsDescriptor = $convert.base64Decode('Cg5GaXhlZEZlZVBhcmFtcxIZCghtc2dfdHlwZRgBIAEoCVIHbXNnVHlwZRIQCgNmZWUYAiABKANSA2ZlZRIXCgdmZWVfZm9yGAMgASgFUgZmZWVGb3I=');
+@$core.Deprecated('Use transferFeeParamDescriptor instead')
 const TransferFeeParam$json = const {
   '1': 'TransferFeeParam',
   '2': const [
@@ -224,6 +279,9 @@ const TransferFeeParam$json = const {
   ],
 };
 
+/// Descriptor for `TransferFeeParam`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List transferFeeParamDescriptor = $convert.base64Decode('ChBUcmFuc2ZlckZlZVBhcmFtEkUKEGZpeGVkX2ZlZV9wYXJhbXMYASABKAsyGy50cmFuc2FjdGlvbi5GaXhlZEZlZVBhcmFtc1IOZml4ZWRGZWVQYXJhbXMSLAoSbXVsdGlfdHJhbnNmZXJfZmVlGAIgASgDUhBtdWx0aVRyYW5zZmVyRmVlEi8KFGxvd2VyX2xpbWl0X2FzX211bHRpGAMgASgDUhFsb3dlckxpbWl0QXNNdWx0aQ==');
+@$core.Deprecated('Use resultBroadcastTxDescriptor instead')
 const ResultBroadcastTx$json = const {
   '1': 'ResultBroadcastTx',
   '2': const [
@@ -234,6 +292,9 @@ const ResultBroadcastTx$json = const {
   ],
 };
 
+/// Descriptor for `ResultBroadcastTx`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List resultBroadcastTxDescriptor = $convert.base64Decode('ChFSZXN1bHRCcm9hZGNhc3RUeBISCgRjb2RlGAEgASgFUgRjb2RlEhIKBGRhdGEYAiABKAxSBGRhdGESEAoDbG9nGAMgASgJUgNsb2cSEgoEaGFzaBgEIAEoDFIEaGFzaA==');
+@$core.Deprecated('Use resultBroadcastTxCommitDescriptor instead')
 const ResultBroadcastTxCommit$json = const {
   '1': 'ResultBroadcastTxCommit',
   '2': const [
@@ -244,6 +305,9 @@ const ResultBroadcastTxCommit$json = const {
   ],
 };
 
+/// Descriptor for `ResultBroadcastTxCommit`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List resultBroadcastTxCommitDescriptor = $convert.base64Decode('ChdSZXN1bHRCcm9hZGNhc3RUeENvbW1pdBIxCghjaGVja190eBgBIAEoCzIWLnR5cGVzLlJlc3BvbnNlQ2hlY2tUeFIHY2hlY2tUeBI3CgpkZWxpdmVyX3R4GAIgASgLMhgudHlwZXMuUmVzcG9uc2VEZWxpdmVyVHhSCWRlbGl2ZXJUeBISCgRoYXNoGAMgASgMUgRoYXNoEhYKBmhlaWdodBgEIAEoA1IGaGVpZ2h0');
+@$core.Deprecated('Use issueDescriptor instead')
 const Issue$json = const {
   '1': 'Issue',
   '2': const [
@@ -255,6 +319,9 @@ const Issue$json = const {
   ],
 };
 
+/// Descriptor for `Issue`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List issueDescriptor = $convert.base64Decode('CgVJc3N1ZRISCgRmcm9tGAEgASgMUgRmcm9tEhIKBG5hbWUYAiABKAlSBG5hbWUSFgoGc3ltYm9sGAMgASgJUgZzeW1ib2wSIQoMdG90YWxfc3VwcGx5GAQgASgDUgt0b3RhbFN1cHBseRIaCghtaW50YWJsZRgFIAEoCFIIbWludGFibGU=');
+@$core.Deprecated('Use burnDescriptor instead')
 const Burn$json = const {
   '1': 'Burn',
   '2': const [
@@ -264,6 +331,9 @@ const Burn$json = const {
   ],
 };
 
+/// Descriptor for `Burn`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List burnDescriptor = $convert.base64Decode('CgRCdXJuEhIKBGZyb20YASABKAxSBGZyb20SFgoGc3ltYm9sGAIgASgJUgZzeW1ib2wSFgoGYW1vdW50GAMgASgDUgZhbW91bnQ=');
+@$core.Deprecated('Use mintDescriptor instead')
 const Mint$json = const {
   '1': 'Mint',
   '2': const [
@@ -273,6 +343,9 @@ const Mint$json = const {
   ],
 };
 
+/// Descriptor for `Mint`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List mintDescriptor = $convert.base64Decode('CgRNaW50EhIKBGZyb20YASABKAxSBGZyb20SFgoGc3ltYm9sGAIgASgJUgZzeW1ib2wSFgoGYW1vdW50GAMgASgDUgZhbW91bnQ=');
+@$core.Deprecated('Use submitProposalDescriptor instead')
 const SubmitProposal$json = const {
   '1': 'SubmitProposal',
   '2': const [
@@ -285,6 +358,9 @@ const SubmitProposal$json = const {
   ],
 };
 
+/// Descriptor for `SubmitProposal`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List submitProposalDescriptor = $convert.base64Decode('Cg5TdWJtaXRQcm9wb3NhbBIUCgV0aXRsZRgBIAEoCVIFdGl0bGUSIAoLZGVzY3JpcHRpb24YAiABKAlSC2Rlc2NyaXB0aW9uEiMKDXByb3Bvc2FsX3R5cGUYAyABKANSDHByb3Bvc2FsVHlwZRIaCghwcm9wb3NlchgEIAEoDFIIcHJvcG9zZXISOwoPaW5pdGlhbF9kZXBvc2l0GAUgAygLMhIudHJhbnNhY3Rpb24uVG9rZW5SDmluaXRpYWxEZXBvc2l0EiMKDXZvdGluZ19wZXJpb2QYBiABKANSDHZvdGluZ1BlcmlvZA==');
+@$core.Deprecated('Use depositDescriptor instead')
 const Deposit$json = const {
   '1': 'Deposit',
   '2': const [
@@ -294,6 +370,9 @@ const Deposit$json = const {
   ],
 };
 
+/// Descriptor for `Deposit`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List depositDescriptor = $convert.base64Decode('CgdEZXBvc2l0Eh8KC3Byb3Bvc2FsX2lkGAEgASgDUgpwcm9wb3NhbElkEhwKCWRlcG9zaXRlchgCIAEoDFIJZGVwb3NpdGVyEioKBmFtb3VudBgDIAMoCzISLnRyYW5zYWN0aW9uLlRva2VuUgZhbW91bnQ=');
+@$core.Deprecated('Use descriptionDescriptor instead')
 const Description$json = const {
   '1': 'Description',
   '2': const [
@@ -304,6 +383,9 @@ const Description$json = const {
   ],
 };
 
+/// Descriptor for `Description`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List descriptionDescriptor = $convert.base64Decode('CgtEZXNjcmlwdGlvbhIYCgdtb25pa2VyGAEgASgJUgdtb25pa2VyEhoKCGlkZW50aXR5GAIgASgJUghpZGVudGl0eRIYCgd3ZWJzaXRlGAMgASgJUgd3ZWJzaXRlEhgKB2RldGFpbHMYBCABKAlSB2RldGFpbHM=');
+@$core.Deprecated('Use commissionDescriptor instead')
 const Commission$json = const {
   '1': 'Commission',
   '2': const [
@@ -313,6 +395,9 @@ const Commission$json = const {
   ],
 };
 
+/// Descriptor for `Commission`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List commissionDescriptor = $convert.base64Decode('CgpDb21taXNzaW9uEhIKBHJhdGUYASABKANSBHJhdGUSGQoIbWF4X3JhdGUYAiABKANSB21heFJhdGUSJgoPbWF4X2NoYW5nZV9yYXRlGAMgASgDUg1tYXhDaGFuZ2VSYXRl');
+@$core.Deprecated('Use createValidatorDescriptor instead')
 const CreateValidator$json = const {
   '1': 'CreateValidator',
   '2': const [
@@ -325,6 +410,9 @@ const CreateValidator$json = const {
   ],
 };
 
+/// Descriptor for `CreateValidator`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List createValidatorDescriptor = $convert.base64Decode('Cg9DcmVhdGVWYWxpZGF0b3ISOgoLZGVzY3JpcHRpb24YASABKAsyGC50cmFuc2FjdGlvbi5EZXNjcmlwdGlvblILZGVzY3JpcHRpb24SNwoKY29tbWlzc2lvbhgCIAEoCzIXLnRyYW5zYWN0aW9uLkNvbW1pc3Npb25SCmNvbW1pc3Npb24SKwoRZGVsZWdhdG9yX2FkZHJlc3MYAyABKAxSEGRlbGVnYXRvckFkZHJlc3MSKwoRdmFsaWRhdG9yX2FkZHJlc3MYBCABKAxSEHZhbGlkYXRvckFkZHJlc3MSFgoGcHVia2V5GAUgASgMUgZwdWJrZXkSMgoKZGVsZWdhdGlvbhgGIAEoCzISLnRyYW5zYWN0aW9uLlRva2VuUgpkZWxlZ2F0aW9u');
+@$core.Deprecated('Use realCreateValidatorDescriptor instead')
 const RealCreateValidator$json = const {
   '1': 'RealCreateValidator',
   '2': const [
@@ -333,6 +421,9 @@ const RealCreateValidator$json = const {
   ],
 };
 
+/// Descriptor for `RealCreateValidator`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List realCreateValidatorDescriptor = $convert.base64Decode('ChNSZWFsQ3JlYXRlVmFsaWRhdG9yEkYKD2NyZWF0ZVZhbGlkYXRvchgBIAEoCzIcLnRyYW5zYWN0aW9uLkNyZWF0ZVZhbGlkYXRvclIPY3JlYXRlVmFsaWRhdG9yEh8KC3Byb3Bvc2FsX2lkGAIgASgDUgpwcm9wb3NhbElk');
+@$core.Deprecated('Use removeValidatorDescriptor instead')
 const RemoveValidator$json = const {
   '1': 'RemoveValidator',
   '2': const [
@@ -343,6 +434,9 @@ const RemoveValidator$json = const {
   ],
 };
 
+/// Descriptor for `RemoveValidator`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List removeValidatorDescriptor = $convert.base64Decode('Cg9SZW1vdmVWYWxpZGF0b3ISIwoNbGF1bmNoZXJfYWRkchgBIAEoDFIMbGF1bmNoZXJBZGRyEhkKCHZhbF9hZGRyGAIgASgMUgd2YWxBZGRyEiIKDXZhbF9jb25zX2FkZHIYAyABKAxSC3ZhbENvbnNBZGRyEh8KC3Byb3Bvc2FsX2lkGAQgASgDUgpwcm9wb3NhbElk');
+@$core.Deprecated('Use list_Descriptor instead')
 const List_$json = const {
   '1': 'List',
   '2': const [
@@ -354,6 +448,9 @@ const List_$json = const {
   ],
 };
 
+/// Descriptor for `List`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List list_Descriptor = $convert.base64Decode('CgRMaXN0EhIKBGZyb20YASABKAxSBGZyb20SHwoLcHJvcG9zYWxfaWQYAiABKANSCnByb3Bvc2FsSWQSKgoRYmFzZV9hc3NldF9zeW1ib2wYAyABKAlSD2Jhc2VBc3NldFN5bWJvbBIsChJxdW90ZV9hc3NldF9zeW1ib2wYBCABKAlSEHF1b3RlQXNzZXRTeW1ib2wSHQoKaW5pdF9wcmljZRgFIAEoA1IJaW5pdFByaWNl');
+@$core.Deprecated('Use timeLockDescriptor instead')
 const TimeLock$json = const {
   '1': 'TimeLock',
   '2': const [
@@ -365,6 +462,7 @@ const TimeLock$json = const {
   '3': const [TimeLock_Token$json],
 };
 
+@$core.Deprecated('Use timeLockDescriptor instead')
 const TimeLock_Token$json = const {
   '1': 'Token',
   '2': const [
@@ -373,6 +471,9 @@ const TimeLock_Token$json = const {
   ],
 };
 
+/// Descriptor for `TimeLock`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List timeLockDescriptor = $convert.base64Decode('CghUaW1lTG9jaxISCgRmcm9tGAEgASgMUgRmcm9tEiAKC2Rlc2NyaXB0aW9uGAIgASgJUgtkZXNjcmlwdGlvbhIzCgZhbW91bnQYAyADKAsyGy50cmFuc2FjdGlvbi5UaW1lTG9jay5Ub2tlblIGYW1vdW50EhsKCWxvY2tfdGltZRgEIAEoA1IIbG9ja1RpbWUaNQoFVG9rZW4SFAoFZGVub20YASABKAlSBWRlbm9tEhYKBmFtb3VudBgCIAEoA1IGYW1vdW50');
+@$core.Deprecated('Use timeUnlockDescriptor instead')
 const TimeUnlock$json = const {
   '1': 'TimeUnlock',
   '2': const [
@@ -381,6 +482,9 @@ const TimeUnlock$json = const {
   ],
 };
 
+/// Descriptor for `TimeUnlock`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List timeUnlockDescriptor = $convert.base64Decode('CgpUaW1lVW5sb2NrEhIKBGZyb20YASABKAxSBGZyb20SIAoMdGltZV9sb2NrX2lkGAIgASgDUgp0aW1lTG9ja0lk');
+@$core.Deprecated('Use timeRelockDescriptor instead')
 const TimeRelock$json = const {
   '1': 'TimeRelock',
   '2': const [
@@ -393,6 +497,7 @@ const TimeRelock$json = const {
   '3': const [TimeRelock_Token$json],
 };
 
+@$core.Deprecated('Use timeRelockDescriptor instead')
 const TimeRelock_Token$json = const {
   '1': 'Token',
   '2': const [
@@ -401,6 +506,9 @@ const TimeRelock_Token$json = const {
   ],
 };
 
+/// Descriptor for `TimeRelock`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List timeRelockDescriptor = $convert.base64Decode('CgpUaW1lUmVsb2NrEhIKBGZyb20YASABKAxSBGZyb20SIAoMdGltZV9sb2NrX2lkGAIgASgDUgp0aW1lTG9ja0lkEiAKC2Rlc2NyaXB0aW9uGAMgASgJUgtkZXNjcmlwdGlvbhI1CgZhbW91bnQYBCADKAsyHS50cmFuc2FjdGlvbi5UaW1lUmVsb2NrLlRva2VuUgZhbW91bnQSGwoJbG9ja190aW1lGAUgASgDUghsb2NrVGltZRo1CgVUb2tlbhIUCgVkZW5vbRgBIAEoCVIFZGVub20SFgoGYW1vdW50GAIgASgDUgZhbW91bnQ=');
+@$core.Deprecated('Use setAccountFlagDescriptor instead')
 const SetAccountFlag$json = const {
   '1': 'SetAccountFlag',
   '2': const [
@@ -409,6 +517,9 @@ const SetAccountFlag$json = const {
   ],
 };
 
+/// Descriptor for `SetAccountFlag`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List setAccountFlagDescriptor = $convert.base64Decode('Cg5TZXRBY2NvdW50RmxhZxISCgRmcm9tGAEgASgMUgRmcm9tEhQKBWZsYWdzGAIgASgDUgVmbGFncw==');
+@$core.Deprecated('Use hashTimerLockTransferMsgDescriptor instead')
 const HashTimerLockTransferMsg$json = const {
   '1': 'HashTimerLockTransferMsg',
   '2': const [
@@ -425,6 +536,9 @@ const HashTimerLockTransferMsg$json = const {
   ],
 };
 
+/// Descriptor for `HashTimerLockTransferMsg`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List hashTimerLockTransferMsgDescriptor = $convert.base64Decode('ChhIYXNoVGltZXJMb2NrVHJhbnNmZXJNc2cSEgoEZnJvbRgBIAEoDFIEZnJvbRIOCgJ0bxgCIAEoDFICdG8SMgoVcmVjaXBpZW50X290aGVyX2NoYWluGAMgASgJUhNyZWNpcGllbnRPdGhlckNoYWluEiwKEnNlbmRlcl9vdGhlcl9jaGFpbhgEIAEoCVIQc2VuZGVyT3RoZXJDaGFpbhIsChJyYW5kb21fbnVtYmVyX2hhc2gYBSABKAxSEHJhbmRvbU51bWJlckhhc2gSHAoJdGltZXN0YW1wGAYgASgDUgl0aW1lc3RhbXASKgoGYW1vdW50GAcgAygLMhIudHJhbnNhY3Rpb24uVG9rZW5SBmFtb3VudBInCg9leHBlY3RlZF9pbmNvbWUYCCABKAlSDmV4cGVjdGVkSW5jb21lEh8KC2hlaWdodF9zcGFuGAkgASgDUgpoZWlnaHRTcGFuEh8KC2Nyb3NzX2NoYWluGAogASgIUgpjcm9zc0NoYWlu');
+@$core.Deprecated('Use depositHashTimerLockMsgDescriptor instead')
 const DepositHashTimerLockMsg$json = const {
   '1': 'DepositHashTimerLockMsg',
   '2': const [
@@ -434,6 +548,9 @@ const DepositHashTimerLockMsg$json = const {
   ],
 };
 
+/// Descriptor for `DepositHashTimerLockMsg`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List depositHashTimerLockMsgDescriptor = $convert.base64Decode('ChdEZXBvc2l0SGFzaFRpbWVyTG9ja01zZxISCgRmcm9tGAEgASgMUgRmcm9tEioKBmFtb3VudBgCIAMoCzISLnRyYW5zYWN0aW9uLlRva2VuUgZhbW91bnQSFwoHc3dhcF9pZBgDIAEoDFIGc3dhcElk');
+@$core.Deprecated('Use claimHashTimerLockMsgDescriptor instead')
 const ClaimHashTimerLockMsg$json = const {
   '1': 'ClaimHashTimerLockMsg',
   '2': const [
@@ -443,6 +560,9 @@ const ClaimHashTimerLockMsg$json = const {
   ],
 };
 
+/// Descriptor for `ClaimHashTimerLockMsg`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List claimHashTimerLockMsgDescriptor = $convert.base64Decode('ChVDbGFpbUhhc2hUaW1lckxvY2tNc2cSEgoEZnJvbRgBIAEoDFIEZnJvbRIXCgdzd2FwX2lkGAIgASgMUgZzd2FwSWQSIwoNcmFuZG9tX251bWJlchgDIAEoDFIMcmFuZG9tTnVtYmVy');
+@$core.Deprecated('Use refundHashTimerLockMsgDescriptor instead')
 const RefundHashTimerLockMsg$json = const {
   '1': 'RefundHashTimerLockMsg',
   '2': const [
@@ -451,6 +571,9 @@ const RefundHashTimerLockMsg$json = const {
   ],
 };
 
+/// Descriptor for `RefundHashTimerLockMsg`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List refundHashTimerLockMsgDescriptor = $convert.base64Decode('ChZSZWZ1bmRIYXNoVGltZXJMb2NrTXNnEhIKBGZyb20YASABKAxSBGZyb20SFwoHc3dhcF9pZBgCIAEoDFIGc3dhcElk');
+@$core.Deprecated('Use tinyTokenIssueDescriptor instead')
 const TinyTokenIssue$json = const {
   '1': 'TinyTokenIssue',
   '2': const [
@@ -463,6 +586,9 @@ const TinyTokenIssue$json = const {
   ],
 };
 
+/// Descriptor for `TinyTokenIssue`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List tinyTokenIssueDescriptor = $convert.base64Decode('Cg5UaW55VG9rZW5Jc3N1ZRISCgRmcm9tGAEgASgMUgRmcm9tEhIKBG5hbWUYAiABKAlSBG5hbWUSFgoGc3ltYm9sGAMgASgJUgZzeW1ib2wSIQoMdG90YWxfc3VwcGx5GAQgASgDUgt0b3RhbFN1cHBseRIaCghtaW50YWJsZRgFIAEoCFIIbWludGFibGUSGwoJdG9rZW5fdXJpGAYgASgJUgh0b2tlblVyaQ==');
+@$core.Deprecated('Use miniTokenIssueDescriptor instead')
 const MiniTokenIssue$json = const {
   '1': 'MiniTokenIssue',
   '2': const [
@@ -475,6 +601,9 @@ const MiniTokenIssue$json = const {
   ],
 };
 
+/// Descriptor for `MiniTokenIssue`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List miniTokenIssueDescriptor = $convert.base64Decode('Cg5NaW5pVG9rZW5Jc3N1ZRISCgRmcm9tGAEgASgMUgRmcm9tEhIKBG5hbWUYAiABKAlSBG5hbWUSFgoGc3ltYm9sGAMgASgJUgZzeW1ib2wSIQoMdG90YWxfc3VwcGx5GAQgASgDUgt0b3RhbFN1cHBseRIaCghtaW50YWJsZRgFIAEoCFIIbWludGFibGUSGwoJdG9rZW5fdXJpGAYgASgJUgh0b2tlblVyaQ==');
+@$core.Deprecated('Use miniTokenSetURIDescriptor instead')
 const MiniTokenSetURI$json = const {
   '1': 'MiniTokenSetURI',
   '2': const [
@@ -484,6 +613,9 @@ const MiniTokenSetURI$json = const {
   ],
 };
 
+/// Descriptor for `MiniTokenSetURI`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List miniTokenSetURIDescriptor = $convert.base64Decode('Cg9NaW5pVG9rZW5TZXRVUkkSEgoEZnJvbRgBIAEoDFIEZnJvbRIWCgZzeW1ib2wYAiABKAlSBnN5bWJvbBIbCgl0b2tlbl91cmkYAyABKAlSCHRva2VuVXJp');
+@$core.Deprecated('Use miniTokenListDescriptor instead')
 const MiniTokenList$json = const {
   '1': 'MiniTokenList',
   '2': const [
@@ -494,3 +626,5 @@ const MiniTokenList$json = const {
   ],
 };
 
+/// Descriptor for `MiniTokenList`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List miniTokenListDescriptor = $convert.base64Decode('Cg1NaW5pVG9rZW5MaXN0EhIKBGZyb20YASABKAxSBGZyb20SKgoRYmFzZV9hc3NldF9zeW1ib2wYAiABKAlSD2Jhc2VBc3NldFN5bWJvbBIsChJxdW90ZV9hc3NldF9zeW1ib2wYAyABKAlSEHF1b3RlQXNzZXRTeW1ib2wSHQoKaW5pdF9wcmljZRgEIAEoA1IJaW5pdFByaWNl');

@@ -2,13 +2,13 @@ import 'package:bs58check/bs58check.dart' as bs58check;
 import 'dart:typed_data';
 
 class WIF {
-  int version;
-  Uint8List privateKey;
-  bool compressed;
+  int? version;
+  Uint8List? privateKey;
+  bool? compressed;
   WIF({this.version, this.privateKey, this.compressed});
 }
 
-WIF decodeRaw(Uint8List buffer, [int version]) {
+WIF decodeRaw(Uint8List buffer, [int? version]) {
   if (version != null && buffer[0] != version) {
     throw ArgumentError('Invalid network version');
   }
@@ -38,10 +38,10 @@ Uint8List encodeRaw(int version, Uint8List privateKey, bool compressed) {
   return result;
 }
 
-WIF decode(String string, [int version]) {
+WIF decode(String string, [int? version]) {
   return decodeRaw(bs58check.decode(string), version);
 }
 
 String encode(WIF wif) {
-  return bs58check.encode(encodeRaw(wif.version, wif.privateKey, wif.compressed));
+  return bs58check.encode(encodeRaw(wif.version!, wif.privateKey!, wif.compressed!));
 }

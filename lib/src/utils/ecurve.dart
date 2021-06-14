@@ -24,7 +24,7 @@ const THROW_BAD_SIGNATURE = 'Expected Signature';
 bool isPrivate(Uint8List x) {
   if (!isScalar(x)) return false;
   return _compare(x, ZERO32) > 0 && // > 0
-      _compare(x, EC_GROUP_ORDER) < 0; // < G
+      _compare(x, EC_GROUP_ORDER as Uint8List) < 0; // < G
 }
 
 bool isPoint(Uint8List p) {
@@ -37,7 +37,7 @@ bool isPoint(Uint8List p) {
   if (_compare(x, ZERO32) == 0) {
     return false;
   }
-  if (_compare(x, EC_P) == 1) {
+  if (_compare(x, EC_P as Uint8List) == 1) {
     return false;
   }
   try {
@@ -52,7 +52,7 @@ bool isPoint(Uint8List p) {
   if (_compare(y, ZERO32) == 0) {
     return false;
   }
-  if (_compare(y, EC_P) == 1) {
+  if (_compare(y, EC_P as Uint8List) == 1) {
     return false;
   }
   if (t == 0x04 && p.length == 65) {
@@ -67,47 +67,48 @@ bool isScalar(Uint8List x) {
 
 bool isOrderScalar(x) {
   if (!isScalar(x)) return false;
-  return _compare(x, EC_GROUP_ORDER) < 0; // < G
+  return _compare(x, EC_GROUP_ORDER as Uint8List) < 0; // < G
 }
 
 bool isSignature(Uint8List value) {
   var r = value.sublist(0, 32);
   var s = value.sublist(32, 64);
-  return value.length == 64 && _compare(r, EC_GROUP_ORDER) < 0 && _compare(s, EC_GROUP_ORDER) < 0;
+
+  return value.length == 64 && _compare(r, EC_GROUP_ORDER as Uint8List) < 0 && _compare(s, EC_GROUP_ORDER as Uint8List) < 0;
 }
 
 bool _isPointCompressed(Uint8List p) {
   return p[0] != 0x04;
 }
 
-bool assumeCompression(bool value, Uint8List pubkey) {
+bool assumeCompression(bool? value, Uint8List? pubkey) {
   if (value == null && pubkey != null) return _isPointCompressed(pubkey);
   if (value == null) return true;
   return value;
 }
 
-Uint8List pointFromScalar(Uint8List d, bool _compressed) {
+Uint8List? pointFromScalar(Uint8List d, bool _compressed) {
   if (!isPrivate(d)) throw ArgumentError(THROW_BAD_PRIVATE);
   var dd = fromBuffer(d);
-  var pp = G * dd;
+  var pp = (G * dd) as ECPoint;
   if (pp.isInfinity) return null;
   return getEncoded(pp, _compressed);
 }
 
-Uint8List pointAddScalar(Uint8List p, Uint8List tweak, bool _compressed) {
+Uint8List? pointAddScalar(Uint8List p, Uint8List tweak, bool _compressed) {
   if (!isPoint(p)) throw ArgumentError(THROW_BAD_POINT);
   if (!isOrderScalar(tweak)) throw ArgumentError(THROW_BAD_TWEAK);
   var compressed = assumeCompression(_compressed, p);
-  var pp = decodeFrom(p);
+  ECPoint? pp = decodeFrom(p);
   if (_compare(tweak, ZERO32) == 0) return getEncoded(pp, compressed);
   var tt = fromBuffer(tweak);
-  var qq = G * tt;
-  var uu = pp + qq;
+  var qq = (G * tt) as ECPoint;
+  var uu = (pp! + qq) as ECPoint;
   if (uu.isInfinity) return null;
   return getEncoded(uu, compressed);
 }
 
-Uint8List privateAdd(Uint8List d, Uint8List tweak) {
+Uint8List? privateAdd(Uint8List d, Uint8List tweak) {
   if (!isPrivate(d)) throw ArgumentError(THROW_BAD_PRIVATE);
   if (!isOrderScalar(tweak)) throw ArgumentError(THROW_BAD_TWEAK);
   var dd = fromBuffer(d);
@@ -128,14 +129,14 @@ Uint8List sign(Uint8List hash, Uint8List x) {
   if (!isPrivate(x)) throw ArgumentError(THROW_BAD_PRIVATE);
   var sig = deterministicGenerateK(hash, x);
   var buffer = Uint8List(64);
-  buffer.setRange(0, 32, encodeBigInt(sig.r));
+  buffer.setRange(0, 32, _encodeBigInt(sig.r));
   var s;
   if (sig.s.compareTo(nDiv2) > 0) {
     s = n - sig.s;
   } else {
     s = sig.s;
   }
-  buffer.setRange(32, 64, encodeBigInt(s));
+  buffer.setRange(32, 64, _encodeBigInt(s));
   return buffer;
 }
 
@@ -145,7 +146,7 @@ bool verify(Uint8List hash, Uint8List q, Uint8List signature) {
   // 1.4.1 Enforce r and s are both integers in the interval [1, n − 1] (1, isSignature enforces '< n - 1')
   if (!isSignature(signature)) throw ArgumentError(THROW_BAD_SIGNATURE);
 
-  var Q = decodeFrom(q);
+  ECPoint? Q = decodeFrom(q);
   var r = fromBuffer(signature.sublist(0, 32));
   var s = fromBuffer(signature.sublist(32, 64));
 
@@ -183,28 +184,64 @@ bool verify(Uint8List hash, Uint8List q, Uint8List signature) {
   */
 }
 
+/// Decode a BigInt from bytes in big-endian encoding.
+BigInt _decodeBigInt(List<int> bytes) {
+  var result = BigInt.from(0);
+  for (var i = 0; i < bytes.length; i++) {
+    result += BigInt.from(bytes[bytes.length - i - 1]) << (8 * i);
+  }
+  return result;
+}
+
+var _byteMask = BigInt.from(0xff);
+
+/// Encode a BigInt into bytes using big-endian encoding.
+Uint8List _encodeBigInt(BigInt number) {
+  int needsPaddingByte;
+  int rawSize;
+
+  if (number > BigInt.zero) {
+    rawSize = (number.bitLength + 7) >> 3;
+    needsPaddingByte = ((number >> (rawSize - 1) * 8) & negativeFlag) == negativeFlag ? 1 : 0;
+
+    if (rawSize < 32) {
+      needsPaddingByte = 1;
+    }
+  } else {
+    needsPaddingByte = 0;
+    rawSize = (number.bitLength + 8) >> 3;
+  }
+
+  final size = rawSize < 32 ? rawSize + needsPaddingByte : rawSize;
+  var result = Uint8List(size);
+  for (var i = 0; i < size; i++) {
+    result[size - i - 1] = (number & _byteMask).toInt();
+    number = number >> 8;
+  }
+  return result;
+}
+
 BigInt fromBuffer(Uint8List d) {
-  return decodeBigInt(d);
+  return _decodeBigInt(d);
 }
 
 Uint8List toBuffer(BigInt d) {
-  return encodeBigInt(d);
+  return _encodeBigInt(d);
 }
 
-ECPoint decodeFrom(Uint8List P) {
+ECPoint? decodeFrom(Uint8List P) {
   return secp256k1.curve.decodePoint(P);
 }
 
-Uint8List getEncoded(ECPoint P, compressed) {
-  return P.getEncoded(compressed);
+Uint8List getEncoded(ECPoint? P, compressed) {
+  return P!.getEncoded(compressed);
 }
 
 ECSignature deterministicGenerateK(Uint8List hash, Uint8List x) {
   final signer = ECDSASigner(null, HMac(SHA256Digest(), 64));
-  var pkp = PrivateKeyParameter(ECPrivateKey(decodeBigInt(x), secp256k1));
+  var pkp = PrivateKeyParameter(ECPrivateKey(_decodeBigInt(x), secp256k1));
   signer.init(true, pkp);
-//  signer.init(false, new PublicKeyParameter(new ECPublicKey(secp256k1.curve.decodePoint(x), secp256k1)));
-  return signer.generateSignature(hash);
+  return signer.generateSignature(hash) as ECSignature;
 }
 
 int _compare(Uint8List a, Uint8List b) {

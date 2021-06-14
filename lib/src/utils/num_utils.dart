@@ -3,13 +3,13 @@ import 'dart:math' as math;
 
 extension DoublePower on double {
   double pow(int power) {
-    return math.pow(this, power);
+    return math.pow(this, power) as double;
   }
 }
 
 extension IntPower on int {
   int pow(int power) {
-    return math.pow(this, power);
+    return math.pow(this, power) as int;
   }
 }
 
@@ -34,11 +34,11 @@ Uint8List encodeBigInt(BigInt number) {
   return result;
 }
 
-Uint8List varint_encode(int number) {
-  var buf = <int>[];
+Uint8List varint_encode(int? number) {
+  var buf = <int?>[];
   var towrite;
   while (true) {
-    towrite = number & 0x7f;
+    towrite = number! & 0x7f;
     number >>= 7;
     if (number != 0) {
       buf.add((towrite | 0x80));
@@ -47,10 +47,10 @@ Uint8List varint_encode(int number) {
       break;
     }
   }
-  return Uint8List.fromList(buf);
+  return Uint8List.fromList(buf as List<int>);
 }
 
-Uint8List convertbits(Uint8List data, int frombits, int tobits, [pad = true]) {
+Uint8List? convertbits(Uint8List data, int frombits, int tobits, [pad = true]) {
   /// General power-of-2 base conversion.
 
   var acc = 0;

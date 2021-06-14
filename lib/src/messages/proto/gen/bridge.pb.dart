@@ -2,7 +2,7 @@
 //  Generated code. Do not modify.
 //  source: bridge.proto
 //
-// @dart = 2.7
+// @dart = 2.12
 // ignore_for_file: annotate_overrides,camel_case_types,unnecessary_const,non_constant_identifier_names,library_prefixes,unused_import,unused_shown_name,return_of_invalid_type,unnecessary_this,prefer_final_fields
 
 import 'dart:core' as $core;
@@ -19,8 +19,8 @@ class TransferOutMsg_Token extends $pb.GeneratedMessage {
 
   TransferOutMsg_Token._() : super();
   factory TransferOutMsg_Token({
-    $core.String denom,
-    $fixnum.Int64 amount,
+    $core.String? denom,
+    $fixnum.Int64? amount,
   }) {
     final _result = create();
     if (denom != null) {
@@ -50,7 +50,7 @@ class TransferOutMsg_Token extends $pb.GeneratedMessage {
   static $pb.PbList<TransferOutMsg_Token> createRepeated() => $pb.PbList<TransferOutMsg_Token>();
   @$core.pragma('dart2js:noInline')
   static TransferOutMsg_Token getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<TransferOutMsg_Token>(create);
-  static TransferOutMsg_Token _defaultInstance;
+  static TransferOutMsg_Token? _defaultInstance;
 
   @$pb.TagNumber(1)
   $core.String get denom => $_getSZ(0);
@@ -82,10 +82,10 @@ class TransferOutMsg extends $pb.GeneratedMessage {
 
   TransferOutMsg._() : super();
   factory TransferOutMsg({
-    $core.List<$core.int> from,
-    $core.List<$core.int> to,
-    TransferOutMsg_Token amount,
-    $fixnum.Int64 expireTime,
+    $core.List<$core.int>? from,
+    $core.List<$core.int>? to,
+    TransferOutMsg_Token? amount,
+    $fixnum.Int64? expireTime,
   }) {
     final _result = create();
     if (from != null) {
@@ -121,7 +121,7 @@ class TransferOutMsg extends $pb.GeneratedMessage {
   static $pb.PbList<TransferOutMsg> createRepeated() => $pb.PbList<TransferOutMsg>();
   @$core.pragma('dart2js:noInline')
   static TransferOutMsg getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<TransferOutMsg>(create);
-  static TransferOutMsg _defaultInstance;
+  static TransferOutMsg? _defaultInstance;
 
   @$pb.TagNumber(1)
   $core.List<$core.int> get from => $_getN(0);

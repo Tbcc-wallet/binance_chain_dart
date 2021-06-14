@@ -2,8 +2,8 @@
 //  Generated code. Do not modify.
 //  source: types.proto
 //
-// @dart = 2.3
-// ignore_for_file: camel_case_types,non_constant_identifier_names,library_prefixes,unused_import,unused_shown_name,return_of_invalid_type
+// @dart = 2.12
+// ignore_for_file: annotate_overrides,camel_case_types,unnecessary_const,non_constant_identifier_names,library_prefixes,unused_import,unused_shown_name,return_of_invalid_type,unnecessary_this,prefer_final_fields,deprecated_member_use_from_same_package
 
 import 'dart:async' as $async;
 
@@ -47,17 +47,17 @@ abstract class ABCIApplicationServiceBase extends $pb.GeneratedService {
 
   $async.Future<$pb.GeneratedMessage> handleCall($pb.ServerContext ctx, $core.String method, $pb.GeneratedMessage request) {
     switch (method) {
-      case 'Echo': return this.echo(ctx, request);
-      case 'Flush': return this.flush(ctx, request);
-      case 'Info': return this.info(ctx, request);
-      case 'SetOption': return this.setOption(ctx, request);
-      case 'DeliverTx': return this.deliverTx(ctx, request);
-      case 'CheckTx': return this.checkTx(ctx, request);
-      case 'Query': return this.query(ctx, request);
-      case 'Commit': return this.commit(ctx, request);
-      case 'InitChain': return this.initChain(ctx, request);
-      case 'BeginBlock': return this.beginBlock(ctx, request);
-      case 'EndBlock': return this.endBlock(ctx, request);
+      case 'Echo': return this.echo(ctx, request as $3.RequestEcho);
+      case 'Flush': return this.flush(ctx, request as $3.RequestFlush);
+      case 'Info': return this.info(ctx, request as $3.RequestInfo);
+      case 'SetOption': return this.setOption(ctx, request as $3.RequestSetOption);
+      case 'DeliverTx': return this.deliverTx(ctx, request as $3.RequestDeliverTx);
+      case 'CheckTx': return this.checkTx(ctx, request as $3.RequestCheckTx);
+      case 'Query': return this.query(ctx, request as $3.RequestQuery);
+      case 'Commit': return this.commit(ctx, request as $3.RequestCommit);
+      case 'InitChain': return this.initChain(ctx, request as $3.RequestInitChain);
+      case 'BeginBlock': return this.beginBlock(ctx, request as $3.RequestBeginBlock);
+      case 'EndBlock': return this.endBlock(ctx, request as $3.RequestEndBlock);
       default: throw $core.ArgumentError('Unknown method: $method');
     }
   }

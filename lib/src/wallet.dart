@@ -13,22 +13,23 @@ import './http_client/http_client.dart';
 import 'package:uuid/uuid.dart' as uuid;
 import 'package:binance_chain/src/utils/keystore.dart';
 import 'package:pointycastle/export.dart';
+import 'package:pointycastle/digests/sha3.dart';
 import 'package:convert/convert.dart';
 import 'package:bip39/bip39.dart' as bip39;
 
 class Wallet {
-  String _privateKey;
-  String _publicKey;
-  String _publicKeyUncompressed;
-  String _address;
-  bip32.BIP32 _bip32;
-  int _accountNumber;
-  String _chain_id;
-  int sequence;
-  BinanceEnvironment _env;
-  HttpApiClient _httpClient;
+  String? _privateKey;
+  String? _publicKey;
+  String? _publicKeyUncompressed;
+  String? _address;
+  late bip32.BIP32 _bip32;
+  int? _accountNumber;
+  String? _chain_id;
+  int? sequence;
+  BinanceEnvironment? _env;
+  HttpApiClient? _httpClient;
 
-  BinanceEnvironment get env => _env;
+  BinanceEnvironment? get env => _env;
 
   /// Binance account address.
   ///
@@ -43,7 +44,7 @@ class Wallet {
   /// where HRP is ``bnb1`` and ``tbnb``.
   ///
   /// Read more: [Binance Chain Docs / blockchain / address](https://docs.binance.org/blockchain.html#address)
-  String get address => _address;
+  String? get address => _address;
 
   /// The Sequence Number is the way how Binance Chain prevents Replay Attack
   /// (the idea is borrowed from Cosmos network, but varies a bit in handling).
@@ -57,35 +58,35 @@ class Wallet {
   //int get sequence => _sequence;
 
   /// Private key in hex.
-  String get privateKey => _privateKey;
+  String? get privateKey => _privateKey;
 
   /// Public key in hex.
-  String get publicKey => _publicKey;
+  String? get publicKey => _publicKey;
 
-  String get publicKeyUncompressed => _publicKeyUncompressed;
+  String? get publicKeyUncompressed => _publicKeyUncompressed;
 
   /// An internal identifier for the account in Binance.
   /// Read more: [Binance Chain Docs / chain access / account](https://docs.binance.org/chain-access.html#account-and-sequence-number)
-  int get accountNumber => _accountNumber;
+  int? get accountNumber => _accountNumber;
 
-  String get chainId => _chain_id;
+  String? get chainId => _chain_id;
 
-  HttpApiClient get httpClient {
+  HttpApiClient? get httpClient {
     _httpClient = _httpClient ?? HttpApiClient(env: _env);
     return _httpClient;
   }
 
   /// Create wallet object from private key in hex.
-  Wallet(String privateKey, BinanceEnvironment env) {
+  Wallet(String privateKey, BinanceEnvironment? env) {
     if (privateKey.isNotEmpty) {
       _privateKey = privateKey;
       _env = env;
-      _bip32 = bip32.BIP32.fromPrivateKey(hex.decode(_privateKey), null);
+      _bip32 = bip32.BIP32.fromPrivateKey(hex.decode(_privateKey!) as Uint8List, null);
 
-      _publicKey = hex.encode(_bip32.publicKey);
-      _publicKeyUncompressed = hex.encode(_bip32.publicKeyUncompressed);
+      _publicKey = hex.encode(_bip32.publicKey!);
+      _publicKeyUncompressed = hex.encode(_bip32.publicKeyUncompressed!);
 
-      _address = getAddressFromPublicKey(_publicKey, env.hrp);
+      _address = getAddressFromPublicKey(_publicKey!, env!.hrp);
     } else {
       throw ArgumentError('Private key can`t be empty');
     }
@@ -98,12 +99,12 @@ class Wallet {
   Wallet.fromMnemonicPhrase(String mnemonicPhrase, BinanceEnvironment env) {
     if (bip39.validateMnemonic(mnemonicPhrase)) {
       _bip32 = bip32.BIP32.fromSeed(bip39.mnemonicToSeed(mnemonicPhrase)).derivePath("44'/714'/0'/0/0");
-      _privateKey = hex.encode(_bip32.privateKey);
-      _publicKey = hex.encode(_bip32.publicKey);
-      _publicKeyUncompressed = hex.encode(_bip32.publicKeyUncompressed);
+      _privateKey = hex.encode(_bip32.privateKey!);
+      _publicKey = hex.encode(_bip32.publicKey!);
+      _publicKeyUncompressed = hex.encode(_bip32.publicKeyUncompressed!);
 
       _env = env;
-      _address = getAddressFromPublicKey(_publicKey, env.hrp);
+      _address = getAddressFromPublicKey(_publicKey!, env.hrp);
     } else {
       throw ArgumentError('Mnemonic Phrase is invalid');
     }
@@ -112,12 +113,12 @@ class Wallet {
   /// Create wallet object from seed [Uint8List]
   Wallet.fromSeed(Uint8List seed, BinanceEnvironment env) {
     _bip32 = bip32.BIP32.fromSeed(seed).derivePath("44'/714'/0'/0/0");
-    _privateKey = hex.encode(_bip32.privateKey);
-    _publicKey = hex.encode(_bip32.publicKey);
-    _publicKeyUncompressed = hex.encode(_bip32.publicKeyUncompressed);
+    _privateKey = hex.encode(_bip32.privateKey!);
+    _publicKey = hex.encode(_bip32.publicKey!);
+    _publicKeyUncompressed = hex.encode(_bip32.publicKeyUncompressed!);
 
     _env = env;
-    _address = getAddressFromPublicKey(_publicKey, env.hrp);
+    _address = getAddressFromPublicKey(_publicKey!, env.hrp);
   }
 
   String toWIF() {
@@ -125,42 +126,42 @@ class Wallet {
   }
 
   factory Wallet.fromWIF(String stringWIF, BinanceEnvironment env) {
-    return Wallet(hex.encode(wif.decode(stringWIF).privateKey.toList()), env);
+    return Wallet(hex.encode(wif.decode(stringWIF).privateKey!.toList()), env);
   }
 
   /// only pbkdf2 yet
   factory Wallet.fromKeystore({
-    Keystore keystore,
-    String password,
-    BinanceEnvironment env,
+    required Keystore keystore,
+    required String password,
+    BinanceEnvironment? env,
   }) {
     var kdfDerivator = PBKDF2KeyDerivator(HMac(SHA256Digest(), 64))
       ..init(
         Pbkdf2Parameters(
-          hex.decode(keystore.crypto.kdfparams.salt),
-          keystore.crypto.kdfparams.c,
-          keystore.crypto.kdfparams.dklen,
+          hex.decode(keystore.crypto!.kdfparams!.salt!) as Uint8List,
+          keystore.crypto!.kdfparams!.c!,
+          keystore.crypto!.kdfparams!.dklen!,
         ),
       );
 
-    var derivedKey = kdfDerivator.process(utf8.encode(password));
+    var derivedKey = kdfDerivator.process(utf8.encode(password) as Uint8List);
 
-    var ciphertextbytes = hex.decode(keystore.crypto.ciphertext);
+    var ciphertextbytes = hex.decode(keystore.crypto!.ciphertext!);
     var macBody = Uint8List(16 + ciphertextbytes.length)..setRange(0, 16, derivedKey.sublist(16, 32))..setRange(16, ciphertextbytes.length + 16, ciphertextbytes);
 
-    var mac = SHA3Digest(int.parse(keystore.crypto.cipher.split('-')[1]) * 2).process(macBody);
-    if (hex.encode(mac) == keystore.crypto.mac) {
+    var mac = SHA3Digest(int.parse(keystore.crypto!.cipher!.split('-')[1]) * 2).process(macBody);
+    if (hex.encode(mac) == keystore.crypto!.mac) {
       var cipher = StreamCipher('AES/CTR');
       cipher
         ..reset()
         ..init(
           false,
           ParametersWithIV(
-            KeyParameter(derivedKey.sublist(0, int.parse(keystore.crypto.cipher.split('-')[1]) ~/ 8)),
-            hex.decode(keystore.crypto.cipherparams.iv),
+            KeyParameter(derivedKey.sublist(0, int.parse(keystore.crypto!.cipher!.split('-')[1]) ~/ 8)),
+            hex.decode(keystore.crypto!.cipherparams!.iv!) as Uint8List,
           ),
         );
-      return Wallet(hex.encode(cipher.process(Uint8List.fromList(hex.decode(keystore.crypto.ciphertext)))), env);
+      return Wallet(hex.encode(cipher.process(Uint8List.fromList(hex.decode(keystore.crypto!.ciphertext!)))), env);
     } else {
       throw ArgumentError('Invalid Password');
     }
@@ -194,30 +195,30 @@ class Wallet {
     var kdfDerivator = PBKDF2KeyDerivator(HMac(SHA256Digest(), 64))
       ..init(
         Pbkdf2Parameters(
-          hex.decode(keystore.crypto.kdfparams.salt),
-          keystore.crypto.kdfparams.c,
-          keystore.crypto.kdfparams.dklen,
+          hex.decode(keystore.crypto!.kdfparams!.salt!) as Uint8List,
+          keystore.crypto!.kdfparams!.c!,
+          keystore.crypto!.kdfparams!.dklen!,
         ),
       );
-    var derivedKey = kdfDerivator.process(utf8.encode(password));
+    var derivedKey = kdfDerivator.process(utf8.encode(password) as Uint8List);
 
     cipher
       ..reset()
       ..init(
         true,
         ParametersWithIV(
-          KeyParameter(derivedKey.sublist(0, int.parse(keystore.crypto.cipher.split('-')[1]) ~/ 8)),
+          KeyParameter(derivedKey.sublist(0, int.parse(keystore.crypto!.cipher!.split('-')[1]) ~/ 8)),
           iv,
         ),
       );
 
-    var cipherText = cipher.process(Uint8List.fromList(hex.decode(_privateKey)));
+    var cipherText = cipher.process(Uint8List.fromList(hex.decode(_privateKey!)));
 
     crypto.ciphertext = hex.encode(cipherText);
 
     var macBody = Uint8List(16 + cipherText.length)..setRange(0, 16, derivedKey.sublist(16, 32))..setRange(16, cipherText.length + 16, cipherText);
 
-    var mac = SHA3Digest(int.parse(keystore.crypto.cipher.split('-')[1]) * 2).process(macBody);
+    var mac = SHA3Digest(int.parse(keystore.crypto!.cipher!.split('-')[1]) * 2).process(macBody);
 
     crypto.mac = hex.encode(mac);
 
@@ -227,19 +228,19 @@ class Wallet {
   /// Load ``accountNumber``, ``chainId`` and ``sequence`` using HTTP request
   Future<void> initialize_wallet() async {
     if (_accountNumber == null) {
-      var account = await httpClient.getAccount(_address);
-      _accountNumber = account.load.accountNumber;
-      sequence = account.load.sequence;
+      var account = await httpClient!.getAccount(_address);
+      _accountNumber = account.load!.accountNumber;
+      sequence = account.load!.sequence;
       //print(account.load.sequence);
-      var nodeInfo = await httpClient.getNodeInfo();
-      _chain_id = nodeInfo.load.network;
+      var nodeInfo = await httpClient!.getNodeInfo();
+      _chain_id = nodeInfo.load!.network;
     }
   }
 
   /// Sign message using secp256k1
   Uint8List sign_message(Uint8List message) {
-    var dsaSigner = ECDSASigner(SHA256Digest(), HMac(SHA256Digest(), 64))..init(true, PrivateKeyParameter(ECPrivateKey(BigInt.parse(privateKey, radix: 16), ECDomainParameters('secp256k1'))));
-    ECSignature s = dsaSigner.generateSignature(message);
+    var dsaSigner = ECDSASigner(SHA256Digest(), HMac(SHA256Digest(), 64))..init(true, PrivateKeyParameter(ECPrivateKey(BigInt.parse(privateKey!, radix: 16), ECDomainParameters('secp256k1'))));
+    var s = dsaSigner.generateSignature(message) as ECSignature;
     var buffer = Uint8List(64);
     var bi = encodeBigInt(s.r);
 
@@ -255,18 +256,18 @@ class Wallet {
 
   void increment_account_sequence() {
     if (sequence != null) {
-      sequence += 1;
+      sequence = sequence! + 1;
     }
   }
 
   Future<void> reload_account_sequence() async {
-    var account = await httpClient.getAccount(_address);
-    sequence = account.load.sequence;
+    var account = await httpClient!.getAccount(_address);
+    sequence = account.load!.sequence;
   }
 
   /// read more: [Binance Chain Docs / encoding / orderID](https://docs.binance.org/encoding.html#order-id)
   String generate_order_id() {
-    return '${hex.encode(decode_address(address)).toUpperCase()}-${sequence + 1}';
+    return '${hex.encode(decode_address(address!)!).toUpperCase()}-${sequence! + 1}';
   }
 }
 
