@@ -20,7 +20,7 @@ int bech32_polymod(List values) {
 
   var chk = 1;
   int top;
-  for (int value in values as Iterable<int>) {
+  for (var value in values as Iterable<int>) {
     top = chk >> 25;
     chk = (chk & 0x1ffffff) << 5 ^ value;
     for (var i in [0, 1, 2, 3, 4]) {

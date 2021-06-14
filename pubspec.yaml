@@ -21,7 +21,6 @@ dependencies:
   fixnum: ^1.0.0
   meta: ^1.4.0
   uuid: ^3.0.4
-  collection: ^1.15.0-nullsafety.4
   
 
 dev_dependencies:

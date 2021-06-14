@@ -332,7 +332,7 @@ class HttpApiClient {
   ///
   /// More info: [BinanceChain docs](https://docs.binance.org/api-reference/dex-api/paths.html#apiv1block-exchange-fee)
   Future<APIResponse<BlockExchangeFeePage>> getTradingFee({
-    required String address,
+    String? address,
     int? endTime,
     int? limit,
     int? offset,

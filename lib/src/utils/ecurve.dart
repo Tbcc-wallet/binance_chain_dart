@@ -99,7 +99,7 @@ Uint8List? pointAddScalar(Uint8List p, Uint8List tweak, bool _compressed) {
   if (!isPoint(p)) throw ArgumentError(THROW_BAD_POINT);
   if (!isOrderScalar(tweak)) throw ArgumentError(THROW_BAD_TWEAK);
   var compressed = assumeCompression(_compressed, p);
-  ECPoint? pp = decodeFrom(p);
+  var pp = decodeFrom(p);
   if (_compare(tweak, ZERO32) == 0) return getEncoded(pp, compressed);
   var tt = fromBuffer(tweak);
   var qq = (G * tt) as ECPoint;
@@ -146,7 +146,7 @@ bool verify(Uint8List hash, Uint8List q, Uint8List signature) {
   // 1.4.1 Enforce r and s are both integers in the interval [1, n − 1] (1, isSignature enforces '< n - 1')
   if (!isSignature(signature)) throw ArgumentError(THROW_BAD_SIGNATURE);
 
-  ECPoint? Q = decodeFrom(q);
+  var Q = decodeFrom(q);
   var r = fromBuffer(signature.sublist(0, 32));
   var s = fromBuffer(signature.sublist(32, 64));
 
