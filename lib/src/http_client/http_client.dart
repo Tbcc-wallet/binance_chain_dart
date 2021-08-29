@@ -23,6 +23,7 @@ class HttpApiClient {
 
   Future<APIResponse> _request(String method, String path, {Map<String, String>? headers, dynamic body, bool? customPath}) async {
     var url = customPath == true ? path : _createFullPath(path);
+    print(url);
     late var resp;
     switch (method) {
       case 'post':
@@ -37,7 +38,12 @@ class HttpApiClient {
   }
 
   APIResponse _handle_response(Response response) {
-    var res = json.decode(response.body);
+    var res;
+    try {
+      res = json.decode(response.body);
+    } catch (e) {
+      print('$e, ${response.body}');
+    }
 
     return APIResponse(response.statusCode, res);
   }
@@ -377,7 +383,7 @@ class HttpApiClient {
         '${startTime != null ? '&startTime=$startTime' : ''}'
         '${txAsset != null ? '&txAsset=$txAsset' : ''}'
         '${txType != null ? '&txType=' + txType.toString().substring(txType.toString().indexOf('.') + 1) : ''}';
-
+    print(path);
     var res = await _get(path);
 
     res.load = TxPage.fromJson(res.load);

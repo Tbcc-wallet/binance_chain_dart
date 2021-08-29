@@ -35,7 +35,7 @@ Uint8List encodeBigInt(BigInt number) {
 }
 
 Uint8List varint_encode(int? number) {
-  var buf = <int?>[];
+  var buf = <int>[];
   var towrite;
   while (true) {
     towrite = number! & 0x7f;
@@ -47,7 +47,7 @@ Uint8List varint_encode(int? number) {
       break;
     }
   }
-  return Uint8List.fromList(buf as List<int>);
+  return Uint8List.fromList(buf);
 }
 
 Uint8List? convertbits(Uint8List data, int frombits, int tobits, [pad = true]) {

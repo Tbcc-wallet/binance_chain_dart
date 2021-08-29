@@ -147,6 +147,14 @@ class StdTxMsg extends Msg {
     });
     return stdtx;
   }
+
+  //@override
+  //Map? to_map() => {
+  //      'type': 'auth/StdTx',
+  //      'value': {
+  //  'msg': [_msg.to_map()]
+  //}
+  //    };
 }
 
 class PubKeyMsg extends Msg {
