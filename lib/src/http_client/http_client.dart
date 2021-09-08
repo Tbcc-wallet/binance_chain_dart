@@ -23,7 +23,6 @@ class HttpApiClient {
 
   Future<APIResponse> _request(String method, String path, {Map<String, String>? headers, dynamic body, bool? customPath}) async {
     var url = customPath == true ? path : _createFullPath(path);
-    print(url);
     late var resp;
     switch (method) {
       case 'post':
