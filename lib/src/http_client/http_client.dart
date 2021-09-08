@@ -383,7 +383,6 @@ class HttpApiClient {
         '${startTime != null ? '&startTime=$startTime' : ''}'
         '${txAsset != null ? '&txAsset=$txAsset' : ''}'
         '${txType != null ? '&txType=' + txType.toString().substring(txType.toString().indexOf('.') + 1) : ''}';
-    print(path);
     var res = await _get(path);
 
     res.load = TxPage.fromJson(res.load);
