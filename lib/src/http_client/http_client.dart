@@ -166,13 +166,14 @@ class HttpApiClient {
   /// More info: [BinanceChain docs](https://docs.binance.org/api-reference/dex-api/paths.html#apiv1broadcast)
   Future<APIResponse<List<Transaction>>> broadcastMsg(Msg msg, {bool sync = false}) async {
     await msg.wallet!.initialize_wallet();
-    print(msg.wallet!.sequence);
+    //print(msg.wallet!.sequence);
     var res = await _post('broadcast${sync ? '?sync=true' : ''}', headers: <String, String>{'content-type': 'text/plain'}, body: msg.to_hex_data());
-    msg.wallet!.increment_account_sequence();
 
-    print(res.load);
-    print(msg.wallet!.sequence);
+    //print(res.load);
+    //print(msg.wallet!.sequence);
     if (res.statusCode == 200) {
+      msg.wallet!.increment_account_sequence();
+
       res.load = List<Transaction>.generate(res.load.length, (index) => Transaction.fromJson(res.load[index]));
     } else {
       res.load = null;
